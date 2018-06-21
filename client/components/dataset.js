@@ -2,12 +2,14 @@ import React from 'react'
 import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts'
 import {connect} from 'react-redux'
 
-export const Dataset = () => {
-  const data = [
-    {name: 'richard', age: 34, grade: 100},
-    {name: 'hello', age: 45, grade: 80},
-    {name: 'world', age: 84, grade: 70}
-  ]
+const Dataset = props => {
+  // const data = [
+  //   {name: 'richard', age: 34, grade: 100},
+  //   {name: 'hello', age: 45, grade: 80},
+  //   {name: 'world', age: 84, grade: 70}
+  // ]
+  const data = props.data
+  console.log("DATA", props)
   return (
     <div>
       <h1>Chart</h1>
@@ -23,5 +25,4 @@ export const Dataset = () => {
     </div>
   )
 }
-
-export default connect(Dataset)
+export default Dataset
