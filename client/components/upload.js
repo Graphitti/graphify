@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import CSVReader from 'react-csv-reader'
 import Dataset from './index'
-import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts'
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, BarChart, Bar} from 'recharts'
 // import "../../public/styles.css";
 
 export default class Upload extends Component {
@@ -31,9 +31,9 @@ export default class Upload extends Component {
 
   render() {
       const data = [
-    {name: 'richard', age: 34, grade: 100},
-    {name: 'hello', age: 45, grade: 80},
-    {name: 'world', age: 84, grade: 70}
+    {name: 'richard', age: 34, grade: 100, expenses: 150},
+    {name: 'hello', age: 45, grade: 80, expenses: 200},
+    {name: 'world', age: 84, grade: 70, expenses: 120}
   ]
     console.log(this.state.uploadFile)
     return (
@@ -46,13 +46,30 @@ export default class Upload extends Component {
         />
         <p>and then open the console</p>
         <h1>Chart</h1>
-        {this.state.uploadFile.length && <LineChart width={1000} height={1000} data={this.state.uploadFile}>
+        <LineChart width={1000} height={1000} data={data}>
           <Line type="monotone" dataKey="age" stroke="#8884d8" />
-          <CartesianGrid stroke="#ccc" />
+          <Line type="monotone" dataKey="grade" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="expenses" stroke="#e22dd6" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
           <XAxis dataKey="name" />
-          <YAxis dataKey="age" />
-        </LineChart>}
+          <YAxis dataKey="expenses" />
+          <Tooltip />
+          <Legend />
+        </LineChart>
+
+        <BarChart width={1000} height={1000} data={data}>
+          <Bar type="monotone" dataKey="age" fill="#8884d8" />
+          <Bar type="monotone" dataKey="grade" fill="#82ca9d" />
+          <Bar type="monotone" dataKey="expenses" fill="#e22dd6" />
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis dataKey="expenses" />
+          <Tooltip />
+          <Legend />
+        </BarChart>
       </div>
     )
   }
 }
+
+

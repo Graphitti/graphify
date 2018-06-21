@@ -18,9 +18,6 @@ const Dataset = props => {
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="name" />
         <YAxis dataKey="age" />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="name" />
-        <YAxis dataKey="grade" />
       </LineChart>
     </div>
   )
