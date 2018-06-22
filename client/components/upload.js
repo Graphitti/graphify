@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CSVReader from "react-csv-reader";
-// import "../../public/styles.css";
+import store, { uploadData } from "../store";
+import history from "../history";
 
 
 export default class Upload extends Component {
@@ -13,25 +14,14 @@ export default class Upload extends Component {
   }
 
   handleForce = data => {
-    // console.log(data);
-    let objArr = [];
-    let headers = data[0];
-
-    for (let j = 1; j < data.length; j++){
-      let obj = {}
-      for (let i = 0; i < headers.length; i++){
-        obj[headers[i]] = data[j][i];
-      }
-      objArr.push(obj);
-    }
-    this.setState({uploadFile: objArr})
+    console.log('the data',data);
+    store.dispatch(uploadData(data));
+    // history.push("/graph")
   };
 
   render(){
-    console.log(this.state)
     return (
       <div className="container">
-      {console.log('upload ......')}
         <CSVReader
           cssClass="react-csv-input"
           label="Select CSV with secret Death Star statistics"

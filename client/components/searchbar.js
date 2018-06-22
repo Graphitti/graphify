@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as d3 from 'd3';
+import store, { fetchData } from '../store';
+import history from '../history';
 
 export default class SearchBar extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            results: [],
-            // result: []
+            results: []
         };
     }
 
@@ -46,11 +46,14 @@ export default class SearchBar extends Component {
 
                                     <button onClick={(event) => {
                                         event.preventDefault();
-                                        d3.csv(`https://${result.metadata.domain}/resource/${result.resource.id}.csv`)
-                                        // axios.get(`/api/soda?id=${result.resource.id}&domain=${result.metadata.domain}`)
-                                        .then(res => console.log(res))
-                                        // .then(data =>)
-                                        .catch(console.error);
+                                        const domain = result.metadata.domain;
+                                        const id = result.resource.id;
+                                        let columObj = {};
+                                        result.resource.columns_name.forEach((columnName, i) => {
+                                            columObj[columnName] = result.resource.columns_datatype[i];
+                                        })
+                                        store.dispatch(fetchData(domain, id, columObj));
+                                        history.push('/graph');
                                     }
                                     }>see this data</button>
                                 </div>
