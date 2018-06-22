@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {Component} from 'react'
 import CSVReader from 'react-csv-reader'
 import Dataset from './index'
@@ -13,6 +14,12 @@ import {
   Bar
 } from 'recharts'
 // import "../../public/styles.css";
+=======
+import React, { Component } from "react";
+import CSVReader from "react-csv-reader";
+import store, { uploadData } from "../store";
+import history from "../history";
+>>>>>>> master
 
 export default class Upload extends Component {
   constructor(props) {
@@ -27,6 +34,7 @@ export default class Upload extends Component {
     this.handleXCategory = this.handleXCategory.bind(this)
   }
 
+<<<<<<< HEAD
   handleUpload = data => {
     console.log('DATA', data)
     let objArr = []
@@ -61,6 +69,15 @@ export default class Upload extends Component {
     }
     console.log('DATASET', this.state.uploadFile)
     console.log('CATEGORY', this.state.currentX)
+=======
+  handleForce = data => {
+    console.log('the data',data);
+    store.dispatch(uploadData(data));
+    // history.push("/graph")
+  };
+
+  render(){
+>>>>>>> master
     return (
       <div className="container">
         <CSVReader
