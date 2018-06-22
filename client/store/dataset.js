@@ -34,7 +34,7 @@ export const fetchData = (domain, id, columnObj) => dispatch => {
     return d3.csv(`https://${domain}/resource/${id}.csv`)
     // axios.get(`/api/soda?id=${result.resource.id}&domain=${result.metadata.domain}`)
     .then(res => {
-        let processedData = setSearchStore(res);
+        let processedData = setSearchStore(res, columnObj);
         dispatch(setData(processedData));
     })
     .catch(console.error);
