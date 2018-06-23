@@ -7,7 +7,6 @@
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
-export {default as Dataset} from './dataset'
 export {default as Upload} from './upload'
 export {default as SearchBar} from './searchbar'
 export {default as Graph} from './graph'
