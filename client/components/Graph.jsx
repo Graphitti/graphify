@@ -24,7 +24,6 @@ import {
   Legend
 } from 'recharts'
 import ReactTable from 'react-table'
-// import "../../node-modules/react-table/react-table.css"
 
 
 class Graph extends Component {
@@ -72,8 +71,6 @@ class Graph extends Component {
   render() {
     const { dataset } = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
-    console.log('888888', columnObj)
-
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
       return columnObj[key].toLowerCase() === 'number' || columnObj[key].toLowerCase() === 'percent'
@@ -131,6 +128,7 @@ class Graph extends Component {
                 })}
               </div>
             </div>
+
             {this.state.currentX && !this.state.currentY.length && (
               <PieChart width={700} height={700}>
                 <Pie
