@@ -152,7 +152,7 @@ class Graph extends Component {
               this.state.currentY.length && (
                 <div id="graphs">
 
-                  {/* <LineChart width={800} height={800} data={dataset}>
+                  <LineChart width={800} height={800} data={dataset}>
                     {this.state.currentY.map((yAxis, idx) => (
                       <Line
                         key={idx}
@@ -162,7 +162,12 @@ class Graph extends Component {
                       />
                     ))}
                     <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-                    <XAxis dataKey={this.state.currentX} />
+                    {
+                      columnObj[this.state.currentX].toLowerCase !== 'number' ?
+                        <XAxis dataKey={this.state.currentX} allowDuplicatedCategory={false} type="category"/>
+                      :
+                        <XAxis dataKey={this.state.currentX} allowDataOverflow={false} type="number" />
+                    }
                     <YAxis />
                     <Tooltip />
                     <Legend />
@@ -171,7 +176,7 @@ class Graph extends Component {
                   <BarChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
                     {
-                      columnObj[this.state.currentX] !== 'number' ?
+                      columnObj[this.state.currentX].toLowerCase !== 'number' ?
                         <XAxis dataKey={this.state.currentX} allowDuplicatedCategory={false} type="category"/>
                       :
                         <XAxis dataKey={this.state.currentX} />
@@ -204,7 +209,7 @@ class Graph extends Component {
                         fill={colors[idx]}
                       />
                     ))}
-                  </AreaChart> */}
+                  </AreaChart>
 
                   <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={dataset}>
                     <PolarGrid />
@@ -249,7 +254,7 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </PieChart>
-                  {columnObj[this.state.currentX].toLowerCase() === 'number' && 
+                  {columnObj[this.state.currentX].toLowerCase() === 'number' &&
                     <ScatterChart width={800} height={800}>
                       <CartesianGrid />
                       <XAxis dataKey={this.state.currentX} type="number"/>
