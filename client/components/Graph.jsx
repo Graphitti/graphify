@@ -72,6 +72,8 @@ class Graph extends Component {
   render() {
     const { dataset } = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
+    console.log('888888', columnObj)
+
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
       return columnObj[key].toLowerCase() === 'number' || columnObj[key].toLowerCase() === 'percent'
@@ -150,7 +152,7 @@ class Graph extends Component {
               this.state.currentY.length && (
                 <div id="graphs">
 
-                  {/* <LineChart width={800} height={800} data={dataset}>
+                  <LineChart width={800} height={800} data={dataset}>
                     {this.state.currentY.map((yAxis, idx) => (
                       <Line
                         key={idx}
@@ -160,7 +162,12 @@ class Graph extends Component {
                       />
                     ))}
                     <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-                    <XAxis dataKey={this.state.currentX} />
+                    {
+                      columnObj[this.state.currentX].toLowerCase !== 'number' ?
+                        <XAxis dataKey={this.state.currentX} allowDuplicatedCategory={false} type="category"/>
+                      :
+                        <XAxis dataKey={this.state.currentX} allowDataOverflow={false} type="number" />
+                    }
                     <YAxis />
                     <Tooltip />
                     <Legend />
@@ -168,8 +175,13 @@ class Graph extends Component {
 
                   <BarChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={this.state.currentX} />
-                    <YAxis />
+                    {
+                      columnObj[this.state.currentX].toLowerCase !== 'number' ?
+                        <XAxis dataKey={this.state.currentX} allowDuplicatedCategory={false} type="category"/>
+                      :
+                        <XAxis dataKey={this.state.currentX} />
+                    }
+                    <YAxis allowDuplicatedCategory="false" />
                     <Tooltip />
                     <Legend />
                     {this.state.currentY.map((yAxis, idx) => (
@@ -197,7 +209,7 @@ class Graph extends Component {
                         fill={colors[idx]}
                       />
                     ))}
-                  </AreaChart> */}
+                  </AreaChart>
 
                   <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={dataset}>
                     <PolarGrid />
@@ -242,7 +254,7 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </PieChart>
-                  {columnObj[this.state.currentX].toLowerCase() === 'number' && 
+                  {columnObj[this.state.currentX].toLowerCase() === 'number' &&
                     <ScatterChart width={800} height={800}>
                       <CartesianGrid />
                       <XAxis dataKey={this.state.currentX} type="number"/>
