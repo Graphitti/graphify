@@ -12,6 +12,8 @@ import {
   BarChart,
   Bar
 } from 'recharts'
+import ReactTable from 'react-table'
+// import '../../node_modules/react-table/react-table.css'
 
 class Graph extends Component {
   constructor(props) {
@@ -56,6 +58,7 @@ class Graph extends Component {
 
   render() {
     const {dataset} = this.props
+    console.log('^^^^^^^^', dataset)
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
@@ -64,6 +67,17 @@ class Graph extends Component {
     const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
     return (
       <div className="container">
+
+        <h1>Table</h1>
+          {dataset.length > 0 && (
+            <div>
+              <ReactTable
+                data={dataset}
+                resolveData={data => data.map(row => row)}
+              />
+            </div>
+          )}
+
         <h1>Select the Data to Graph</h1>
         {dataset.length && (
           <div>
