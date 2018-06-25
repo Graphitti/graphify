@@ -9,7 +9,14 @@ body {
 .container {
   text-align: center;
   padding: 15px;
-  margin: 10px auto;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.graphContainer {
+  display: flex;
+  flex-direction: column;
 }
 
 .container p {

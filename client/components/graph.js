@@ -13,7 +13,8 @@ import {
   Bar
 } from 'recharts'
 import ReactTable from 'react-table'
-// import '../../node_modules/react-table/react-table.css'
+// import "../../node-modules/react-table/react-table.css"
+
 
 class Graph extends Component {
   constructor(props) {
@@ -64,16 +65,24 @@ class Graph extends Component {
     const yAxis = xAxis.filter(key => {
       return columnObj[key].toLowerCase() === 'number' || columnObj[key].toLowerCase() === 'percent'
     })
+    const columns = xAxis.map(column => {
+      return {
+        Header: column,
+        accessor: column,
+        width: "auto"
+      }
+    })
     const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
     return (
-      <div className="container">
+      <div className="graphContainer">
 
         <h1>Table</h1>
-          {dataset.length > 0 && (
+          {(dataset.length && xAxis.length) && (
             <div>
               <ReactTable
                 data={dataset}
-                resolveData={data => data.map(row => row)}
+                columns={columns}
+                defaultPageSize={5}
               />
             </div>
           )}
