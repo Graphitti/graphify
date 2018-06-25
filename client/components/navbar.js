@@ -7,7 +7,7 @@ import {logout} from '../store'
 const Navbar = ({handleClick, isLoggedIn, dataset}) => (
   <div>
     {console.log('navbar props',dataset)}
-    <h1>BOILERMAKER</h1>
+    <Link to="/homepage"><h1>GRAPHIFY</h1></Link>
     <nav>
       {isLoggedIn ? (
         <div>

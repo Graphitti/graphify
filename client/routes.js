@@ -19,6 +19,8 @@ class Routes extends Component {
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+        <Route path="/" component ={Upload}/>
+        <Route path="/homepage" component ={Upload}/>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/upload" component={Upload} />
