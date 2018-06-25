@@ -24,7 +24,6 @@ import {
   Legend
 } from 'recharts'
 import ReactTable from 'react-table'
-// import "../../node-modules/react-table/react-table.css"
 
 
 class Graph extends Component {
@@ -72,8 +71,6 @@ class Graph extends Component {
   render() {
     const { dataset } = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
-    console.log('888888', columnObj)
-
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
       return columnObj[key].toLowerCase() === 'number' || columnObj[key].toLowerCase() === 'percent'
@@ -131,12 +128,13 @@ class Graph extends Component {
                 })}
               </div>
             </div>
+
             {this.state.currentX && !this.state.currentY.length && (
               <PieChart width={700} height={700}>
                 <Pie
                   isAnimationActive={true}
                   data={quantityMaker(dataset, this.state.currentX)}
-                  // dataKey={yAxis}
+                  dataKey="value"
                   cx={400}
                   cy={400}
                   outerRadius={150}
@@ -231,7 +229,7 @@ class Graph extends Component {
                     <Pie
                       isAnimationActive={true}
                       data={quantityMaker(dataset, this.state.currentX)}
-                      // dataKey={yAxis}
+                      dataKey="value"
                       cx={200}
                       cy={200}
                       outerRadius={60}
@@ -242,7 +240,7 @@ class Graph extends Component {
                         key={idx}
                         isAnimationActive={true}
                         data={quantityMaker(dataset, yAxis)}
-                        // dataKey={yAxis}
+                        dataKey="value"
                         cx={200}
                         cy={200}
                         innerRadius={60 + 10 + (30 * idx)}
@@ -254,7 +252,8 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </PieChart>
-                  {columnObj[this.state.currentX].toLowerCase() === 'number' &&
+
+                  {columnObj[this.state.currentX].toLowerCase() === 'number' && 
                     <ScatterChart width={800} height={800}>
                       <CartesianGrid />
                       <XAxis dataKey={this.state.currentX} type="number"/>
@@ -266,7 +265,7 @@ class Graph extends Component {
                       <Tooltip cursor={{strokeDasharray: '3 3'}} />
                       <Legend />
                     </ScatterChart>
-                    }
+                  }
 
                 </div>
               )}
