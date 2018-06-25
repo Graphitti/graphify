@@ -18,63 +18,93 @@ class Graph extends Component {
     super(props)
     this.state = {
       currentX: '',
-      currentY: []
+      currentY: [],
+      yCategQuantity: ['']
     }
 
     this.handleXCategory = this.handleXCategory.bind(this)
     this.handleYCategory = this.handleYCategory.bind(this)
+    this.handleDeleteY = this.handleDeleteY.bind(this)
+    this.addYCategory = this.addYCategory.bind(this)
   }
 
-  handleXCategory = event => {
+  handleXCategory(event) {
     this.setState({currentX: event.target.value})
   }
 
-  handleYCategory = event => {
+  handleYCategory(value, idx) {
+    const newCurrentY = [...this.state.currentY]
+    newCurrentY[idx] = value
     this.setState({
-      currentY: Array.from(new Set([...this.state.currentY, event.target.value]))
+      currentY: newCurrentY})
+  }
+
+  handleDeleteY(idx) {
+    const newCurrentY = [...this.state.currentY]
+    newCurrentY.splice(idx, 1)
+    this.setState({
+      currentY: newCurrentY,
+      yCategQuantity: this.state.yCategQuantity.slice(0, -1)
     })
   }
+
+  addYCategory() {
+    this.setState({
+      yCategQuantity: [...this.state.yCategQuantity, ""]
+    })
+  }
+
   render() {
     const {dataset} = this.props
     const {columnObj} = dataset
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
-      return (
-        columnObj[key].toLowerCase() === 'number' ||
-        columnObj[key].toLowerCase() === 'percent'
-      )
+      return columnObj[key] === 'number' || columnObj[key] === 'percent'
     })
-    console.log('STATE-Y', this.state.currentY)
+    const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
     return (
       <div className="container">
-        <h1>Chart</h1>
+        <h1>Select the Data to Graph</h1>
         {dataset.length && (
           <div>
-            <h3>choose x and y please</h3>
-            <form>
-              <select onChange={this.handleXCategory}>
-                <option hidden>choose X</option>
-                {xAxis.map(xCategory => (
-                  <option key={xCategory}>{xCategory}</option>
-                ))}
-              </select>
-              <select onChange={this.handleYCategory}>
-                <option hidden>choose Y</option>
-                {yAxis.map(yCategory => (
-                  <option key={yCategory}>{yCategory}</option>
-                ))}
-              </select>
-            </form>
+            <div>
+              <div>
+                <h2>X Axis Data</h2>
+                <select onChange={this.handleXCategory}>
+                  <option hidden>choose X</option>
+                  {xAxis.map(xCategory => (
+                    <option key={xCategory}>{xCategory}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <h2>Y Axis Data</h2>
+                <button onClick={this.addYCategory}>+</button>
+                {this.state.yCategQuantity.map((n, idx) => {
+                  return (
+                    <div key={idx}>
+                      <select onChange={e => (this.handleYCategory(e.target.value, idx))}>
+                        <option hidden>choose Y</option>
+                        {yAxis.map(yCategory => (
+                          <option key={yCategory}>{yCategory}</option>
+                        ))}
+                      </select>
+                      <button onClick={() => this.handleDeleteY(idx)}>x</button>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
             {this.state.currentX &&
               this.state.currentY.length && (
-                <div>
+                <div id="graphs">
                   <LineChart width={1000} height={1000} data={dataset}>
-                    {this.state.currentY.map(yAxis => (
+                    {this.state.currentY.map((yAxis, idx) => (
                       <Line
-                        key={yAxis}
+                        key={idx}
                         type="monotone"
                         dataKey={yAxis}
-                        fill="#8884d8"
+                        stroke={colors[idx]}
                       />
                     ))}
                     <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
@@ -83,18 +113,21 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </LineChart>
-                  {/* <BarChart width={1000} height={1000} data={dataset}>
+                  <BarChart width={1000} height={1000} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={this.state.currentX} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      type="monotone"
-                      dataKey={this.state.currentY}
-                      fill="#8884d8"
-                    />
-                  </BarChart> */}
+                    {this.state.currentY.map((yAxis, idx) => (
+                      <Bar
+                        key={idx}
+                        type="monotone"
+                        dataKey={yAxis}
+                        fill={colors[idx]}
+                      />
+                    ))}
+                  </BarChart>
                 </div>
               )}
           </div>

@@ -1,29 +1,20 @@
-body {
-  font-family: sans-serif;
-}
-
 a {
   text-decoration: none;
 }
 
-label {
-  display: block;
-}
-
-nav a {
-  display: inline-block;
-  margin: 1em;
-}
-
-form div {
-  margin: 1em;
-  display: inline-block;
+body {
+  font-family: sans-serif;
 }
 
 .container {
   text-align: center;
   padding: 15px;
   margin: 10px auto;
+}
+
+.container p {
+  padding-top: 10px;
+  color: #666;
 }
 
 .csv-input {
@@ -34,7 +25,20 @@ form div {
   border-radius: 5px;
 }
 
-.container p {
-  padding-top: 10px;
-  color: #666;
+form div {
+  margin: 1em;
+  display: inline-block;
+}
+
+#graphs {
+  display: flex;
+}
+
+label {
+  display: block;
+}
+
+nav a {
+  display: inline-block;
+  margin: 1em;
 }
