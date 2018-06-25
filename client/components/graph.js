@@ -12,6 +12,11 @@ import {
   Scatter,
   PieChart,
   Pie,
+  RadarChart,
+  Radar,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  PolarGrid,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -102,11 +107,28 @@ class Graph extends Component {
                 })}
               </div>
             </div>
+            {this.state.currentX && !this.state.currentY.length && (
+              <PieChart width={800} height={800}>
+                <Pie
+                  isAnimationActive={true}
+                  data={quantityMaker(dataset, this.state.currentX)}
+                  // dataKey={yAxis}
+                  cx={200}
+                  cy={200}
+                  outerRadius={80}
+                  fill={colors[0]}
+                  label
+                />
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            )}
+
             {this.state.currentX &&
               this.state.currentY.length && (
                 <div id="graphs">
 
-                  {/* <LineChart width={800} height={800} data={dataset}>
+                  <LineChart width={800} height={800} data={dataset}>
                     {this.state.currentY.map((yAxis, idx) => (
                       <Line
                         key={idx}
@@ -120,9 +142,9 @@ class Graph extends Component {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                  </LineChart> */}
+                  </LineChart>
 
-                  {/* <BarChart width={800} height={800} data={dataset}>
+                  <BarChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={this.state.currentX} />
                     <YAxis />
@@ -136,7 +158,7 @@ class Graph extends Component {
                         fill={colors[idx]}
                       />
                     ))}
-                  </BarChart> */}
+                  </BarChart>
 
                   <AreaChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -155,35 +177,22 @@ class Graph extends Component {
                     ))}
                   </AreaChart>
 
-                  {/* <ScatterChart width={800} height={800} data={dataset}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={this.state.currentX} />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
+                  <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={dataset}>
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey={this.state.currentX} />
+                    <PolarRadiusAxis />
                     {this.state.currentY.map((yAxis, idx) => (
-                      <Scatter 
+                      <Radar
                         key={idx}
-                        data={yAxis}
+                        name={yAxis}
+                        dataKey={yAxis}
+                        stroke={colors[idx]}
                         fill={colors[idx]}
+                        fillOpacity={0.6}
                       />
                     ))}
-                  </ScatterChart> */}
-                  {this.state.currentY.map((yAxis, idx) => (
-                    <PieChart width={800} height={800} key={idx}>
-                      <Pie 
-                        isAnimationActive={true}
-                        data={quantityMaker(dataset, yAxis)}
-                        cx={200}
-                        cy={200}
-                        outerRadius={80}
-                        fill={colors[idx]}
-                        label
-                      />
-                      <Tooltip />
-                    </PieChart>
+                  </RadarChart>
 
-                  ))}
                 </div>
               )}
           </div>
@@ -200,14 +209,14 @@ const mapState = state => {
 }
 
 const someData = [
-  {name: 'A', value: 20},
-  {name: 'B', value: 30},
-  {name: 'C', value: 40},
+  { name: 'A', value: 20 },
+  { name: 'B', value: 30 },
+  { name: 'C', value: 40 },
 ]
 
 
 function quantityMaker(arr, term) {
-  let quantityObj ={};
+  let quantityObj = {};
   arr.forEach(row => {
     let value = row[term];
     quantityObj[value] = quantityObj[value] + 1 || 1;
@@ -220,5 +229,7 @@ function quantityMaker(arr, term) {
   });
   return objArr;
 }
+
+
 
 export default connect(mapState)(Graph)
