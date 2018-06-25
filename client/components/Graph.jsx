@@ -70,7 +70,7 @@ class Graph extends Component {
   }
 
   render() {
-    const {dataset} = this.props
+    const { dataset } = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
     console.log('888888', columnObj)
 
@@ -90,15 +90,15 @@ class Graph extends Component {
       <div className="graphContainer">
 
         <h1>Table</h1>
-          {(dataset.length && xAxis.length) && (
-            <div>
-              <ReactTable
-                data={dataset}
-                columns={columns}
-                defaultPageSize={5}
-              />
-            </div>
-          )}
+        {(dataset.length && xAxis.length) && (
+          <div>
+            <ReactTable
+              data={dataset}
+              columns={columns}
+              defaultPageSize={5}
+            />
+          </div>
+        )}
 
         <h1>Select the Data to Graph</h1>
         {dataset.length && (
@@ -132,14 +132,14 @@ class Graph extends Component {
               </div>
             </div>
             {this.state.currentX && !this.state.currentY.length && (
-              <PieChart width={800} height={800}>
+              <PieChart width={700} height={700}>
                 <Pie
                   isAnimationActive={true}
                   data={quantityMaker(dataset, this.state.currentX)}
                   // dataKey={yAxis}
-                  cx={200}
-                  cy={200}
-                  outerRadius={80}
+                  cx={400}
+                  cy={400}
+                  outerRadius={150}
                   fill={colors[0]}
                   label
                 />
@@ -152,7 +152,7 @@ class Graph extends Component {
               this.state.currentY.length && (
                 <div id="graphs">
 
-                  <LineChart width={800} height={800} data={dataset}>
+                  {/* <LineChart width={800} height={800} data={dataset}>
                     {this.state.currentY.map((yAxis, idx) => (
                       <Line
                         key={idx}
@@ -204,7 +204,7 @@ class Graph extends Component {
                         fill={colors[idx]}
                       />
                     ))}
-                  </AreaChart>
+                  </AreaChart> */}
 
                   <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={dataset}>
                     <PolarGrid />
@@ -221,6 +221,47 @@ class Graph extends Component {
                       />
                     ))}
                   </RadarChart>
+
+                  <PieChart width={800} height={800}>
+                    <Pie
+                      isAnimationActive={true}
+                      data={quantityMaker(dataset, this.state.currentX)}
+                      // dataKey={yAxis}
+                      cx={200}
+                      cy={200}
+                      outerRadius={60}
+                      fill={colors[0]}
+                    />
+                    {this.state.currentY.map((yAxis, idx) => (
+                      <Pie
+                        key={idx}
+                        isAnimationActive={true}
+                        data={quantityMaker(dataset, yAxis)}
+                        // dataKey={yAxis}
+                        cx={200}
+                        cy={200}
+                        innerRadius={60 + 10 + (30 * idx)}
+                        outerRadius={70 + 20 + (30 * idx)}
+                        fill={colors[idx + 1]}
+                        label
+                      />
+                    ))}
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                  {columnObj[this.state.currentX].toLowerCase() === 'number' && 
+                    <ScatterChart width={800} height={800}>
+                      <CartesianGrid />
+                      <XAxis dataKey={this.state.currentX} type="number"/>
+                      <YAxis dataKey={this.state.currentY[0]} type="number"/>
+                      <Scatter
+                        data={dataset}
+                        fill={colors[0]}
+                        />
+                      <Tooltip cursor={{strokeDasharray: '3 3'}} />
+                      <Legend />
+                    </ScatterChart>
+                    }
 
                 </div>
               )}
