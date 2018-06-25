@@ -169,19 +169,21 @@ class Graph extends Component {
                       />
                     ))}
                   </ScatterChart> */}
+                  {this.state.currentY.map((yAxis, idx) => (
+                    <PieChart width={800} height={800} key={idx}>
+                      <Pie 
+                        isAnimationActive={true}
+                        data={quantityMaker(dataset, yAxis)}
+                        cx={200}
+                        cy={200}
+                        outerRadius={80}
+                        fill={colors[idx]}
+                        label
+                      />
+                      <Tooltip />
+                    </PieChart>
 
-                  <PieChart width={800} height={800}>
-                    <Pie 
-                      isAnimationActive={true}
-                      data={someData}
-                      cx={200}
-                      cy={200}
-                      outerRadius={80}
-                      fill='#888d48'
-                      label
-                    />
-                    <Tooltip />
-                  </PieChart>
+                  ))}
                 </div>
               )}
           </div>
@@ -202,5 +204,21 @@ const someData = [
   {name: 'B', value: 30},
   {name: 'C', value: 40},
 ]
+
+
+function quantityMaker(arr, term) {
+  let quantityObj ={};
+  arr.forEach(row => {
+    let value = row[term];
+    quantityObj[value] = quantityObj[value] + 1 || 1;
+  });
+  let objArr = Object.keys(quantityObj).map(name => {
+    return {
+      name: name,
+      value: quantityObj[name]
+    }
+  });
+  return objArr;
+}
 
 export default connect(mapState)(Graph)
