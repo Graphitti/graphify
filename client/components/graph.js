@@ -4,15 +4,19 @@ import { Link } from 'react-router-dom'
 import {
   LineChart,
   Line,
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
+  ScatterChart,
+  Scatter,
+  PieChart,
+  Pie,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
-  BarChart,
-  Bar,
-  AreaChart,
-  Area
+  Legend
 } from 'recharts'
 
 class Graph extends Component {
@@ -101,8 +105,8 @@ class Graph extends Component {
             {this.state.currentX &&
               this.state.currentY.length && (
                 <div id="graphs">
-                
-                  <LineChart width={800} height={800} data={dataset}>
+
+                  {/* <LineChart width={800} height={800} data={dataset}>
                     {this.state.currentY.map((yAxis, idx) => (
                       <Line
                         key={idx}
@@ -116,9 +120,9 @@ class Graph extends Component {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                  </LineChart>
+                  </LineChart> */}
 
-                  <BarChart width={800} height={800} data={dataset}>
+                  {/* <BarChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={this.state.currentX} />
                     <YAxis />
@@ -132,7 +136,7 @@ class Graph extends Component {
                         fill={colors[idx]}
                       />
                     ))}
-                  </BarChart>
+                  </BarChart> */}
 
                   <AreaChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -150,6 +154,34 @@ class Graph extends Component {
                       />
                     ))}
                   </AreaChart>
+
+                  {/* <ScatterChart width={800} height={800} data={dataset}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={this.state.currentX} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {this.state.currentY.map((yAxis, idx) => (
+                      <Scatter 
+                        key={idx}
+                        data={yAxis}
+                        fill={colors[idx]}
+                      />
+                    ))}
+                  </ScatterChart> */}
+
+                  <PieChart width={800} height={800}>
+                    <Pie 
+                      isAnimationActive={true}
+                      data={someData}
+                      cx={200}
+                      cy={200}
+                      outerRadius={80}
+                      fill='#888d48'
+                      label
+                    />
+                    <Tooltip />
+                  </PieChart>
                 </div>
               )}
           </div>
@@ -164,5 +196,11 @@ const mapState = state => {
     dataset: state.dataset
   }
 }
+
+const someData = [
+  {name: 'A', value: 20},
+  {name: 'B', value: 30},
+  {name: 'C', value: 40},
+]
 
 export default connect(mapState)(Graph)
