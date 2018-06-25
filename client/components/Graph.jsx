@@ -134,7 +134,7 @@ class Graph extends Component {
                 <Pie
                   isAnimationActive={true}
                   data={quantityMaker(dataset, this.state.currentX)}
-                  // dataKey={yAxis}
+                  dataKey="value"
                   cx={400}
                   cy={400}
                   outerRadius={150}
@@ -219,7 +219,7 @@ class Graph extends Component {
                     <Pie
                       isAnimationActive={true}
                       data={quantityMaker(dataset, this.state.currentX)}
-                      // dataKey={yAxis}
+                      dataKey="value"
                       cx={200}
                       cy={200}
                       outerRadius={60}
@@ -230,7 +230,7 @@ class Graph extends Component {
                         key={idx}
                         isAnimationActive={true}
                         data={quantityMaker(dataset, yAxis)}
-                        // dataKey={yAxis}
+                        dataKey="value"
                         cx={200}
                         cy={200}
                         innerRadius={60 + 10 + (30 * idx)}
@@ -242,6 +242,7 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </PieChart>
+
                   {columnObj[this.state.currentX].toLowerCase() === 'number' && 
                     <ScatterChart width={800} height={800}>
                       <CartesianGrid />
