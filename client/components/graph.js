@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   LineChart,
   Line,
@@ -10,7 +10,9 @@ import {
   Tooltip,
   Legend,
   BarChart,
-  Bar
+  Bar,
+  AreaChart,
+  Area
 } from 'recharts'
 
 class Graph extends Component {
@@ -29,14 +31,15 @@ class Graph extends Component {
   }
 
   handleXCategory(event) {
-    this.setState({currentX: event.target.value})
+    this.setState({ currentX: event.target.value })
   }
 
   handleYCategory(value, idx) {
     const newCurrentY = [...this.state.currentY]
     newCurrentY[idx] = value
     this.setState({
-      currentY: newCurrentY})
+      currentY: newCurrentY
+    })
   }
 
   handleDeleteY(idx) {
@@ -55,7 +58,7 @@ class Graph extends Component {
   }
 
   render() {
-    const {dataset} = this.props
+    const { dataset } = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
@@ -98,7 +101,8 @@ class Graph extends Component {
             {this.state.currentX &&
               this.state.currentY.length && (
                 <div id="graphs">
-                  <LineChart width={1000} height={1000} data={dataset}>
+                
+                  <LineChart width={800} height={800} data={dataset}>
                     {this.state.currentY.map((yAxis, idx) => (
                       <Line
                         key={idx}
@@ -113,7 +117,8 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </LineChart>
-                  <BarChart width={1000} height={1000} data={dataset}>
+
+                  <BarChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={this.state.currentX} />
                     <YAxis />
@@ -128,6 +133,23 @@ class Graph extends Component {
                       />
                     ))}
                   </BarChart>
+
+                  <AreaChart width={800} height={800} data={dataset}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={this.state.currentX} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {this.state.currentY.map((yAxis, idx) => (
+                      <Area
+                        key={idx}
+                        type="monotone"
+                        dataKey={yAxis}
+                        stroke={colors[idx]}
+                        fill={colors[idx]}
+                      />
+                    ))}
+                  </AreaChart>
                 </div>
               )}
           </div>
