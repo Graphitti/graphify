@@ -72,6 +72,8 @@ class Graph extends Component {
   render() {
     const {dataset} = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};
+    console.log('888888', columnObj)
+
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
       return columnObj[key].toLowerCase() === 'number' || columnObj[key].toLowerCase() === 'percent'
@@ -168,8 +170,13 @@ class Graph extends Component {
 
                   <BarChart width={800} height={800} data={dataset}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={this.state.currentX} />
-                    <YAxis />
+                    {
+                      columnObj[this.state.currentX] !== 'number' ?
+                        <XAxis dataKey={this.state.currentX} allowDuplicatedCategory={false} type="category"/>
+                      :
+                        <XAxis dataKey={this.state.currentX} />
+                    }
+                    <YAxis allowDuplicatedCategory="false" />
                     <Tooltip />
                     <Legend />
                     {this.state.currentY.map((yAxis, idx) => (
