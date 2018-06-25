@@ -16,7 +16,6 @@ export default class SearchBar extends Component {
     
 
     render() {
-        console.log(this.state)
         const results = this.state.results;
         return (
             <div>
