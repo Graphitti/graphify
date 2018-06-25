@@ -233,8 +233,8 @@ class Graph extends Component {
                         // dataKey={yAxis}
                         cx={200}
                         cy={200}
-                        innerRadius={60 + (10 * (i + 1))}
-                        outerRadius={70 + (20 * (i + 1))}
+                        innerRadius={60 + 10 + (30 * idx)}
+                        outerRadius={70 + 20 + (30 * idx)}
                         fill={colors[idx + 1]}
                         label
                       />
@@ -242,6 +242,19 @@ class Graph extends Component {
                     <Tooltip />
                     <Legend />
                   </PieChart>
+                  {columnObj[this.state.currentX].toLowerCase() === 'number' && 
+                    <ScatterChart width={800} height={800}>
+                      <CartesianGrid />
+                      <XAxis dataKey={this.state.currentX} type="number"/>
+                      <YAxis dataKey={this.state.currentY[0]} type="number"/>
+                      <Scatter
+                        data={dataset}
+                        fill={colors[0]}
+                        />
+                      <Tooltip cursor={{strokeDasharray: '3 3'}} />
+                      <Legend />
+                    </ScatterChart>
+                    }
 
                 </div>
               )}
