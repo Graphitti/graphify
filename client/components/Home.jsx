@@ -12,7 +12,6 @@ export default class Home extends Component {
 
   handleUpload = data => {
     store.dispatch(uploadData(data))
-    history.push('/graph-dataset')
   }
 
   render() {
