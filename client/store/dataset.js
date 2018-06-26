@@ -1,13 +1,13 @@
 import axios from 'axios'
 import history from '../history'
 import * as d3 from 'd3';
-import { setSearchStore, setUploadStore } from './datasetFuncs';
+import { datasetColumnFormatter, uploadedDataFormatter } from './utils/datasetOrganizingFuncs';
 
 /**
  * ACTION TYPES
  */
 const SET_DATA = 'SET_DATA'
-const GET_DATA = 'GET_DATA'
+// const GET_DATA = 'GET_DATA'
 
 /**
  * INITIAL STATE
@@ -18,20 +18,21 @@ const defaultData = []
  * ACTION CREATORS
  */
 const setData = data => ({type: SET_DATA, data})
-const getData = data => ({type: GET_DATA, data})
+// const getData = data => ({type: GET_DATA, data})
 
 /**
  * THUNK CREATORS
  */
 export const uploadData = data => dispatch => {
-    let processedData = setUploadStore(data);
+    let processedData = uploadedDataFormatter(data);
     dispatch(setData(processedData));
+    history.push('/graph-dataset')
 }
 
-export const fetchData = (domain, id, columnObj) => dispatch => {
+export const getAsyncData = (domain, id, columnObj) => dispatch => {
     return d3.csv(`https://${domain}/resource/${id}.csv`)
     .then(res => {
-        let processedData = setSearchStore(res, columnObj);
+        let processedData = datasetColumnFormatter(res, columnObj);
         dispatch(setData(processedData));
     })
     .catch(console.error);

@@ -1,6 +1,6 @@
 
 
-export function setSearchStore(dataset, columnObj) {
+export function datasetColumnFormatter(dataset, columnObj) {
     //only columns that are numbers
     let columnKeys = Object.keys(columnObj).filter(key => {
         return columnObj[key].toLowerCase() === 'number';
@@ -16,8 +16,8 @@ export function setSearchStore(dataset, columnObj) {
     return dataset;
 }
 
-
-export function setUploadStore(dataset) {
+//change uploaded data from array of arrays into an array of objects
+export function uploadedDataFormatter(dataset) {
     let columnNames = dataset[0];
     let columnObj = {};
     dataset[1].forEach((el, i) => {
@@ -34,7 +34,7 @@ export function setUploadStore(dataset) {
         })
         return obj;
     });
-    return setSearchStore(newDataset, columnObj);
+    return datasetColumnFormatter(newDataset, columnObj);
 }
 
 

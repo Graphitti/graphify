@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+const {User, Graph, YAxis} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -13,5 +13,21 @@ router.get('/', async (req, res, next) => {
     res.json(users)
   } catch (err) {
     next(err)
+  }
+})
+
+router.get('/:userId/graphs', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  if (req.user && req.user.dataValues.id === userId) {
+    Graph.findAll({
+      where: {
+        userId: userId
+      },
+      include: [{model: YAxis}]
+    })
+    .then(graphs => res.json(graphs));
+  }
+  else {
+    res.send('You don\'t have permission to view this data');
   }
 })
