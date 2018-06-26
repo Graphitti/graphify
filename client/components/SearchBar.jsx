@@ -9,7 +9,8 @@ export default class SearchBar extends Component {
         this.state = {
             results: [],
             search: '',
-            showResults: false
+            showResults: false,
+            submittedSearch: ''
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -23,18 +24,19 @@ export default class SearchBar extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const search = this.state.search;
+        const {search} = {...this.state};
         axios.get(
             `https://api.us.socrata.com/api/catalog/v1?only=datasets&q=${search}`
         )
             .then(res => {
-                this.setState({results: res.data, showResults: true});
+                this.setState({results: res.data, showResults: true, submittedSearch: search});
             })
             .catch(console.error)
     }
 
     render() {
         const { results } = this.state;
+        const {submittedSearch} = {...this.state};
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -42,7 +44,7 @@ export default class SearchBar extends Component {
                     <button type="submit">Search</button>
                 </form>
                 {this.state.showResults &&
-                    <ShowSearchResults results={this.state.results} />
+                    <ShowSearchResults results={results} search={submittedSearch} />
                 }
             </div>
         )
