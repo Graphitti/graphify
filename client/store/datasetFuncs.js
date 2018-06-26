@@ -1,5 +1,6 @@
 
-
+//CG: WHY IS THIS IN YOUR STORE - This should be in a utils folder.
+//CG: Your functions names don't delineate what it is doing. 
 export function setSearchStore(dataset, columnObj) {
     //only columns that are numbers
     let columnKeys = Object.keys(columnObj).filter(key => {
@@ -18,6 +19,7 @@ export function setSearchStore(dataset, columnObj) {
 
 
 export function setUploadStore(dataset) {
+    // let [columnNames, dataSet1Thing] = dataset;
     let columnNames = dataset[0];
     let columnObj = {};
     dataset[1].forEach((el, i) => {

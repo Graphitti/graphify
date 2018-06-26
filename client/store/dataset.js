@@ -23,11 +23,13 @@ const getData = data => ({type: GET_DATA, data})
 /**
  * THUNK CREATORS
  */
+//getDataFromUpload
 export const uploadData = data => dispatch => {
     let processedData = setUploadStore(data);
     dispatch(setData(processedData));
 }
 
+//getDataFromSoda 
 export const fetchData = (domain, id, columnObj) => dispatch => {
     return d3.csv(`https://${domain}/resource/${id}.csv`)
     .then(res => {

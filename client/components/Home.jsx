@@ -11,10 +11,30 @@ export default class Home extends Component {
   }
 
   handleUpload = data => {
+    //CG: we should only update history if we actually complete the dispatched action.
     store.dispatch(uploadData(data))
-    history.push('/graph')
+    history.push('/graph') //we might want to think about constructing a replicable url here.
+    // /graph?source=upload  /graph?source="http://soda.com/pepsi"
   }
 
+  //cssClass formatting. 
+  //className="home-container"
+  //"home-container-button" ..
+
+  /*
+
+  .home {
+    //all styles applying to home 
+
+    &-container {
+
+      &-button {
+
+      }
+    }
+  }
+
+  */
   render() {
     return (
       <div className="container">

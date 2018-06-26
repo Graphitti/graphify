@@ -1,3 +1,10 @@
+// data graphs 
+// /data?source=""
+// /graph/edit?source="" //save.
+// /graph/:id?editable=false,creator,true
+// crypto.createHash(10).toDigest('hext'); //Pseudocode
+
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -54,6 +61,7 @@ class Graph extends Component {
   }
 
   handleDeleteY(idx) {
+    //CG: can replace next two steps with a filter. 
     const newCurrentY = [...this.state.currentY]
     newCurrentY.splice(idx, 1)
     this.setState({
@@ -68,6 +76,8 @@ class Graph extends Component {
     })
   }
 
+  //CG: Break this component up into smaller parts. Also IDK if I would call this the "Graph" component.
+  
   render() {
     const { dataset } = this.props
     const columnObj = dataset.length > 0 ? dataset.columnObj : {};

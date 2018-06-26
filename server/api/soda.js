@@ -3,6 +3,8 @@ const soda = require('soda-js');
 module.exports = router;
 
 router.get('/', (req, res, next) => {
+  //CG: don't commit console.logs!! 
+  //TODO: remove the comment here when we integrate x feature.
     console.log('hit the soda route')
     const { id, domain } = req.query;
     console.log('soda',id, domain);

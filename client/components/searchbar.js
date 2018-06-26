@@ -4,6 +4,7 @@ import axios from 'axios'
 import store, {fetchData} from '../store'
 import history from '../history'
 
+//CG: Capitalize classes in the file name!
 export default class SearchBar extends Component {
   constructor(props) {
     super(props)
@@ -12,10 +13,16 @@ export default class SearchBar extends Component {
       results: []
     }
   }
+  //let us bind the value in the text input to the react component 
 
   render() {
+    //CG: Be cool and destructure. B-D
     const results = this.state.results
+    //CG: get rid of console .log
     console.log(results)
+    //CG: WHAT IS THE CLASSNAME HERE!?!?! what am i looking at?
+
+    //CG: Please remove complicate function logic from the render method.
     return (
       <div>
         <form
@@ -30,7 +37,7 @@ export default class SearchBar extends Component {
               .catch(console.error)
           }}
         >
-          <input name="searchbar" />
+          <input name="searchbar" /> 
           <button type="submit">search</button>
         </form>
         <div className="search-results">
