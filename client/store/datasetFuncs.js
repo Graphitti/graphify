@@ -1,6 +1,7 @@
 
 
 export function setSearchStore(dataset, columnObj) {
+    console.log("dataset in setSearchStore",dataset);
     //only columns that are numbers
     let columnKeys = Object.keys(columnObj).filter(key => {
         return columnObj[key].toLowerCase() === 'number';
