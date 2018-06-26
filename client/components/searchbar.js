@@ -49,7 +49,7 @@ export default class SearchBar extends Component {
                       columObj[columnName] = result.resource.columns_datatype[i]
                     })
                     store.dispatch(fetchData(domain, id, columObj))
-                    history.push('/graph')
+                    history.push('/graph-dataset')
                   }}
                 >
                   <div>
