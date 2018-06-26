@@ -1,5 +1,10 @@
 const User = require('./user')
+const Graph = require('./graph')
+const YAxis = require('./yAxis')
 
+
+User.hasMany(Graph);
+Graph.hasMany(YAxis);
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
