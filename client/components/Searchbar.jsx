@@ -49,7 +49,6 @@ export default class SearchBar extends Component {
                       columObj[columnName] = result.resource.columns_datatype[i]
                     })
                     store.dispatch(getAsyncData(domain, id, columObj))
-                    history.push('/graph')
                   }}
                 >
                   <div>
