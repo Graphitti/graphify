@@ -27,15 +27,18 @@ const Navbar = ({handleClick, isLoggedIn, dataset}) => (
       )}
     </nav>
     <hr />
-    <button onClick={ ()=> {
-      axios.get('http://graphify-test.s3.amazonaws.com/test(1).csv', {
-        Date: new Date(), 
-        Authorization: AWS
-      })
+    <form onSubmit={ (event)=> {
+      event.preventDefault();
+      axios.get('http://graphify-test.s3.amazonaws.com/test(1).csv')
+      // , {
+      //   Authorization: AWS
+      // })
       .then(res => console.log(res))
       // axios.post('/api/graphs/send', {object: 'hello'})
     }
-    }>post test</button>
+    }>
+    <button type="submit">post test</button>
+    </form>
   </div>
 )
 
