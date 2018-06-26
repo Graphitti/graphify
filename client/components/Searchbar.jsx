@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import store, {fetchData} from '../store'
+import store, {getAsyncData} from '../store'
 import history from '../history'
 
 export default class SearchBar extends Component {
@@ -48,8 +48,7 @@ export default class SearchBar extends Component {
                     result.resource.columns_name.forEach((columnName, i) => {
                       columObj[columnName] = result.resource.columns_datatype[i]
                     })
-                    store.dispatch(fetchData(domain, id, columObj))
-                    history.push('/graph')
+                    store.dispatch(getAsyncData(domain, id, columObj))
                   }}
                 >
                   <div>
