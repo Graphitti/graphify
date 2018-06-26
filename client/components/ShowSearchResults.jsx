@@ -35,7 +35,7 @@ export default class SearchBar extends Component {
                                     <Link to="/graph" onClick={(event) => this.handleClick(event, result)}>
                                         <h2>{result.resource.name}</h2>
                                     </Link>
-                                    <h3>{result.resource.description}</h3>
+                                    <h4>{result.resource.description.split(' ').slice(0,201).join(' ') + '...'}</h4>
                                 </div>
                         )
                     }) :  <h2>Results not found for {search}</h2>
