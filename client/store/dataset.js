@@ -26,7 +26,7 @@ const setData = data => ({type: SET_DATA, data})
 export const uploadData = data => dispatch => {
     let processedData = uploadedDataFormatter(data);
     dispatch(setData(processedData));
-    history.push('/graph')
+    history.push('/graph-dataset')
 }
 
 export const getAsyncData = (domain, id, columnObj) => dispatch => {

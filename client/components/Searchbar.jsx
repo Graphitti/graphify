@@ -39,7 +39,7 @@ export default class SearchBar extends Component {
               return (
                 <Link
                   key={idx}
-                  to="/graph"
+                  to="/graph-dataset"
                   onClick={event => {
                     event.preventDefault()
                     const domain = result.metadata.domain

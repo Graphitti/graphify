@@ -39,6 +39,7 @@ form div {
 
 #graphs {
   display: flex;
+  flex-wrap: wrap;
 }
 
 label {
