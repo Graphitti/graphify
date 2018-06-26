@@ -24,10 +24,11 @@ export default class SearchBar extends Component {
 
     render() {
         const { results } = this.props.results;
+        const {search} = this.props;
         console.log('Results in ShowSearchResults --->>>',results)
         return (
             <div className="search-results">
-                {results.length > 0 &&
+                {results.length > 0 ?
                     results.map((result, idx) => {
                         return (
                                 <div key={idx}>
@@ -37,7 +38,8 @@ export default class SearchBar extends Component {
                                     <h3>{result.resource.description}</h3>
                                 </div>
                         )
-                    })}
+                    }) :  <h2>Results not found for {search}</h2>
+                }
             </div>
         )
     }
