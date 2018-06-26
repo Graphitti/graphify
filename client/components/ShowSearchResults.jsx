@@ -30,12 +30,13 @@ export default class SearchBar extends Component {
             <div className="search-results">
                 {results.length > 0 ?
                     results.map((result, idx) => {
+                        const description = result.resource.description.split(' ').slice(0,200);
                         return (
                                 <div key={idx}>
                                     <Link to="/graph" onClick={(event) => this.handleClick(event, result)}>
                                         <h2>{result.resource.name}</h2>
                                     </Link>
-                                    <h4>{result.resource.description.split(' ').slice(0,201).join(' ') + '...'}</h4>
+                                    <h4>{description.length === 200 ? description.join(' ') + '...' : description.join(' ')}</h4>
                                 </div>
                         )
                     }) :  <h2>Results not found for {search}</h2>
