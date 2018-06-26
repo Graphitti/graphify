@@ -14,11 +14,11 @@ export const RadarChartGraph = props => {
   const {dataset, currentY, currentX, colors} = props
   return (
     <RadarChart
-      cx={400}
-      cy={400}
-      outerRadius={350}
-      width={800}
-      height={800}
+      cx={300}
+      cy={300}
+      outerRadius={250}
+      width={600}
+      height={600}
       data={dataset}
     >
       <Tooltip />

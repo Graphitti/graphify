@@ -27,7 +27,7 @@ export const PieChartGraph = props => {
   const {dataset, currentY, currentX, colors} = props
 
   return (
-    <PieChart width={800} height={800}>
+    <PieChart width={600} height={600}>
       <Pie
         isAnimationActive={true}
         data={quantityMaker(dataset, currentX)}

@@ -14,7 +14,7 @@ export const AreaChartGraph = props => {
   const {dataset, currentY, currentX, colors} = props
 
   return (
-    <AreaChart width={800} height={800} data={dataset}>
+    <AreaChart width={600} height={600} data={dataset}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey={currentX} />
       <YAxis />

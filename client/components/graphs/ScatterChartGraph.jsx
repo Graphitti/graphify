@@ -13,7 +13,7 @@ import {
 export const ScatterChartGraph = props => {
   const {dataset, currentY, currentX, colors} = props
   return (
-    <ScatterChart width={800} height={800}>
+    <ScatterChart width={600} height={600}>
       <CartesianGrid />
       <XAxis dataKey={currentX} type="number" />
       <YAxis dataKey={currentY[0]} type="number" />

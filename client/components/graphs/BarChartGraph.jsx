@@ -13,7 +13,7 @@ import {
 export const BarChartGraph = props => {
   const {dataset, currentY, currentX, colors, columnObj} = props
   return (
-    <BarChart width={800} height={800} data={dataset}>
+    <BarChart width={600} height={600} data={dataset}>
       <CartesianGrid strokeDasharray="3 3" />
       {columnObj[currentX].toLowerCase !== 'number' ? (
         <XAxis
@@ -28,7 +28,13 @@ export const BarChartGraph = props => {
       <Tooltip />
       <Legend />
       {currentY.map((yAxis, idx) => (
-        <Bar key={idx} type="monotone" dataKey={yAxis} fill={colors[idx]} />
+        <Bar
+          key={idx}
+          type="monotone"
+          dataKey={yAxis}
+          fillOpacity={0.6}
+          fill={colors[idx]}
+        />
       ))}
     </BarChart>
   )
