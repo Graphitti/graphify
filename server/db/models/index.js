@@ -19,5 +19,7 @@ Graph.hasMany(YAxis);
  * instead of: const User = require('../db/models/user')
  */
 module.exports = {
-  User
+  User,
+  Graph,
+  YAxis
 }

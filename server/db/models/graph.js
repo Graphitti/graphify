@@ -6,7 +6,8 @@ const Graph = db.define('graph', {
     //do we want colors, width, height anything else customizable
     id: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     xAxis: {
         type: Sequelize.STRING,
@@ -31,6 +32,10 @@ const Graph = db.define('graph', {
     },
     yAxisLabel: {
         type: Sequelize.STRING
+    },
+    graphType: {
+        type: Sequelize.STRING,
+        allowNull: false
     }
 })
 
