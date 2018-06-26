@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import axios from 'axios'
+import {AWS} from '../../secrets'
 
 const Navbar = ({handleClick, isLoggedIn, dataset}) => (
   <div>
-    {console.log('navbar props',dataset)}
     <Link to="/"><h1>GRAPHIFY</h1></Link>
     <nav>
       {isLoggedIn ? (
@@ -26,6 +27,15 @@ const Navbar = ({handleClick, isLoggedIn, dataset}) => (
       )}
     </nav>
     <hr />
+    <button onClick={ ()=> {
+      axios.get('http://graphify-test.s3.amazonaws.com/test(1).csv', {
+        Date: new Date(), 
+        Authorization: AWS
+      })
+      .then(res => console.log(res))
+      // axios.post('/api/graphs/send', {object: 'hello'})
+    }
+    }>post test</button>
   </div>
 )
 

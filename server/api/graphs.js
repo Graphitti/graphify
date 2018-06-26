@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const {Graph, YAxis} = require('../db/models');
+const axios = require('axios');
 module.exports = router;
 
 
@@ -22,4 +23,11 @@ router.get('/:graphId', (req, res, next) => {
         }
         res.json(feedback);
     })
+})
+
+router.post('/send', (req, res, next) => {
+    const {object} = req.body;
+    console.log('post it', object);
+    axios.post('http://graphify-test.s3.amazonaws.com', {object})
+    .then(res => console.log(res))
 })
