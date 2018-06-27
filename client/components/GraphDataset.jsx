@@ -6,10 +6,12 @@ import {
   AreaChartGraph,
   RadarChartGraph,
   ScatterChartGraph,
-  PieChartGraph,
+  PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
 import {setXAxis, addYAxis, deleteYAxis} from '../store'
+import axios from 'axios'
+import crypto from 'crypto'
 
 class GraphDataset extends Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class GraphDataset extends Component {
 
     this.addYCategory = this.addYCategory.bind(this)
     this.handleDeleteY = this.handleDeleteY.bind(this)
+    this.handleGraphClick = this.handleGraphClick.bind(this)
   }
 
   addYCategory() {
@@ -33,6 +36,15 @@ class GraphDataset extends Component {
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
+    })
+  }
+
+  handleGraphClick() {
+    console.log('DATASET', this.props.dataset)
+    //Upload dataset to S3 AWS
+    const hasId = crypto.randomBytes(8).toString('base64')
+    axios.post(`api/graphs/aws/3455`, {
+      dataset: this.props.dataset
     })
   }
 
@@ -110,7 +122,9 @@ class GraphDataset extends Component {
             {currentX &&
               currentY.length && (
                 <div id="graphs">
-                  <LineChartGraph />
+                  <div onClick={this.handleGraphClick}>
+                    <LineChartGraph />
+                  </div>
                   <BarChartGraph />
                   <AreaChartGraph />
                   <RadarChartGraph />
@@ -118,7 +132,6 @@ class GraphDataset extends Component {
                   <PieChartGraph />
                 </div>
               )}
-
           </div>
         )}
       </div>
