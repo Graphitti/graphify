@@ -106,9 +106,6 @@ class GraphDataset extends Component {
                 })}
               </div>
             </div>
-
-            {currentX &&
-              currentY.length && (
                 <div id="graphs">
                   <LineChartGraph />
                   <BarChartGraph />
@@ -117,7 +114,6 @@ class GraphDataset extends Component {
                   <ScatterChartGraph />
                   <PieChartGraph />
                 </div>
-              )}
           </div>
         )}
       </div>
