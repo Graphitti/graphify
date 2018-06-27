@@ -26,7 +26,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       )}
     </nav>
     <hr />
-    <form onSubmit={ (event)=> {
+    {/* can use this for sending requests to aws with dummy data, delete in the future */}
+    {/* <form onSubmit={ (event)=> {
       event.preventDefault();
       axios.post('/api/graphs/cat', {
         xAxis: 'hello', yAxis: ['hi', 'hello'], xAxisLabel: 'thelabel', 
@@ -34,11 +35,10 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       })
       // axios.get('/api/graphs/5558/aws')
       // axios.post('/api/graphs/5558/aws', {dataset: dataset})
-      .then(res => console.log('#############',res.data))
     }
     }>
     <button type="submit">post test</button>
-    </form>
+    </form> */}
   </div>
 )
 
