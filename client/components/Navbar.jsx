@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import axios from 'axios'
 
-const Navbar = ({handleClick, isLoggedIn, dataset}) => (
+const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
     <Link to="/"><h1>GRAPHIFY</h1></Link>
     <nav>
@@ -47,8 +47,7 @@ const Navbar = ({handleClick, isLoggedIn, dataset}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id,
-    dataset: state.dataset
+    isLoggedIn: !!state.user.id
   }
 }
 
