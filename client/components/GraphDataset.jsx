@@ -61,7 +61,7 @@ class GraphDataset extends Component {
     })
     return (
       <div className="graphContainer">
-        <h1>Table</h1>
+        <h1>{dataset.name}</h1>
         {dataset.length &&
           xAxis.length && (
             <div>

@@ -12,40 +12,43 @@ const SET_DATA = 'SET_DATA'
 /**
  * INITIAL STATE
  */
-const defaultData = []
+const defaultData = [];
 
 /**
  * ACTION CREATORS
  */
-const setData = data => ({type: SET_DATA, data})
+const setData = data => ({ type: SET_DATA, data })
 // const getData = data => ({type: GET_DATA, data})
 
 /**
  * THUNK CREATORS
  */
-export const uploadData = data => dispatch => {
+export const uploadData = (data, fileName) => dispatch => {
     let processedData = uploadedDataFormatter(data);
-    dispatch(setData(processedData));
+    processedData.name = fileName;
+    dispatch(setData(processedData))
     history.push('/graph-dataset')
 }
 
-export const getAsyncData = (domain, id, columnObj) => dispatch => {
+export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => {
     return d3.csv(`https://${domain}/resource/${id}.csv`)
-    .then(res => {
-        let processedData = datasetColumnFormatter(res, columnObj);
-        dispatch(setData(processedData));
-    })
-    .catch(console.error);
+        .then(res => {
+            let processedData = datasetColumnFormatter(res, columnObj);
+            processedData.name = datasetName;
+            dispatch(setData(processedData))
+            history.push('/graph-dataset');
+        })
+        .catch(console.error);
 }
 
 /**
  * REDUCER
  */
-export default function(state = defaultData, action) {
-  switch (action.type) {
-    case SET_DATA:
-      return action.data
-    default:
-      return state
-  }
+export default function (state = defaultData, action) {
+    switch (action.type) {
+        case SET_DATA:
+            return action.data
+        default:
+            return state
+    }
 }
