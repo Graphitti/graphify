@@ -10,8 +10,8 @@ export default class Home extends Component {
     this.handleUpload = this.handleUpload.bind(this)
   }
 
-  handleUpload = data => {
-    store.dispatch(uploadData(data))
+  handleUpload = (data, fileName) => {
+    store.dispatch(uploadData(data, fileName))
   }
 
   render() {
