@@ -6,20 +6,25 @@ import {
   AreaChartGraph,
   RadarChartGraph,
   ScatterChartGraph,
-  PieChartGraph,
+  PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
 import {setXAxis, addYAxis, deleteYAxis} from '../store'
+import axios from 'axios'
+import crypto from 'crypto'
+
 
 class GraphDataset extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      yCategQuantity: ['']
+      yCategQuantity: [''],
+      hashId: ''
     }
 
     this.addYCategory = this.addYCategory.bind(this)
     this.handleDeleteY = this.handleDeleteY.bind(this)
+    this.handleGraphClick = this.handleGraphClick.bind(this)
   }
 
   addYCategory() {
@@ -36,7 +41,39 @@ class GraphDataset extends Component {
     })
   }
 
+  handleGraphClick(graphType) {
+    //Upload dataset to S3 AWS
+    const {
+      dataset,
+      graphSettings,
+      handleXCategory,
+      handleYCategory
+    } = this.props;
+    const {currentX, currentY} = graphSettings;
+    const hashId = crypto.randomBytes(8).toString('base64').replace('/', '7');
+    console.log('hashid',hashId);
+    this.setState({hashId});
+    let datasetPost = axios.post(`api/graphs/aws/${hashId}`, {
+      dataset
+    })
+    let graphPost = axios.post(`api/graphs/${hashId}`, {
+      xAxis: currentX,
+      yAxis: currentY,
+      title: dataset.name,
+      graphType
+    })
+    Promise.all([datasetPost, graphPost])
+    .then(() => {
+      console.log('did we et here')
+      this.props.history.push(`/graph-dataset/customize/${hashId}`)
+    })
+        // .then(() => {
+        // })
+    .catch(console.error)
+  }
+
   render() {
+    console.log(this.props)
     const {
       dataset,
       graphSettings,
@@ -61,7 +98,7 @@ class GraphDataset extends Component {
     })
     return (
       <div className="graphContainer">
-        <h1>{dataset.name}</h1>
+        <h1>Table</h1>
         {dataset.length &&
           xAxis.length && (
             <div>
@@ -106,19 +143,16 @@ class GraphDataset extends Component {
                 })}
               </div>
             </div>
-
-            {currentX &&
-              currentY.length && (
                 <div id="graphs">
-                  <LineChartGraph />
+                  <div onClick={() => this.handleGraphClick('Line')}>
+                    <LineChartGraph />
+                  </div>
                   <BarChartGraph />
                   <AreaChartGraph />
                   <RadarChartGraph />
                   <ScatterChartGraph />
                   <PieChartGraph />
                 </div>
-              )}
-
           </div>
         )}
       </div>
