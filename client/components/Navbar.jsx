@@ -28,13 +28,12 @@ const Navbar = ({handleClick, isLoggedIn, dataset}) => (
     <hr />
     <form onSubmit={ (event)=> {
       event.preventDefault();
-      // axios.get('http://graphify-test.s3.amazonaws.com/test.csv')
-      // // , {
-      // //   Authorization: AWS
-      // // })
-      // .then(res => console.log(res))
-      axios.get('/api/graphs/send')
-      // axios.post('/api/graphs/send', {dataset: dataset})
+      axios.post('/api/graphs/cat', {
+        xAxis: 'hello', yAxis: ['hi', 'hello'], xAxisLabel: 'thelabel', 
+        yAxisLabel: 'thislabel', title: 'tietle', graphType: 'line', shareable: true,
+      })
+      // axios.get('/api/graphs/5558/aws')
+      // axios.post('/api/graphs/5558/aws', {dataset: dataset})
       .then(res => console.log('#############',res.data))
     }
     }>

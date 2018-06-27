@@ -4,22 +4,24 @@ const db = require('../db');
 const Graph = db.define('graph', {
     //save a customized id for each graph
     //do we want colors, width, height anything else customizable
-    id: {
+    //will we store all socrata data to aws or will we remake the call everytime
+        //space vs complexity/time, aws seems to be unlimited space
+    graphId: {
         type: Sequelize.STRING,
-        allowNull: false,
-        primaryKey: true
+        unique: true,
+        allowNull: false
     },
     xAxis: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    datasetUrl: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            isUrl: true
-        }
-    },
+    // datasetUrl: {
+    //     type: Sequelize.STRING,
+    //     allowNull: false,
+    //     validate: {
+    //         isUrl: true
+    //     }
+    // },
     shareable: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
