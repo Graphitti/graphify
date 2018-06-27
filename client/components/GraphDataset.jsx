@@ -41,21 +41,35 @@ class GraphDataset extends Component {
     })
   }
 
-  handleGraphClick() {
+  handleGraphClick(graphType) {
     //Upload dataset to S3 AWS
+    const {
+      dataset,
+      graphSettings,
+      handleXCategory,
+      handleYCategory
+    } = this.props;
+    const {currentX, currentY} = graphSettings;
     const hashId = crypto.randomBytes(8).toString('base64').replace('/', '7');
     console.log('hashid',hashId);
     this.setState({hashId});
-    axios.post(`api/graphs/aws/${hashId}`, {
-      dataset: this.props.dataset
+    let datasetPost = axios.post(`api/graphs/aws/${hashId}`, {
+      dataset
     })
+    let graphPost = axios.post(`api/graphs/${hashId}`, {
+      xAxis: currentX,
+      yAxis: currentY,
+      title: dataset.name,
+      graphType
+    })
+    Promise.all([datasetPost, graphPost])
     .then(() => {
-<<<<<<< HEAD
-=======
-      
->>>>>>> master
+      console.log('did we et here')
       this.props.history.push(`/graph-dataset/customize/${hashId}`)
     })
+        // .then(() => {
+        // })
+    .catch(console.error)
   }
 
   render() {
@@ -130,7 +144,7 @@ class GraphDataset extends Component {
               </div>
             </div>
                 <div id="graphs">
-                  <div onClick={this.handleGraphClick}>
+                  <div onClick={() => this.handleGraphClick('Line')}>
                     <LineChartGraph />
                   </div>
                   <BarChartGraph />

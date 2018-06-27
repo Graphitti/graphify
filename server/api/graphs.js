@@ -43,6 +43,42 @@ router.post('/:graphId', (req, res, next) => {
         const {
             xAxis,
             yAxis,
+            title,
+            graphType,
+        } = req.body
+        const userId = req.user.id
+
+        Graph.create({
+            userId,
+            graphId,
+            xAxis,
+            title,
+            graphType,
+        })
+            .then(returnedGraph => {
+                //this always creates new Yaxis doesn't update this is an issue
+                // ---------------------------
+                Promise.all(
+                    yAxis.map(name => {
+                        return YAxis.create({ name })
+                    })
+                ).then(newYAxis => {
+                    returnedGraph.setYAxes(newYAxis)
+                    res.send('worked')
+                })
+            })
+            .catch(next)
+    } else {
+        res.send('You need to be a user to save graph data')
+    }
+})
+
+router.put('/:graphId', (req, res, next) => {
+    if (req.user) {
+        const { graphId } = req.params
+        const {
+            xAxis,
+            yAxis,
             xAxisLabel,
             yAxisLabel,
             title,
@@ -56,18 +92,6 @@ router.post('/:graphId', (req, res, next) => {
                 let recentGraph
                 if (foundGraph) {
                     recentGraph = foundGraph.update({
-                        userId,
-                        xAxis,
-                        xAxisLabel,
-                        yAxisLabel,
-                        title,
-                        graphType,
-                        shareable
-                    })
-                } else {
-                    recentGraph = Graph.create({
-                        userId,
-                        graphId,
                         xAxis,
                         xAxisLabel,
                         yAxisLabel,
@@ -76,22 +100,9 @@ router.post('/:graphId', (req, res, next) => {
                         shareable
                     })
                 }
-                return recentGraph
             })
-            .then(returnedGraph => {
-                //this always creates new Yaxis doesn't update this is an issue
-                // ---------------------------
-                Promise.all(
-                    yAxis.map(name => {
-                        return YAxis.create({ name })
-                    })
-                ).then(newYAxis => {
-                    returnedGraph.setYAxes(newYAxis)
-                })
-            })
-            .catch(next)
     } else {
-        res.send('You need to be a user to save graph data')
+        res.send('You need to be a user to edit this graph')
     }
 })
 

@@ -7,12 +7,10 @@ const Graph = db.define('graph', {
   //will we store all socrata data to aws or will we remake the call everytime
   //space vs complexity/time, aws seems to be unlimited space
   graphId: {
-    type: Sequelize.STRING,
-    allowNull: true
+    type: Sequelize.STRING
   },
   xAxis: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   },
   // datasetUrl: {
   //     type: Sequelize.STRING,
@@ -21,10 +19,10 @@ const Graph = db.define('graph', {
   //         isUrl: true
   //     }
   // },
-  shareable: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false
-  },
+  // shareable: {
+  //   type: Sequelize.BOOLEAN,
+  //   defaultValue: false
+  // },
   title: {
     type: Sequelize.STRING
   },
@@ -35,8 +33,7 @@ const Graph = db.define('graph', {
     type: Sequelize.STRING
   },
   graphType: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   }
 })
 
