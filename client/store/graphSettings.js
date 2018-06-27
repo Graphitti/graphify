@@ -6,8 +6,7 @@ const DELETE_Y_AXIS = 'DELETE_Y_AXIS'
 //INITIAL STATE
 const graphSettings = {
   currentX: '',
-  currentY: [],
-  yCategQuantity: ['']
+  currentY: []
 }
 
 //ACTION CREATORS
