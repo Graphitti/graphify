@@ -35,6 +35,7 @@
   "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.264.1",
     "axios": "^0.15.3",
     "body-parser": "^1.16.1",
     "compression": "^1.7.1",
@@ -61,7 +62,8 @@
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.3.1",
     "socket.io": "^2.0.3",
-    "soda-js": "^0.2.3"
+    "soda-js": "^0.2.3",
+    "uuid": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",

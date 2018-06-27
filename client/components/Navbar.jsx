@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import axios from 'axios'
-import {AWS} from '../../secrets'
 
 const Navbar = ({handleClick, isLoggedIn, dataset}) => (
   <div>
@@ -29,12 +28,14 @@ const Navbar = ({handleClick, isLoggedIn, dataset}) => (
     <hr />
     <form onSubmit={ (event)=> {
       event.preventDefault();
-      axios.get('http://graphify-test.s3.amazonaws.com/test(1).csv')
-      // , {
-      //   Authorization: AWS
-      // })
-      .then(res => console.log(res))
-      // axios.post('/api/graphs/send', {object: 'hello'})
+      // axios.get('http://graphify-test.s3.amazonaws.com/test.csv')
+      // // , {
+      // //   Authorization: AWS
+      // // })
+      // .then(res => console.log(res))
+      axios.get('/api/graphs/send')
+      // axios.post('/api/graphs/send', {dataset: dataset})
+      .then(res => console.log('#############',res.data))
     }
     }>
     <button type="submit">post test</button>
@@ -67,5 +68,5 @@ export default connect(mapState, mapDispatch)(Navbar)
  */
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
 }
