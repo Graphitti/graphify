@@ -50,6 +50,10 @@ class GraphDataset extends Component {
       dataset: this.props.dataset
     })
     .then(() => {
+<<<<<<< HEAD
+=======
+      
+>>>>>>> master
       this.props.history.push(`/graph-dataset/customize/${hashId}`)
     })
   }
