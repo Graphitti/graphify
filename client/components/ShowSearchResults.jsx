@@ -13,11 +13,12 @@ export default class SearchBar extends Component {
         event.preventDefault();
         const domain = result.metadata.domain;
         const id = result.resource.id;
+        const datasetName = result.resource.name;
         let columObj = {};
         result.resource.columns_name.forEach((columnName, i) => {
             columObj[columnName] = result.resource.columns_datatype[i];
         })
-        store.dispatch(getAsyncData(domain, id, columObj));
+        store.dispatch(getAsyncData(domain, id, columObj, datasetName));
     }
 
     render() {

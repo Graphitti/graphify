@@ -31,8 +31,7 @@ export default class SearchBar extends Component {
         )
             .then(res => {
                 this.setState({results: res.data, showResults: true, submittedSearch: search});
-                console.log('---->>>>>>',this.props)
-                history.push(`/search?search=${search}`);
+                history.push('/search');
             })
             .catch(console.error)
     }
