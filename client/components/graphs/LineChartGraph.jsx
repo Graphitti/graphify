@@ -11,22 +11,16 @@ import {
 } from 'recharts'
 
 export const LineChartGraph = props => {
-  const {dataset, currentY, currentX, colors, columnObj} = props
+  const {dataset, graphSettings} = props
+  const {currentX, currentY} = graphSettings
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
   return (
     <LineChart width={600} height={600} data={dataset}>
       {currentY.map((yAxis, idx) => (
         <Line key={idx} type="monotone" dataKey={yAxis} stroke={colors[idx]} />
       ))}
       <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-      {columnObj[currentX].toLowerCase() !== 'number' ? (
-        <XAxis
-          dataKey={currentX}
-          allowDuplicatedCategory={false}
-          type="category"
-        />
-      ) : (
-        <XAxis dataKey={currentX} allowDataOverflow={false} type="number" />
-      )}
+      <XAxis dataKey={currentX} />
       <YAxis />
       <Tooltip />
       <Legend />
@@ -36,7 +30,8 @@ export const LineChartGraph = props => {
 
 const mapState = state => {
   return {
-    dataset: state.dataset
+    dataset: state.dataset,
+    graphSettings: state.graphSettings
   }
 }
 

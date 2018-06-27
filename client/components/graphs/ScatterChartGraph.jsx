@@ -11,7 +11,9 @@ import {
 } from 'recharts'
 
 export const ScatterChartGraph = props => {
-  const {dataset, currentY, currentX, colors} = props
+  const {dataset, graphSettings} = props
+  const {currentX, currentY} = graphSettings
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
   return (
     <ScatterChart width={600} height={600}>
       <CartesianGrid />
@@ -26,7 +28,8 @@ export const ScatterChartGraph = props => {
 
 const mapState = state => {
     return {
-        dataset: state.dataset
+        dataset: state.dataset,
+        graphSettings: state.graphSettings
     }
 }
 
