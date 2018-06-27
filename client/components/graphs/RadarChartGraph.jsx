@@ -11,14 +11,16 @@ import {
 } from 'recharts'
 
 export const RadarChartGraph = props => {
-  const {dataset, currentY, currentX, colors} = props
+  const {dataset, graphSettings} = props
+  const {currentX, currentY} = graphSettings
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
   return (
     <RadarChart
-      cx={400}
-      cy={400}
-      outerRadius={350}
-      width={800}
-      height={800}
+      cx={300}
+      cy={300}
+      outerRadius={250}
+      width={600}
+      height={600}
       data={dataset}
     >
       <Tooltip />
@@ -42,7 +44,8 @@ export const RadarChartGraph = props => {
 
 const mapState = state => {
   return {
-    dataset: state.dataset
+    dataset: state.dataset,
+    graphSettings: state.graphSettings
   }
 }
 
