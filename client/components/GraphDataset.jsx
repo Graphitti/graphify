@@ -13,11 +13,13 @@ import {setXAxis, addYAxis, deleteYAxis} from '../store'
 import axios from 'axios'
 import crypto from 'crypto'
 
+
 class GraphDataset extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      yCategQuantity: ['']
+      yCategQuantity: [''],
+      hashId: ''
     }
 
     this.addYCategory = this.addYCategory.bind(this)
@@ -40,15 +42,20 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick() {
-    console.log('DATASET', this.props.dataset)
     //Upload dataset to S3 AWS
-    const hasId = crypto.randomBytes(8).toString('base64')
-    axios.post(`api/graphs/aws/3455`, {
+    const hashId = crypto.randomBytes(8).toString('base64').replace('/', '7');
+    console.log('hashid',hashId);
+    this.setState({hashId});
+    axios.post(`api/graphs/aws/${hashId}`, {
       dataset: this.props.dataset
+    })
+    .then(() => {
+      this.props.history.push(`/graph-dataset/customize/${hashId}`)
     })
   }
 
   render() {
+    console.log(this.props)
     const {
       dataset,
       graphSettings,
