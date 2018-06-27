@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import ShowSearchResults from './ShowSearchResults.jsx'
+import history from '../history'
 
 export default class SearchBar extends Component {
     constructor(props) {
@@ -30,12 +31,14 @@ export default class SearchBar extends Component {
         )
             .then(res => {
                 this.setState({results: res.data, showResults: true, submittedSearch: search});
+                console.log('---->>>>>>',this.props)
+                history.push(`/search?search=${search}`);
             })
             .catch(console.error)
     }
 
     render() {
-        const { results } = this.state;
+        const { results, submittedSearch } = this.state;
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -43,7 +46,7 @@ export default class SearchBar extends Component {
                     <button type="submit">Search</button>
                 </form>
                 {this.state.showResults &&
-                    <ShowSearchResults results={this.state.results} search={this.state.submittedSearch} />
+                    <ShowSearchResults results={results} search={submittedSearch} />
                 }
             </div>
         )

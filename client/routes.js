@@ -22,6 +22,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/search" component={SearchBar} />
+        {/* <Route path="/search?" */}
         <Route path="/graph-dataset" component={GraphDataset} />
         <Route path="/" component ={Home}/>
         {isLoggedIn && (
