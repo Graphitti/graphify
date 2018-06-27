@@ -16,7 +16,6 @@ class SingleGraphView extends Component {
     }
 
     render() {
-      console.log('***', this.props.graphSettings)
       let graphType = 'Bar'   // hardcode graph type now. After refactoring store state which could save user's favorie graph type, refactor this line later.
       return (
         <div>
