@@ -73,7 +73,7 @@ class GraphDataset extends Component {
     })
     return (
       <div className="graphContainer">
-        <h1>{dataset.name}</h1>
+        <h1>Table</h1>
         {dataset.length &&
           xAxis.length && (
             <div>
@@ -118,9 +118,6 @@ class GraphDataset extends Component {
                 })}
               </div>
             </div>
-
-            {currentX &&
-              currentY.length && (
                 <div id="graphs">
                   <div onClick={this.handleGraphClick}>
                     <LineChartGraph />
@@ -131,7 +128,6 @@ class GraphDataset extends Component {
                   <ScatterChartGraph />
                   <PieChartGraph />
                 </div>
-              )}
           </div>
         )}
       </div>
