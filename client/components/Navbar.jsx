@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import axios from 'axios'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
@@ -25,6 +26,19 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       )}
     </nav>
     <hr />
+    {/* can use this for sending requests to aws with dummy data, delete in the future */}
+    {/* <form onSubmit={ (event)=> {
+      event.preventDefault();
+      axios.post('/api/graphs/cat', {
+        xAxis: 'hello', yAxis: ['hi', 'hello'], xAxisLabel: 'thelabel', 
+        yAxisLabel: 'thislabel', title: 'tietle', graphType: 'line', shareable: true,
+      })
+      // axios.get('/api/graphs/5558/aws')
+      // axios.post('/api/graphs/5558/aws', {dataset: dataset})
+    }
+    }>
+    <button type="submit">post test</button>
+    </form> */}
   </div>
 )
 
@@ -52,5 +66,5 @@ export default connect(mapState, mapDispatch)(Navbar)
  */
 Navbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
 }
