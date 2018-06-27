@@ -6,10 +6,12 @@ import {
   AreaChartGraph,
   RadarChartGraph,
   ScatterChartGraph,
-  PieChartGraph
+  PieChartGraph,
 } from './graphs'
 import ReactTable from 'react-table'
 import {setXAxis, addYAxis, deleteYAxis} from '../store'
+
+import SingleGraphView from './SingleGraphView.jsx'
 
 class GraphDataset extends Component {
   constructor(props) {
@@ -118,6 +120,9 @@ class GraphDataset extends Component {
                   <PieChartGraph />
                 </div>
               )}
+              <div>
+                <SingleGraphView />
+              </div>
           </div>
         )}
       </div>
