@@ -35,7 +35,6 @@ export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => 
         .then(res => {
             let processedData = datasetColumnFormatter(res, columnObj);
             processedData.name = datasetName;
-            console.log('Processed data', processedData);
             dispatch(setData(processedData))
             history.push('/graph-dataset');
         })
