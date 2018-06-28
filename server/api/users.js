@@ -25,7 +25,8 @@ router.get('/:userId/graphs', (req, res, next) => {
       },
       include: [{model: YAxis}]
     })
-    .then(graphs => res.json(graphs));
+    .then(graphs => res.json(graphs))
+    .cacth(next);
   }
   else {
     res.send('You don\'t have permission to view this data');
