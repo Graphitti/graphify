@@ -3,16 +3,27 @@ const SET_X_AXIS = 'SET_X_AXIS'
 const ADD_Y_AXIS = 'ADD_Y_AXIS'
 const DELETE_Y_AXIS = 'DELETE_Y_AXIS'
 
+const UPDATE_TITLE = 'UPDATE_TITLE'
+const UPDATE_XAXIS_NAME = 'UPDATE_XAXIS_NAME'
+const UPDATE_YAXIS_NAME = 'UPDATE_YAXIS_NAME'
+
 //INITIAL STATE
 const graphSettings = {
   currentX: '',
-  currentY: []
+  currentY: [],
+  title: 'title',
+  xAxisName: 'X axis',
+  yAxisName: 'Y axis'
 }
 
 //ACTION CREATORS
 const setXAxisToStore = xAxis => ({type: SET_X_AXIS, xAxis})
 const addYAxisToStore = (yAxis, idx) => ({type: ADD_Y_AXIS, yAxis, idx})
 const deleteYAxisFromState = deletedYIdx => ({type: DELETE_Y_AXIS, deletedYIdx})
+
+export const updateTitle = title =>({type: UPDATE_TITLE, title})
+export const updateXAxisName = name =>({type: UPDATE_XAXIS_NAME, name})
+export const updateYAxisName = name =>({type: UPDATE_YAXIS_NAME, name})
 
 // THUNK CREATORS
 export const setXAxis = xAxis => dispatch => {
@@ -38,8 +49,14 @@ export default (state = graphSettings, action) => {
       newCurrentY[action.idx] = action.yAxis
       return {...state, currentY: newCurrentY}
     case DELETE_Y_AXIS:
-      const yAxisDeleted = [...state.currentY].filter((y, i) => i !== action.deletedYIdx)    
+      const yAxisDeleted = [...state.currentY].filter((y, i) => i !== action.deletedYIdx)
       return {...state, currentY: yAxisDeleted}
+    case UPDATE_TITLE:
+      return {...state, title: action.title}
+    case UPDATE_XAXIS_NAME:
+      return {...state, xAxisName: action.name}
+    case UPDATE_YAXIS_NAME:
+      return {...state, yAxisName: action.name}
     default:
       return state
   }

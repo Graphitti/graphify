@@ -14,6 +14,8 @@ import axios from 'axios'
 import crypto from 'crypto'
 
 
+import SingleGraphView from './SingleGraphView.jsx'
+
 class GraphDataset extends Component {
   constructor(props) {
     super(props)
@@ -155,6 +157,10 @@ class GraphDataset extends Component {
                 </div>
           </div>
         )}
+
+        <div>
+          <SingleGraphView />
+        </div>
       </div>
     )
   }
