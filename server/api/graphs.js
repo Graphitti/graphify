@@ -22,7 +22,7 @@ router.get('/:graphId', (req, res, next) => {
         .then(graph => {
             res.send(graph)
         })
-        .catch(next)
+        .catch(next);
 })
 
 router.post('/:graphId', (req, res, next) => {
@@ -48,7 +48,7 @@ router.post('/:graphId', (req, res, next) => {
                 newGraph.setYAxes(newYAxes)
                 res.send('worked')
             })
-            .catch(next)
+            .catch(next);
     } else {
         res.send('You need to be a user to save graph data')
     }
@@ -113,7 +113,7 @@ router.get('/aws/:graphId', (req, res, next) => {
             let parsedDataset = JSON.parse(result.Body)
             res.json(parsedDataset)
         })
-        .catch(next)
+        .catch(next);
 })
 
 router.post('/aws/:graphId', (req, res, next) => {
@@ -134,7 +134,7 @@ router.post('/aws/:graphId', (req, res, next) => {
             .then(data => {
                 res.send(`Succesfully uploaded ${graphId} to ${bucketName}`)
             })
-            .catch(next)
+            .catch(next);
     } else {
         res.status(401).send('Please Log In to save your data')
     }
