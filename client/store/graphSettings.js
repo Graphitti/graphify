@@ -1,18 +1,26 @@
+import axios from 'axios'
+
 // ACTION TYPES
 const SET_X_AXIS = 'SET_X_AXIS'
 const ADD_Y_AXIS = 'ADD_Y_AXIS'
 const DELETE_Y_AXIS = 'DELETE_Y_AXIS'
+const FETCH_AND_SET_GRAPH = 'FETCH_AND_SET_GRAPH'
 
 //INITIAL STATE
 const graphSettings = {
   currentX: '',
-  currentY: []
+  currentY: [],
+  graphType: ''
 }
 
 //ACTION CREATORS
 const setXAxisToStore = xAxis => ({type: SET_X_AXIS, xAxis})
 const addYAxisToStore = (yAxis, idx) => ({type: ADD_Y_AXIS, yAxis, idx})
 const deleteYAxisFromState = deletedYIdx => ({type: DELETE_Y_AXIS, deletedYIdx})
+const fetchAndSetGraphFromDatabase = graph => ({
+  type: FETCH_AND_SET_GRAPH,
+  graph
+})
 
 // THUNK CREATORS
 export const setXAxis = xAxis => dispatch => {
@@ -27,6 +35,12 @@ export const deleteYAxis = deletedYIdx => dispatch => {
   dispatch(deleteYAxisFromState(deletedYIdx))
 }
 
+export const fetchAndSetGraph = graphId => dispatch => {
+  axios
+    .get(`/api/graphs/${graphId}`)
+    .then(res => dispatch(fetchAndSetGraphFromDatabase(res.data)))
+}
+
 // REDUCER
 
 export default (state = graphSettings, action) => {
@@ -38,8 +52,14 @@ export default (state = graphSettings, action) => {
       newCurrentY[action.idx] = action.yAxis
       return {...state, currentY: newCurrentY}
     case DELETE_Y_AXIS:
-      const yAxisDeleted = [...state.currentY].filter((y, i) => i !== action.deletedYIdx)    
+      const yAxisDeleted = [...state.currentY].filter(
+        (y, i) => i !== action.deletedYIdx
+      )
       return {...state, currentY: yAxisDeleted}
+    case FETCH_AND_SET_GRAPH:
+      const {xAxis, yAxes, graphType} = action.graph
+      const YAxisNames = yAxes.map(yAxis => yAxis.name)
+      return {...state, currentX: xAxis, currentY: YAxisNames, graphType}
     default:
       return state
   }

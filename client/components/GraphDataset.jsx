@@ -13,7 +13,6 @@ import {setXAxis, addYAxis, deleteYAxis} from '../store'
 import axios from 'axios'
 import crypto from 'crypto'
 
-
 class GraphDataset extends Component {
   constructor(props) {
     super(props)
@@ -48,28 +47,31 @@ class GraphDataset extends Component {
       graphSettings,
       handleXCategory,
       handleYCategory
-    } = this.props;
-    const {currentX, currentY} = graphSettings;
-    const hashId = crypto.randomBytes(8).toString('base64').replace('/', '7');
-    console.log('hashid',hashId);
-    this.setState({hashId});
-    let datasetPost = axios.post(`api/graphs/aws/${hashId}`, {
+    } = this.props
+    const {currentX, currentY} = graphSettings
+    const hashId = crypto
+      .randomBytes(8)
+      .toString('base64')
+      .replace('/', '7')
+    console.log('hashid', hashId)
+    this.setState({hashId})
+    let AWSPost = axios.post(`api/graphs/aws/${hashId}`, {
       dataset
     })
-    let graphPost = axios.post(`api/graphs/${hashId}`, {
+    let databasePost = axios.post(`api/graphs/${hashId}`, {
       xAxis: currentX,
       yAxis: currentY,
       title: dataset.name,
       graphType
     })
-    Promise.all([datasetPost, graphPost])
-    .then(() => {
-      console.log('did we et here')
-      this.props.history.push(`/graph-dataset/customize/${hashId}`)
-    })
-        // .then(() => {
-        // })
-    .catch(console.error)
+    Promise.all([AWSPost, databasePost])
+      .then(() => {
+        console.log('WE GOT HERE')
+        this.props.history.push(`/graph-dataset/customize/${hashId}`)
+      })
+      // .then(() => {
+      // })
+      .catch(console.error)
   }
 
   render() {
@@ -143,16 +145,26 @@ class GraphDataset extends Component {
                 })}
               </div>
             </div>
-                <div id="graphs">
-                  <div onClick={() => this.handleGraphClick('Line')}>
-                    <LineChartGraph />
-                  </div>
-                  <BarChartGraph />
-                  <AreaChartGraph />
-                  <RadarChartGraph />
-                  <ScatterChartGraph />
-                  <PieChartGraph />
-                </div>
+            <div id="graphs">
+              <div onClick={() => this.handleGraphClick('Line')}>
+                <LineChartGraph />
+              </div>
+              <div onClick={() => this.handleGraphClick('Bar')}>
+                <BarChartGraph />
+              </div>
+              <div onClick={() => this.handleGraphClick('Area')}>
+                <AreaChartGraph />
+              </div>
+              <div onClick={() => this.handleGraphClick('Radar')}>
+                <RadarChartGraph />
+              </div>
+              <div onClick={() => this.handleGraphClick('Scatter')}>
+                <ScatterChartGraph />
+              </div>
+              <div onClick={() => this.handleGraphClick('Pie')}>
+                <PieChartGraph />
+              </div>
+            </div>
           </div>
         )}
       </div>
