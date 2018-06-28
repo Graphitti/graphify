@@ -9,8 +9,8 @@ import {
   PieChartGraph
 } from './graphs'
 
-import { updateTitle, updateXAxisName, updateYAxisName } from '../store'
-
+import { updateTitle, updateXAxisName, updateYAxisName, changeColor } from '../store'
+import { TwitterPicker } from 'react-color'
 
 class SingleGraphView extends Component {
     constructor(props) {
@@ -29,14 +29,17 @@ class SingleGraphView extends Component {
         case 'XAxis':
           return this.props.changeXAxisName(value)
         case 'YAxis':
-        return this.props.changeYAxisName(value)
+          return this.props.changeYAxisName(value)
+        case 'color':
+          return this.props.changeColor(value)
       }
 
 
     }
 
     render() {
-      let graphType = 'Line'   // hardcode graph type now. After refactoring store state which could save user's favorie graph type, refactor this line later.
+      const { currentY } = this.props.graphSettings
+      const graphType = 'Line'   // hardcode graph type now. After refactoring store state which could save user's favorie graph type, refactor this line later.
       return (
         <div>
           <div>
@@ -64,13 +67,9 @@ class SingleGraphView extends Component {
               <form>
                 <label>{`Change title`}</label>
                   <input type='text' name='title' onChange={this.handleChange}/>
-                <label>{`Choose color`}</label>
-                  <select name='color' onChange={this.handleChange}>
-                    <option value='#8884d8'><img width="20" height="25" src='https://www.colorhexa.com/8884d8.png' /></option>
-                    <option value='#82ca9d'><img width="20" height="25" src='https://www.colorhexa.com/82ca9d.png'/></option>
-                    <option value='#ffc658'><img width="20" height="25" src='https://www.colorhexa.com/ffc658.png' /></option>
-                    <option value='#FF8042'><img width="20" height="25" src='https://www.colorhexa.com/ff8042.png' /></option>
-                  </select>
+              {/*  {currentY.map((yAxis, idx) => (
+
+                ))} */}
                 <label>{`Change the name of X axis`}</label>
                   <input type='text' name='XAxis' onChange={this.handleChange}/>
                 <label>{`Change the name of Y axis`}</label>
@@ -99,6 +98,9 @@ const mapDispatch = dispatch => ({
   },
   changeYAxisName(name) {
     dispatch(updateYAxisName(name))
+  },
+  changeColor(color) {
+    dispatch(updateColor(color))
   }
 })
 

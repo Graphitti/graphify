@@ -14,6 +14,7 @@ export const LineChartGraph = props => {
   const {dataset, graphSettings} = props
   const {currentX, currentY, title, xAxisName, yAxisName} = graphSettings
   const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+  console.log('yyyyyy', currentY)
   return (
     <div>
       <h4>{title}</h4>
