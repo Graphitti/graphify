@@ -15,18 +15,18 @@ const UserProfile = props => {
   }
   const name = `${dummyData.email[0].toUpperCase()}${dummyData.email.slice(
     1,
-    email.search('@')
+    dummyData.email.search('@')
   )}`
   return (
-    <div>
-      <h1>{name}</h1>
+    <div id="profile">
+      <h1>Hi, {name}!</h1>
       <h2>Graphs</h2>
-      <div>
+      <div id="profile-graphs">
         {dummyData.graphs.map(graph => {
           return (
-            <div>
+            <div id="profile-graphs-single">
               <h2>{graph.title}</h2>
-              <img scr={graph.img} />
+              <img src={graph.thumnail} />
             </div>
           )
         })}
@@ -35,4 +35,10 @@ const UserProfile = props => {
   )
 }
 
-export default UserProfile
+const mapState = state => {
+    return {
+      dataset: state.dataset
+    }
+  }
+
+export default connect(mapState)(UserProfile)
