@@ -1,11 +1,12 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
+const crypto = require('crypto')
 
 const Graph = db.define('graph', {
     //save a customized id for each graph
     //do we want colors, width, height anything else customizable
     //will we store all socrata data to aws or will we remake the call everytime
-        //space vs complexity/time, aws seems to be unlimited space
+    //space vs complexity/time, aws seems to be unlimited space
     graphId: {
         type: Sequelize.STRING,
         unique: true,
@@ -42,3 +43,13 @@ const Graph = db.define('graph', {
 })
 
 module.exports = Graph
+
+Graph.generateSalt = function () {
+    return crypto.randomBytes(16).toString('base64');
+}
+
+const setGraphId = graph => {
+    graph.graphId = Graph.generateSalt();
+}
+
+Graph.beforeCreate(setGraphId)

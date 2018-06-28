@@ -16,10 +16,12 @@ class SingleGraphView extends Component {
     }
 
     render() {
-      let graphType = 'Bar'   // hardcode graph type now. After refactoring store state which could save user's favorie graph type, refactor this line later.
+      let graphType = 'Line'   // hardcode graph type now. After refactoring store state which could save user's favorie graph type, refactor this line later.
+      const graphId = this.props;
+      console.log('GraphId --->>>',graphId);
       return (
         <div>
-            {(function() {
+            {graphId && (function() {
                 switch(graphType) {
                     case 'Line':
                         return <LineChartGraph />;

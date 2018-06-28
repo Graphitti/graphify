@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -9,7 +9,8 @@ import {
   PieChartGraph,
 } from './graphs'
 import ReactTable from 'react-table'
-import {setXAxis, addYAxis, deleteYAxis} from '../store'
+import { Link } from 'react-router-dom'
+import { setXAxis, addYAxis, deleteYAxis } from '../store'
 
 class GraphDataset extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class GraphDataset extends Component {
   }
 
   handleDeleteY(idx) {
-    const {deleteY} = this.props
+    const { deleteY } = this.props
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
@@ -43,7 +44,7 @@ class GraphDataset extends Component {
       handleXCategory,
       handleYCategory
     } = this.props
-    const {currentX, currentY} = graphSettings
+    const { currentX, currentY } = graphSettings
     const columnObj = dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
@@ -110,7 +111,9 @@ class GraphDataset extends Component {
             {currentX &&
               currentY.length && (
                 <div id="graphs">
-                  <LineChartGraph />
+                  <Link to='/graph-dataset/123456AF1'>
+                    <LineChartGraph />
+                  </Link>
                   <BarChartGraph />
                   <AreaChartGraph />
                   <RadarChartGraph />
