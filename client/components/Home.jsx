@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import CSVReader from 'react-csv-reader'
 import store, {uploadData, resetGraphSettings} from '../store'
 import history from '../history'
-// import Link from 'react-router-dom'
 
 export default class Home extends Component {
   constructor(props) {
