@@ -51,16 +51,14 @@ router.post('/:graphId', (req, res, next) => {
     let makingDataset = Dataset.findOrCreate({
       where : {
         name: datasetName,
-        userId
-      },
-      default: {
+        userId,
         awsId
       }
     })
     return Promise.all([makingGraph, makingYAxes, makingDataset])
       .then(([newGraph, newYAxes, newDataset]) => {
         let setY = newGraph.setYAxes(newYAxes)
-        let setDataset = newGraph.setDataset(newDataset)
+        let setDataset = newGraph.setDataset(newDataset[0])
         return Promise.all([setY, setDataset])
       })
       .then(() => res.send('worked'))
