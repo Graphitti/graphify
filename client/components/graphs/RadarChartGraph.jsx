@@ -12,33 +12,36 @@ import {
 
 export const RadarChartGraph = props => {
   const {dataset, graphSettings} = props
-  const {currentX, currentY} = graphSettings
-  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+  const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
+
   return (
-    <RadarChart
-      cx={300}
-      cy={300}
-      outerRadius={250}
-      width={600}
-      height={600}
-      data={dataset}
-    >
-      <Tooltip />
-      <Legend />
-      <PolarGrid />
-      <PolarAngleAxis dataKey={currentX} />
-      <PolarRadiusAxis />
-      {currentY.map((yAxis, idx) => (
-        <Radar
-          key={idx}
-          name={yAxis}
-          dataKey={yAxis}
-          stroke={colors[idx]}
-          fill={colors[idx]}
-          fillOpacity={0.6}
-        />
-      ))}
-    </RadarChart>
+    <div>
+      <h4>{title}</h4>
+      <RadarChart
+        cx={300}
+        cy={300}
+        outerRadius={250}
+        width={600}
+        height={600}
+        data={dataset}
+      >
+        <Tooltip />
+        <Legend align='right'/>
+        <PolarGrid />
+        <PolarAngleAxis dataKey={currentX} />
+        <PolarRadiusAxis />
+        {currentY.map((yAxis, idx) => (
+          <Radar
+            key={idx}
+            name={yAxis}
+            dataKey={yAxis}
+            stroke={colors[idx]}
+            fill={colors[idx]}
+            fillOpacity={0.6}
+          />
+        ))}
+      </RadarChart>
+    </div>
   )
 }
 
