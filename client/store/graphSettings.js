@@ -6,6 +6,7 @@ const DELETE_Y_AXIS = 'DELETE_Y_AXIS'
 const UPDATE_TITLE = 'UPDATE_TITLE'
 const UPDATE_XAXIS_NAME = 'UPDATE_XAXIS_NAME'
 const UPDATE_YAXIS_NAME = 'UPDATE_YAXIS_NAME'
+const UPDATE_COLOR = 'UPDATE_COLOR'
 
 //INITIAL STATE
 const graphSettings = {
@@ -13,7 +14,8 @@ const graphSettings = {
   currentY: [],
   title: 'title',
   xAxisName: 'X axis',
-  yAxisName: 'Y axis'
+  yAxisName: 'Y axis',
+  colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042'],
 }
 
 //ACTION CREATORS
@@ -24,6 +26,7 @@ const deleteYAxisFromState = deletedYIdx => ({type: DELETE_Y_AXIS, deletedYIdx})
 export const updateTitle = title =>({type: UPDATE_TITLE, title})
 export const updateXAxisName = name =>({type: UPDATE_XAXIS_NAME, name})
 export const updateYAxisName = name =>({type: UPDATE_YAXIS_NAME, name})
+export const updateColor = (color, idx) =>({type: UPDATE_COLOR, color, idx})
 
 // THUNK CREATORS
 export const setXAxis = xAxis => dispatch => {
@@ -57,6 +60,12 @@ export default (state = graphSettings, action) => {
       return {...state, xAxisName: action.name}
     case UPDATE_YAXIS_NAME:
       return {...state, yAxisName: action.name}
+    case UPDATE_COLOR:
+      const newColors = state.colors.map((color, index) =>{
+        if(index === action.idx) return action.color
+        else return color
+      })
+      return {...state, colors: newColors}
     default:
       return state
   }
