@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const { Graph, YAxis } = require('../db/models')
+const { Graph, YAxis, Dataset } = require('../db/models')
 const axios = require('axios')
-const { AWS_KEY, AWS_SECRET } = require('../../secrets')
+const { AWS_KEY, AWS_SECRET, AWS_BUCKET } = require('../../secrets')
 const AWS = require('aws-sdk')
 // set all the keys and region here
 AWS.config.update({
@@ -9,9 +9,15 @@ AWS.config.update({
     secretAccessKey: AWS_SECRET,
     region: 'us-east-2'
 })
-const bucketName = 'graphify-test-22'
 
 module.exports = router
+
+// router.post('/make-dataset', (req, res, next) => {
+//     const { datasetId } = req.body;
+//     Dataset.create({ awsId: datasetId })
+//         .then(newDataset => res.send(newDataset))
+//         .catch(next);
+// })
 
 router.get('/:graphId', (req, res, next) => {
     const { graphId } = req.params
@@ -39,12 +45,12 @@ router.post('/:graphId', (req, res, next) => {
             graphType
         })
         let makingYAxes = Promise.all(
-                    yAxis.map(name => {
-                        return YAxis.create({ name })
-                    })
-                )
+            yAxis.map(name => {
+                return YAxis.create({ name })
+            })
+        )
         return Promise.all([makingGraph, makingYAxes])
-        .then(([newGraph, newYAxes]) => {
+            .then(([newGraph, newYAxes]) => {
                 newGraph.setYAxes(newYAxes)
                 res.send('worked')
             })
@@ -57,7 +63,7 @@ router.post('/:graphId', (req, res, next) => {
 router.put('/:graphId', (req, res, next) => {
     if (req.user) {
         const { graphId } = req.params
-        const {xAxis, yAxis, xAxisLabel, yAxisLabel, title, graphType
+        const { xAxis, yAxis, xAxisLabel, yAxisLabel, title, graphType
         } = req.body
         const userId = req.user.id
         //find the graph you need
@@ -67,7 +73,7 @@ router.put('/:graphId', (req, res, next) => {
             },
             include: [{ model: YAxis }]
         })
-        //update the found graph
+            //update the found graph
             .then(foundGraph => {
                 let effectedGraph = foundGraph.update({
                     xAxis,
@@ -103,7 +109,7 @@ router.put('/:graphId', (req, res, next) => {
 router.get('/aws/:graphId', (req, res, next) => {
     //have some kind of security so that we don't do this if the user doesn't have access to the graph
     const { graphId } = req.params
-    let datasetParams = { Bucket: bucketName, Key: graphId }
+    let datasetParams = { Bucket: AWS_BUCKET, Key: graphId }
     //this makes the promise to do the actual request, get object is a get request
     let findDatasetPromise = new AWS.S3({ apiVersion: '2006-03-01' })
         .getObject(datasetParams)
@@ -122,9 +128,7 @@ router.post('/aws/:graphId', (req, res, next) => {
         const { dataset } = req.body
         const stringifiedDataset = JSON.stringify(dataset)
         let datasetParams = {
-            Bucket: bucketName,
-            Key: graphId,
-            Body: stringifiedDataset
+            Bucket: AWS_BUCKET, Key: graphId, Body: stringifiedDataset
         }
         //this creates or updates the desired object
         let uploadDatasetPromise = new AWS.S3({ apiVersion: '2006-03-01' })
@@ -132,7 +136,7 @@ router.post('/aws/:graphId', (req, res, next) => {
             .promise()
         uploadDatasetPromise
             .then(data => {
-                res.send(`Succesfully uploaded ${graphId} to ${bucketName}`)
+                res.send(`Succesfully uploaded ${graphId} to ${AWS_BUCKET}`)
             })
             .catch(next);
     } else {
