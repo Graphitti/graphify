@@ -7,10 +7,7 @@ const Dataset = db.define('dataset', {
     },
     awsId: {
         type: Sequelize.STRING,
-        unique: true,
-        get() {
-            return () => this.getDataValue('awsId')
-        }
+        unique: true
     }
 })
 
