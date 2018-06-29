@@ -34,6 +34,10 @@ const Graph = db.define('graph', {
   },
   graphType: {
     type: Sequelize.STRING
+  },
+  thumbnail: {
+    type: Sequelize.STRING,
+    defaultValue: '/graph.gif'
   }
 })
 

@@ -42,12 +42,7 @@ class GraphDataset extends Component {
 
   handleGraphClick(graphType) {
     //Upload dataset to S3 AWS
-    const {
-      dataset,
-      graphSettings,
-      handleXCategory,
-      handleYCategory
-    } = this.props
+    const {dataset, graphSettings} = this.props
     const {currentX, currentY} = graphSettings
     const hashId = crypto
       .randomBytes(8)
@@ -69,8 +64,6 @@ class GraphDataset extends Component {
         console.log('WE GOT HERE')
         this.props.history.push(`/graph-dataset/customize/${hashId}`)
       })
-      // .then(() => {
-      // })
       .catch(console.error)
   }
 
