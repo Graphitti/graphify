@@ -42,7 +42,9 @@ class GraphDataset extends Component {
   handleGraphClick(graphType) {
     const {dataset, graphSettings} = this.props
     const {currentX, currentY} = graphSettings
-    const {datasetName} = dataset
+    const datasetName = dataset.name
+    //if the dataset already has an aws then we want to make that the awsId
+    //this will cause use to reuse that dataset for the graph
     const awsId = crypto
       .randomBytes(8)
       .toString('base64')
@@ -56,6 +58,7 @@ class GraphDataset extends Component {
     console.log('graphId', graphId)
   
      //Upload dataset to S3 AWS
+     //if the dataset already has an awsId we need to not do this
     let AWSPost = axios.post(`api/graphs/aws/${awsId}`, {
       dataset
     })
