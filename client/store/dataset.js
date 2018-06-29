@@ -19,7 +19,7 @@ const defaultData = []
 /**
  * ACTION CREATORS
  */
-const setData = data => ({type: SET_DATA, data})
+export const setData = data => ({type: SET_DATA, data})
 
 /**
  * THUNK CREATORS
@@ -50,7 +50,6 @@ export const getAsyncData = (
 
 export const fetchAndSetDataFromS3 = graphId => dispatch => {
   axios.get(`/api/graphs/aws/${graphId}`).then(res => {
-    console.log('S3DATA', res.data)
     dispatch(setData(res.data))
   })
 }

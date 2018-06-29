@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {setData} from './dataset'
 
 // ACTION TYPES
 const SET_X_AXIS = 'SET_X_AXIS'
@@ -33,10 +34,10 @@ const fetchAndSetGraphFromDatabase = graph => ({
 })
 const resetGraphSettingsState = () => ({type: RESET_GRAPH_SETTINGS})
 
-export const updateTitle = title =>({type: UPDATE_TITLE, title})
-export const updateXAxisName = name =>({type: UPDATE_XAXIS_NAME, name})
-export const updateYAxisName = name =>({type: UPDATE_YAXIS_NAME, name})
-export const updateColor = (color, idx) =>({type: UPDATE_COLOR, color, idx})
+export const updateTitle = title => ({type: UPDATE_TITLE, title})
+export const updateXAxisName = name => ({type: UPDATE_XAXIS_NAME, name})
+export const updateYAxisName = name => ({type: UPDATE_YAXIS_NAME, name})
+export const updateColor = (color, idx) => ({type: UPDATE_COLOR, color, idx})
 
 // THUNK CREATORS
 export const setXAxis = xAxis => dispatch => {
@@ -54,7 +55,11 @@ export const deleteYAxis = deletedYIdx => dispatch => {
 export const fetchAndSetGraph = graphId => dispatch => {
   axios
     .get(`/api/graphs/${graphId}`)
-    .then(res => dispatch(fetchAndSetGraphFromDatabase(res.data)))
+    .then(res => {
+      dispatch(fetchAndSetGraphFromDatabase(res.data.graph));
+      dispatch(setData(res.data.dataset));
+    })
+    .catch(err => console.log(err))
 }
 
 export const resetGraphSettings = () => dispatch => {
@@ -72,7 +77,9 @@ export default (state = graphSettings, action) => {
       newCurrentY[action.idx] = action.yAxis
       return {...state, currentY: newCurrentY}
     case DELETE_Y_AXIS:
-      const yAxisDeleted = [...state.currentY].filter((y, i) => i !== action.deletedYIdx)
+      const yAxisDeleted = [...state.currentY].filter(
+        (y, i) => i !== action.deletedYIdx
+      )
       return {...state, currentY: yAxisDeleted}
     case UPDATE_TITLE:
       return {...state, title: action.title}
@@ -81,12 +88,13 @@ export default (state = graphSettings, action) => {
     case UPDATE_YAXIS_NAME:
       return {...state, yAxisName: action.name}
     case UPDATE_COLOR:
-      const newColors = state.colors.map((color, index) =>{
-        if(index === action.idx) return action.color
+      const newColors = state.colors.map((color, index) => {
+        if (index === action.idx) return action.color
         else return color
       })
       return {...state, colors: newColors}
     case FETCH_AND_SET_GRAPH:
+      console.log('GRAPHSETTINGS', action.graph)
       const {xAxis, yAxes, graphType} = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {...state, currentX: xAxis, currentY: YAxisNames, graphType}

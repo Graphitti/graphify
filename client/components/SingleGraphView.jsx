@@ -9,102 +9,109 @@ import {
   PieChartGraph
 } from './graphs'
 
-import { updateTitle, updateXAxisName, updateYAxisName, updateColor, fetchAndSetGraph, fetchAndSetDataFromS3 } from '../store'
-import { HuePicker } from 'react-color'
+import {
+  updateTitle,
+  updateXAxisName,
+  updateYAxisName,
+  updateColor,
+  fetchAndSetGraph,
+  fetchAndSetDataFromS3
+} from '../store'
+import {HuePicker} from 'react-color'
 
 class SingleGraphView extends Component {
-    constructor(props) {
-      super(props)
-      this.state={
-        legend: -1
-      }
-
-      this.handleChange = this.handleChange.bind(this)
-      this.handleChangeColor = this.handleChangeColor.bind(this)
+  constructor(props) {
+    super(props)
+    this.state = {
+      legend: -1
     }
 
-    componentDidMount() {
-      const {graphId} = this.props.match.params
-      this.props.getGraphId(graphId)
-      this.props.getDataset(graphId)
-    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleChangeColor = this.handleChangeColor.bind(this)
+  }
 
-    handleChange(event) {
-      const name = event.target.name
-      const value = event.target.value
-      switch(name) {
-        case 'title':
-          return this.props.changeTitle(value)
-        case 'XAxis':
-          return this.props.changeXAxisName(value)
-        case 'YAxis':
-          return this.props.changeYAxisName(value)
-      }
-    }
+  componentDidMount() {
+    const {graphId} = this.props.match.params
+    const {getGraphId} = this.props
+    getGraphId(graphId)
+    // const {awsId} = this.props.graphSettings
+    // getDataset(awsId)
+  }
 
-    handleClick(idx) {
-      console.log('index', idx)
-      this.setState({legend: idx})
+  handleChange(event) {
+    const name = event.target.name
+    const value = event.target.value
+    switch (name) {
+      case 'title':
+        return this.props.changeTitle(value)
+      case 'XAxis':
+        return this.props.changeXAxisName(value)
+      case 'YAxis':
+        return this.props.changeYAxisName(value)
     }
+  }
 
-    handleChangeColor(color) {
-      this.props.changeColor(color.hex, this.state.legend)
-      this.setState({legend: -1})
-    }
+  handleClick(idx) {
+    console.log('index', idx)
+    this.setState({legend: idx})
+  }
 
-    render() {
-      let { currentY, graphType } = this.props.graphSettings
-      let colors = this.props.graphSettings.colors
-      return (
+  handleChangeColor(color) {
+    this.props.changeColor(color.hex, this.state.legend)
+    this.setState({legend: -1})
+  }
+
+  render() {
+    let {currentY, graphType, colors} = this.props.graphSettings
+
+    return (
+      <div>
         <div>
-          <div>
-              {(function() {
-                  switch(graphType) {
-                      case 'Line':
-                          return <LineChartGraph />;
-                      case 'Bar':
-                          return <BarChartGraph />;
-                      case 'Area':
-                          return <AreaChartGraph />;
-                      case 'Radar':
-                          return <RadarChartGraph />;
-                      case 'Scatter':
-                          return <ScatterChartGraph />;
-                      case 'Pie':
-                          return <PieChartGraph />;
-                      default:
-                          return null;
-                  }
-              })()}
-          </div>
-
-          <div>
-              <form>
-                <label>{`Change title`}</label>
-                  <input type='text' name='title' onChange={this.handleChange}/>
-                <label>{`Change the name of X axis`}</label>
-                  <input type='text' name='XAxis' onChange={this.handleChange}/>
-                <label>{`Change the name of Y axis`}</label>
-                  <input type='text' name='YAxis' onChange={this.handleChange}/>
-              </form>
-              <div>
-                {currentY.map((yAxis, idx) => (
-                  <div key={idx}>
-                    <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                    <button onClick={ () => this.handleClick(idx) }>Pick Color</button>
-                    <HuePicker
-                      color={ colors[idx] }
-                      onChangeComplete={this.handleChangeColor }
-                    />
-                  </div>
-                ))}
-              </div>
-          </div>
-
+          {(function() {
+            switch (graphType) {
+              case 'Line':
+                return <LineChartGraph />
+              case 'Bar':
+                return <BarChartGraph />
+              case 'Area':
+                return <AreaChartGraph />
+              case 'Radar':
+                return <RadarChartGraph />
+              case 'Scatter':
+                return <ScatterChartGraph />
+              case 'Pie':
+                return <PieChartGraph />
+              default:
+                return null
+            }
+          })()}
         </div>
-      )
-    }
-}
+
+        <div>
+            <form>
+              <label>{`Change title`}</label>
+                <input type='text' name='title' onChange={this.handleChange}/>
+              <label>{`Change the name of X axis`}</label>
+                <input type='text' name='XAxis' onChange={this.handleChange}/>
+              <label>{`Change the name of Y axis`}</label>
+                <input type='text' name='YAxis' onChange={this.handleChange}/>
+            </form>
+            <div>
+              {currentY.map((yAxis, idx) => (
+                <div key={idx}>
+                  <label>{`Change the color of the legend of '${yAxis}'`}</label>
+                  <button onClick={ () => this.handleClick(idx) }>Pick Color</button>
+                  <HuePicker
+                    color={ colors[idx] }
+                    onChangeComplete={this.handleChangeColor }
+                  />
+                </div>
+              ))}
+            </div>
+        </div>
+      </div>
+    )}
+  }
 
 const mapState = state => {
   return {
