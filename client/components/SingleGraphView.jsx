@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -8,10 +8,8 @@ import {
   ScatterChartGraph,
   PieChartGraph
 } from './graphs'
-import { log } from 'util';
-import { bindActionCreators } from 'redux';
 
-import { updateTitle, updateXAxisName, updateYAxisName, updateColor } from '../store'
+import { updateTitle, updateXAxisName, updateYAxisName, updateColor, fetchAndSetGraph, fetchAndSetDataFromS3 } from '../store'
 import { HuePicker } from 'react-color'
 
 class SingleGraphView extends Component {
@@ -23,6 +21,12 @@ class SingleGraphView extends Component {
 
       this.handleChange = this.handleChange.bind(this)
       this.handleChangeColor = this.handleChangeColor.bind(this)
+    }
+
+    componentDidMount() {
+      const {graphId} = this.props.match.params
+      this.props.getGraphId(graphId)
+      this.props.getDataset(graphId)
     }
 
     handleChange(event) {
@@ -49,9 +53,8 @@ class SingleGraphView extends Component {
     }
 
     render() {
-      const { currentY } = this.props.graphSettings
+      let { currentY, graphType } = this.props.graphSettings
       const defaultColor = this.props.graphSettings.color
-      const graphType = 'Line'   // hardcode graph type now. After refactoring store state which could save user's favorie graph type, refactor this line later.
       return (
         <div>
           <div>
@@ -103,7 +106,6 @@ class SingleGraphView extends Component {
     }
 }
 
-
 const mapState = state => {
   return {
     graphSettings: state.graphSettings
@@ -123,6 +125,12 @@ const mapDispatch = dispatch => ({
   changeColor(color, idx) {
     dispatch(updateColor(color, idx))
   },
+  getGraphId: graphid => {
+    dispatch(fetchAndSetGraph(graphid))
+  },
+  getDataset: graphId => {
+    dispatch(fetchAndSetDataFromS3(graphId))
+  }
 })
 
 export default connect(mapState, mapDispatch)(SingleGraphView)

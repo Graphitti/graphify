@@ -3,6 +3,8 @@ const soda = require('soda-js');
 module.exports = router;
 
 router.get('/', (req, res, next) => {
+    //delete these console logs in the future
+    //also maybe delete this route????
     console.log('hit the soda route')
     const { id, domain } = req.query;
     console.log('soda',id, domain);

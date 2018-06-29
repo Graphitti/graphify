@@ -1,7 +1,10 @@
+import axios from 'axios'
+
 // ACTION TYPES
 const SET_X_AXIS = 'SET_X_AXIS'
 const ADD_Y_AXIS = 'ADD_Y_AXIS'
 const DELETE_Y_AXIS = 'DELETE_Y_AXIS'
+const FETCH_AND_SET_GRAPH = 'FETCH_AND_SET_GRAPH'
 
 const UPDATE_TITLE = 'UPDATE_TITLE'
 const UPDATE_XAXIS_NAME = 'UPDATE_XAXIS_NAME'
@@ -16,12 +19,17 @@ const graphSettings = {
   xAxisName: 'X axis',
   yAxisName: 'Y axis',
   colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042'],
+  graphType: ''
 }
 
 //ACTION CREATORS
 const setXAxisToStore = xAxis => ({type: SET_X_AXIS, xAxis})
 const addYAxisToStore = (yAxis, idx) => ({type: ADD_Y_AXIS, yAxis, idx})
 const deleteYAxisFromState = deletedYIdx => ({type: DELETE_Y_AXIS, deletedYIdx})
+const fetchAndSetGraphFromDatabase = graph => ({
+  type: FETCH_AND_SET_GRAPH,
+  graph
+})
 
 export const updateTitle = title =>({type: UPDATE_TITLE, title})
 export const updateXAxisName = name =>({type: UPDATE_XAXIS_NAME, name})
@@ -39,6 +47,12 @@ export const addYAxis = (yAxis, idx) => dispatch => {
 
 export const deleteYAxis = deletedYIdx => dispatch => {
   dispatch(deleteYAxisFromState(deletedYIdx))
+}
+
+export const fetchAndSetGraph = graphId => dispatch => {
+  axios
+    .get(`/api/graphs/${graphId}`)
+    .then(res => dispatch(fetchAndSetGraphFromDatabase(res.data)))
 }
 
 // REDUCER
@@ -66,6 +80,10 @@ export default (state = graphSettings, action) => {
         else return color
       })
       return {...state, colors: newColors}
+    case FETCH_AND_SET_GRAPH:
+      const {xAxis, yAxes, graphType} = action.graph
+      const YAxisNames = yAxes.map(yAxis => yAxis.name)
+      return {...state, currentX: xAxis, currentY: YAxisNames, graphType}
     default:
       return state
   }
