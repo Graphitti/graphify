@@ -32,19 +32,15 @@ router.post('/:graphId', (req, res, next) => {
         const userId = req.user.id
 
         let makingGraph = Graph.create({
-            userId,
-            graphId,
-            xAxis,
-            title,
-            graphType
+            userId, graphId, xAxis, title, graphType
         })
         let makingYAxes = Promise.all(
-                    yAxis.map(name => {
-                        return YAxis.create({ name })
-                    })
-                )
+            yAxis.map(name => {
+                return YAxis.create({ name })
+            })
+        )
         return Promise.all([makingGraph, makingYAxes])
-        .then(([newGraph, newYAxes]) => {
+            .then(([newGraph, newYAxes]) => {
                 newGraph.setYAxes(newYAxes)
                 res.send('worked')
             })
@@ -57,8 +53,7 @@ router.post('/:graphId', (req, res, next) => {
 router.put('/:graphId', (req, res, next) => {
     if (req.user) {
         const { graphId } = req.params
-        const {xAxis, yAxis, xAxisLabel, yAxisLabel, title, graphType
-        } = req.body
+        const { xAxis, yAxis, xAxisLabel, yAxisLabel, title, graphType } = req.body
         const userId = req.user.id
         //find the graph you need
         Graph.findOne({
@@ -67,14 +62,10 @@ router.put('/:graphId', (req, res, next) => {
             },
             include: [{ model: YAxis }]
         })
-        //update the found graph
+            //update the found graph
             .then(foundGraph => {
                 let effectedGraph = foundGraph.update({
-                    xAxis,
-                    xAxisLabel,
-                    yAxisLabel,
-                    title,
-                    graphType
+                    xAxis, xAxisLabel, yAxisLabel, title, graphType
                 });
                 //destroy the current yAxes
                 foundGraph.yAxes.map(yAxis => {
