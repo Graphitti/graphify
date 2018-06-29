@@ -12,12 +12,6 @@ AWS.config.update({
 
 module.exports = router
 
-// router.post('/make-dataset', (req, res, next) => {
-//     const { datasetId } = req.body;
-//     Dataset.create({ awsId: datasetId })
-//         .then(newDataset => res.send(newDataset))
-//         .catch(next);
-// })
 
 router.get('/:graphId', (req, res, next) => {
     const { graphId } = req.params
@@ -34,7 +28,7 @@ router.get('/:graphId', (req, res, next) => {
 router.post('/:graphId', (req, res, next) => {
     if (req.user) {
         const { graphId } = req.params
-        const { xAxis, yAxis, title, graphType } = req.body
+        const { xAxis, yAxis, title, graphType, datasetName, awsId } = req.body
         const userId = req.user.id
 
         let makingGraph = Graph.create({
@@ -45,11 +39,16 @@ router.post('/:graphId', (req, res, next) => {
                 return YAxis.create({ name })
             })
         )
-        return Promise.all([makingGraph, makingYAxes])
-            .then(([newGraph, newYAxes]) => {
-                newGraph.setYAxes(newYAxes)
-                res.send('worked')
+        let makingDataset = Dataset.create({
+            awsId, name: datasetName, userId
+        })
+        return Promise.all([makingGraph, makingYAxes, makingDataset])
+            .then(([newGraph, newYAxes, newDataset]) => {
+                let setY = newGraph.setYAxes(newYAxes);
+                let setDataset = newGraph.setDataset(newDataset);
+                return Promise.all([setY, setDataset]);
             })
+            .then(() => res.send('worked'))
             .catch(next);
     } else {
         res.send('You need to be a user to save graph data')
@@ -66,7 +65,7 @@ router.put('/:graphId', (req, res, next) => {
             where: {
                 graphId
             },
-            include: [{ model: YAxis }]
+            include: [{ model: YAxis, model: Dataset }]
         })
             //update the found graph
             .then(foundGraph => {
@@ -97,10 +96,10 @@ router.put('/:graphId', (req, res, next) => {
     }
 })
 
-router.get('/aws/:graphId', (req, res, next) => {
+router.get('/aws/:awsId', (req, res, next) => {
     //have some kind of security so that we don't do this if the user doesn't have access to the graph
-    const { graphId } = req.params
-    let datasetParams = { Bucket: AWS_BUCKET, Key: graphId }
+    const { awsId } = req.params
+    let datasetParams = { Bucket: AWS_BUCKET, Key: awsId }
     //this makes the promise to do the actual request, get object is a get request
     let findDatasetPromise = new AWS.S3({ apiVersion: '2006-03-01' })
         .getObject(datasetParams)
@@ -113,13 +112,13 @@ router.get('/aws/:graphId', (req, res, next) => {
         .catch(next);
 })
 
-router.post('/aws/:graphId', (req, res, next) => {
+router.post('/aws/:awsId', (req, res, next) => {
     if (req.user) {
-        const { graphId } = req.params
+        const { awsId } = req.params
         const { dataset } = req.body
         const stringifiedDataset = JSON.stringify(dataset)
         let datasetParams = {
-            Bucket: AWS_BUCKET, Key: graphId, Body: stringifiedDataset
+            Bucket: AWS_BUCKET, Key: awsId, Body: stringifiedDataset
         }
         //this creates or updates the desired object
         let uploadDatasetPromise = new AWS.S3({ apiVersion: '2006-03-01' })
@@ -127,7 +126,7 @@ router.post('/aws/:graphId', (req, res, next) => {
             .promise()
         uploadDatasetPromise
             .then(data => {
-                res.send(`Succesfully uploaded ${graphId} to ${AWS_BUCKET}`)
+                res.send(`Succesfully uploaded ${awsId} to ${AWS_BUCKET}`)
             })
             .catch(next);
     } else {
