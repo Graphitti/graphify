@@ -10,6 +10,8 @@ import {
   Legend
 } from 'recharts'
 
+
+
 export const BarChartGraph = props => {
   const {dataset, graphSettings} = props
   const {currentX, currentY} = graphSettings
