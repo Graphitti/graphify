@@ -50,3 +50,20 @@ nav a {
   display: inline-block;
   margin: 1em;
 }
+
+#profile {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#profile-graphs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#profile-graphs-single {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -11,4 +11,5 @@ export {default as Home} from './Home'
 export {default as SearchBar} from './SearchBar.jsx'
 export {default as GraphDataset} from './GraphDataset'
 export {default as SingleGraphView} from './SingleGraphView'
+export {default as UserProfile} from './UserProfile'
 

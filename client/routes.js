@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, Home, SearchBar, GraphDataset, SingleGraphView} from './components'
+import {Login, Signup, UserHome, Home, SearchBar, GraphDataset, SingleGraphView, UserProfile} from './components'
 import {me} from './store'
 
 /**
@@ -24,6 +24,7 @@ class Routes extends Component {
         <Route path="/search" component={SearchBar} />
         <Route path='/graph-dataset/customize/:graphId' component={SingleGraphView} />
         <Route exact path="/graph-dataset" component={GraphDataset} />
+        <Route path="/profile" component={UserProfile} />
         <Route path="/" component ={Home}/>
         {isLoggedIn && (
           <Switch>

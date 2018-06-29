@@ -16,7 +16,7 @@ module.exports = router
 router.get('/:graphId', (req, res, next) => {
     const { graphId } = req.params
     Graph.findOne({
-        graphId,
+        where: {graphId},
         include: [{ model: YAxis }]
     })
         .then(graph => {

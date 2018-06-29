@@ -5,6 +5,7 @@ const SET_X_AXIS = 'SET_X_AXIS'
 const ADD_Y_AXIS = 'ADD_Y_AXIS'
 const DELETE_Y_AXIS = 'DELETE_Y_AXIS'
 const FETCH_AND_SET_GRAPH = 'FETCH_AND_SET_GRAPH'
+const RESET_GRAPH_SETTINGS = 'RESET_GRAPH_SETTINGS'
 
 //INITIAL STATE
 const graphSettings = {
@@ -21,6 +22,7 @@ const fetchAndSetGraphFromDatabase = graph => ({
   type: FETCH_AND_SET_GRAPH,
   graph
 })
+const resetGraphSettingsState = () => ({type: RESET_GRAPH_SETTINGS})
 
 // THUNK CREATORS
 export const setXAxis = xAxis => dispatch => {
@@ -39,6 +41,10 @@ export const fetchAndSetGraph = graphId => dispatch => {
   axios
     .get(`/api/graphs/${graphId}`)
     .then(res => dispatch(fetchAndSetGraphFromDatabase(res.data)))
+}
+
+export const resetGraphSettings = () => dispatch => {
+  dispatch(resetGraphSettingsState())
 }
 
 // REDUCER
@@ -60,6 +66,8 @@ export default (state = graphSettings, action) => {
       const {xAxis, yAxes, graphType} = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {...state, currentX: xAxis, currentY: YAxisNames, graphType}
+    case RESET_GRAPH_SETTINGS:
+      return {...state, currentX: '', currentY: [], graphType: ''}
     default:
       return state
   }
