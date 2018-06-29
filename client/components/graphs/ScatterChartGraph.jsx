@@ -12,17 +12,24 @@ import {
 
 export const ScatterChartGraph = props => {
   const {dataset, graphSettings} = props
-  const {currentX, currentY} = graphSettings
-  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+  const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
+
   return (
-    <ScatterChart width={600} height={600}>
-      <CartesianGrid />
-      <XAxis dataKey={currentX} type="number" />
-      <YAxis dataKey={currentY[0]} type="number" />
-      <Scatter data={dataset} fill={colors[0]} />
-      <Tooltip cursor={{strokeDasharray: '3 3'}} />
-      <Legend />
-    </ScatterChart>
+    <div>
+      <h4>{title}</h4>
+      <ScatterChart width={600} height={600}>
+        <CartesianGrid />
+        <XAxis dataKey={currentX} type="number" label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
+        {currentY.length && currentY.map((yAxis, idx) =>(
+          <YAxis yAxisId={idx} key={idx} dataKey={yAxis} type="number" label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
+        ))}
+        <Tooltip cursor={{strokeDasharray: '3 3'}} />
+        <Legend align='right'/>
+        {currentY.length && currentY.map((yAxis, idx) =>(
+          <Scatter yAxisId={idx} key={idx} name={yAxis} data={dataset} fill={colors[idx]} />
+        ))}
+      </ScatterChart>
+    </div>
   )
 }
 
