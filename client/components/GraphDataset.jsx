@@ -165,6 +165,11 @@ class GraphDataset extends Component {
                 <div onClick={() => this.handleGraphClick('Area')}>
                   <AreaChartGraph />
                 </div>
+              </div>
+            }
+            {
+              currentY.length > 0 && currentX && !(yAxis.includes(currentX)) &&
+              <div id="graphs">
                 <div onClick={() => this.handleGraphClick('Radar')}>
                   <RadarChartGraph />
                 </div>
