@@ -48,10 +48,14 @@ router.post('/:graphId', (req, res, next) => {
         return YAxis.create({name})
       })
     )
-    let makingDataset = Dataset.create({
-      awsId,
-      name: datasetName,
-      userId
+    let makingDataset = Dataset.findOrCreate({
+      where : {
+        name: datasetName,
+        userId
+      },
+      default: {
+        awsId
+      }
     })
     return Promise.all([makingGraph, makingYAxes, makingDataset])
       .then(([newGraph, newYAxes, newDataset]) => {
@@ -76,7 +80,7 @@ router.put('/:graphId', (req, res, next) => {
       where: {
         graphId
       },
-      include: [{model: YAxis, model: Dataset}]
+      include: [{model: YAxis}]
     })
       //update the found graph
       .then(foundGraph => {
