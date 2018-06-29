@@ -76,7 +76,7 @@ router.put('/:graphId', (req, res, next) => {
       where: {
         graphId
       },
-      include: [{model: YAxis, model: Dataset}]
+      include: [{model: YAxis}, {model: Dataset}]
     })
       //update the found graph
       .then(foundGraph => {
