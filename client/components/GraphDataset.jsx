@@ -164,9 +164,6 @@ class GraphDataset extends Component {
           </div>
         )}
 
-        <div>
-          <SingleGraphView />
-        </div>
       </div>
     )
   }
