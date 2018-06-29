@@ -14,25 +14,28 @@ import {
 
 export const BarChartGraph = props => {
   const {dataset, graphSettings} = props
-  const {currentX, currentY} = graphSettings
-  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+  const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
+
   return (
-    <BarChart width={600} height={600} data={dataset}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey={currentX} />
-      <YAxis allowDuplicatedCategory="false" />
-      <Tooltip />
-      <Legend />
-      {currentY.map((yAxis, idx) => (
-        <Bar
-          key={idx}
-          type="monotone"
-          dataKey={yAxis}
-          fillOpacity={0.6}
-          fill={colors[idx]}
-        />
-      ))}
-    </BarChart>
+    <div>
+      <h4>{title}</h4>
+      <BarChart width={600} height={600} data={dataset}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
+        <YAxis allowDuplicatedCategory="false" label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
+        <Tooltip />
+        <Legend align='right'/>
+        {currentY.map((yAxis, idx) => (
+          <Bar
+            key={idx}
+            type="monotone"
+            dataKey={yAxis}
+            fillOpacity={0.6}
+            fill={colors[idx]}
+          />
+        ))}
+      </BarChart>
+    </div>
   )
 }
 

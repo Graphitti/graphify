@@ -22,7 +22,7 @@ export const AreaChartGraph = props => {
         <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
         <Tooltip />
-        <Legend />
+        <Legend align='right'/>
         {currentY.map((yAxis, idx) => (
           <Area
             key={idx}
