@@ -21,8 +21,13 @@ export const BarChartGraph = props => {
       <h4>{title}</h4>
       <BarChart width={600} height={600} data={dataset}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
-        <YAxis allowDuplicatedCategory="false" label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
+        {
+          currentX.toLowerCase() !== 'number' ?
+            <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} allowDuplicatedCategory={false} type="category" />
+          :
+            <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
+        }
+        <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
         <Tooltip />
         <Legend align='right'/>
         {currentY.map((yAxis, idx) => (
