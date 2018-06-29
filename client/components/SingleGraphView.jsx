@@ -62,8 +62,8 @@ class SingleGraphView extends Component {
   }
 
   render() {
-    let {currentY, graphType} = this.props.graphSettings
-    const defaultColor = this.props.graphSettings.color
+    let {currentY, graphType, colors} = this.props.graphSettings
+
     return (
       <div>
         <div>
@@ -88,33 +88,30 @@ class SingleGraphView extends Component {
         </div>
 
         <div>
-          <form>
-            <label>{`Change title`}</label>
-            <input type="text" name="title" onChange={this.handleChange} />
-            <label>{`Change the name of X axis`}</label>
-            <input type="text" name="XAxis" onChange={this.handleChange} />
-            <label>{`Change the name of Y axis`}</label>
-            <input type="text" name="YAxis" onChange={this.handleChange} />
-          </form>
-          <div>
-            {currentY.map((yAxis, idx) => (
-              <div key={idx}>
-                <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                <button onClick={() => this.handleClick(idx)}>
-                  Pick Color
-                </button>
-                <HuePicker
-                  // color={ defaultColor[idx] }
-                  onChangeComplete={this.handleChangeColor}
-                />
-              </div>
-            ))}
-          </div>
+            <form>
+              <label>{`Change title`}</label>
+                <input type='text' name='title' onChange={this.handleChange}/>
+              <label>{`Change the name of X axis`}</label>
+                <input type='text' name='XAxis' onChange={this.handleChange}/>
+              <label>{`Change the name of Y axis`}</label>
+                <input type='text' name='YAxis' onChange={this.handleChange}/>
+            </form>
+            <div>
+              {currentY.map((yAxis, idx) => (
+                <div key={idx}>
+                  <label>{`Change the color of the legend of '${yAxis}'`}</label>
+                  <button onClick={ () => this.handleClick(idx) }>Pick Color</button>
+                  <HuePicker
+                    color={ colors[idx] }
+                    onChangeComplete={this.handleChangeColor }
+                  />
+                </div>
+              ))}
+            </div>
         </div>
       </div>
-    )
+    )}
   }
-}
 
 const mapState = state => {
   return {
