@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -9,7 +9,7 @@ import {
   PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
-import {setXAxis, addYAxis, deleteYAxis} from '../store'
+import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
 import crypto from 'crypto'
 
@@ -33,7 +33,7 @@ class GraphDataset extends Component {
   }
 
   handleDeleteY(idx) {
-    const {deleteY} = this.props
+    const { deleteY } = this.props
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
@@ -42,19 +42,14 @@ class GraphDataset extends Component {
 
   handleGraphClick(graphType) {
     //Upload dataset to S3 AWS
-    const {
-      dataset,
-      graphSettings,
-      handleXCategory,
-      handleYCategory
-    } = this.props
+    const {dataset, graphSettings} = this.props
     const {currentX, currentY} = graphSettings
     const hashId = crypto
       .randomBytes(8)
       .toString('base64')
       .replace('/', '7')
     console.log('hashid', hashId)
-    this.setState({hashId})
+    this.setState({ hashId })
     let AWSPost = axios.post(`api/graphs/aws/${hashId}`, {
       dataset
     })
@@ -66,23 +61,19 @@ class GraphDataset extends Component {
     })
     Promise.all([AWSPost, databasePost])
       .then(() => {
-        console.log('WE GOT HERE')
         this.props.history.push(`/graph-dataset/customize/${hashId}`)
       })
-      // .then(() => {
-      // })
       .catch(console.error)
   }
 
   render() {
-    console.log(this.props)
     const {
       dataset,
       graphSettings,
       handleXCategory,
       handleYCategory
     } = this.props
-    const {currentX, currentY} = graphSettings
+    const { currentX, currentY } = graphSettings
     const columnObj = dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
