@@ -17,8 +17,7 @@ class GraphDataset extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      yCategQuantity: [''],
-      hashId: ''
+      yCategQuantity: ['']
     }
 
     this.addYCategory = this.addYCategory.bind(this)
@@ -41,27 +40,37 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick(graphType) {
-    //Upload dataset to S3 AWS
-    const { dataset, graphSettings } = this.props
-    const { currentX, currentY } = graphSettings
-    const hashId = crypto
+    const {dataset, graphSettings} = this.props
+    const {currentX, currentY} = graphSettings
+    const {datasetName} = dataset
+    const awsId = crypto
       .randomBytes(8)
       .toString('base64')
-      .replace('/', '7')
-    console.log('hashid', hashId)
-    this.setState({ hashId })
-    let AWSPost = axios.post(`api/graphs/aws/${hashId}`, {
+      .replace(/\//g, '7')
+    console.log('awsId', awsId)
+
+    const graphId = crypto
+      .randomBytes(8)
+      .toString('base64')
+      .replace(/\//g, '7')
+    console.log('graphId', graphId)
+  
+     //Upload dataset to S3 AWS
+    let AWSPost = axios.post(`api/graphs/aws/${awsId}`, {
       dataset
     })
-    let databasePost = axios.post(`api/graphs/${hashId}`, {
+    let databasePost = axios.post(`api/graphs/${graphId}`, {
       xAxis: currentX,
       yAxis: currentY,
-      title: dataset.name,
-      graphType
+      title: datasetName,
+      datasetName,
+      graphType,
+      awsId
     })
     Promise.all([AWSPost, databasePost])
       .then(() => {
-        this.props.history.push(`/graph-dataset/customize/${hashId}`)
+        console.log("S3, GRAPH CREATED")
+        this.props.history.push(`/graph-dataset/customize/${graphId}`)
       })
       .catch(console.error)
   }
