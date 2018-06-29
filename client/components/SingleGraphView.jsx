@@ -54,7 +54,7 @@ class SingleGraphView extends Component {
 
     render() {
       let { currentY, graphType } = this.props.graphSettings
-      const defaultColor = this.props.graphSettings.color
+      let colors = this.props.graphSettings.colors
       return (
         <div>
           <div>
@@ -93,7 +93,7 @@ class SingleGraphView extends Component {
                     <label>{`Change the color of the legend of '${yAxis}'`}</label>
                     <button onClick={ () => this.handleClick(idx) }>Pick Color</button>
                     <HuePicker
-                      // color={ defaultColor[idx] }
+                      color={ colors[idx] }
                       onChangeComplete={this.handleChangeColor }
                     />
                   </div>
