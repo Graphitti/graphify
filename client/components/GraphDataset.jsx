@@ -42,8 +42,8 @@ class GraphDataset extends Component {
 
   handleGraphClick(graphType) {
     //Upload dataset to S3 AWS
-    const {dataset, graphSettings} = this.props
-    const {currentX, currentY} = graphSettings
+    const { dataset, graphSettings } = this.props
+    const { currentX, currentY } = graphSettings
     const hashId = crypto
       .randomBytes(8)
       .toString('base64')
@@ -91,7 +91,7 @@ class GraphDataset extends Component {
     })
     return (
       <div className="graphContainer">
-        <h1>Table</h1>
+        <h1>{dataset.name}</h1>
         {dataset.length &&
           xAxis.length && (
             <div>
@@ -136,26 +136,39 @@ class GraphDataset extends Component {
                 })}
               </div>
             </div>
-            <div id="graphs">
-              <div onClick={() => this.handleGraphClick('Line')}>
-                <LineChartGraph />
+            {
+              currentY.length > 0 && currentX && yAxis.includes(currentX) &&
+              <div id="graphs">
+                <div onClick={() => this.handleGraphClick('Scatter')}>
+                  <ScatterChartGraph />
+                </div>
               </div>
-              <div onClick={() => this.handleGraphClick('Bar')}>
-                <BarChartGraph />
+            }
+            {
+              currentY.length > 0 && currentX &&
+              <div id="graphs">
+                <div onClick={() => this.handleGraphClick('Line')}>
+                  <LineChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Bar')}>
+                  <BarChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Area')}>
+                  <AreaChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Radar')}>
+                  <RadarChartGraph />
+                </div>
               </div>
-              <div onClick={() => this.handleGraphClick('Area')}>
-                <AreaChartGraph />
+            }
+            {
+              currentY.length === 0 && currentX &&
+              <div id="graphs">
+                <div onClick={() => this.handleGraphClick('Pie')}>
+                  <PieChartGraph />
+                </div>
               </div>
-              <div onClick={() => this.handleGraphClick('Radar')}>
-                <RadarChartGraph />
-              </div>
-              <div onClick={() => this.handleGraphClick('Scatter')}>
-                <ScatterChartGraph />
-              </div>
-              <div onClick={() => this.handleGraphClick('Pie')}>
-                <PieChartGraph />
-              </div>
-            </div>
+            }
           </div>
         )}
 
