@@ -28,7 +28,7 @@ class SingleGraphView extends Component {
         {(function() {
           switch (graphType) {
             case 'Line':
-              return <LineChartGraph animationDuration={1500} />
+              return <LineChartGraph />
             case 'Bar':
               return <BarChartGraph />
             case 'Area':
