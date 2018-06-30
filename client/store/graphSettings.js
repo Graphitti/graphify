@@ -17,9 +17,9 @@ const UPDATE_COLOR = 'UPDATE_COLOR'
 const graphSettings = {
   currentX: '',
   currentY: [],
-  title: 'title',
-  xAxisName: 'X axis',
-  yAxisName: 'Y axis',
+  title: '',
+  xAxisName: '',
+  yAxisName: '',
   colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042'],
   graphType: ''
 }
@@ -94,7 +94,6 @@ export default (state = graphSettings, action) => {
       })
       return {...state, colors: newColors}
     case FETCH_AND_SET_GRAPH:
-      console.log('GRAPHSETTINGS', action.graph)
       const {xAxis, yAxes, graphType} = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {...state, currentX: xAxis, currentY: YAxisNames, graphType}

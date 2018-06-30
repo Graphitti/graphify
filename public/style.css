@@ -42,6 +42,10 @@ form div {
   flex-wrap: wrap;
 }
 
+img {
+  max-width: 100%;
+}
+
 label {
   display: block;
 }
@@ -52,12 +56,27 @@ nav a {
 }
 
 #profile {
-  align-items: center;
+ margin: 50px;
+}
+
+#profile-content {
+  display: flex;
+}
+
+#profile-datasets {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 #profile-graphs {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 50px;
+  align-items: center;
+}
+
+#profile-graphs-wrap {
   display: flex;
   flex-wrap: wrap;
 }

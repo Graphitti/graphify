@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { User, Graph } = require('../db/models')
+const {User, Graph, Dataset} = require('../db/models')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
@@ -7,9 +7,8 @@ router.post('/login', async (req, res, next) => {
     where: {
       email: req.body.email
     },
-    include: [{ model: Graph }]
-  }
-  )
+    include: [{model: Graph}, {model: Dataset}]
+  })
   if (!user) {
     console.log('No such user found:', req.body.email)
     res.status(401).send('Wrong username and/or password')
