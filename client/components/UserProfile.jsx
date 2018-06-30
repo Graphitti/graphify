@@ -4,9 +4,8 @@ import {Link} from 'react-router-dom'
 import store, {fetchAndSetDataFromS3} from '../store'
 
 const UserProfile = props => {
-  async function handleDatasetClick(awsId) {
-    await store.dispatch(fetchAndSetDataFromS3(awsId))
-    props.history.push('/graph-dataset')
+  const handleDatasetClick = (awsId) => {
+    store.dispatch(fetchAndSetDataFromS3(awsId))
   }
   const {email, graphs, datasets} = props.user
   const name = email
