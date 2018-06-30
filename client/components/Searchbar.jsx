@@ -26,19 +26,22 @@ export default class SearchBar extends Component {
         const {search} = this.props.location;
         const queryIndex = search.indexOf('?query=');
         const filterIndex = search.indexOf('&filter=');
-        let filter, searchbar;
-        let end = filterIndex === -1 ? search.length : filterIndex
-        if (filterIndex !== -1) {
-            filter = search.slice(filterIndex + 8).replace(/%20/g, ' ');
-        }
+        let filter = 'no filter'
+        let searchbar = '';
+        let end = filterIndex === -1 ? search.length : filterIndex;
         if (queryIndex !== -1) {
             searchbar = search.slice(queryIndex + 7, end).replace(/%20/g, ' ');
-            this.setState({search: searchbar});
+        }
+        if (filterIndex !== -1) {
+            filter = search.slice(filterIndex + 8).replace(/%20/g, ' ');
         }
         getSocrataCategories()
         .then(categories => {
             let setFilter = categories.includes(filter) ? filter : 'no filter';
-            this.setState({searchCategories: categories, filter: setFilter})
+            this.setState({search: searchbar, searchCategories: categories, filter: setFilter})
+            if (queryIndex !== -1 || filterIndex !== -1) {
+                document.getElementById('search-button').click();
+            }
         })
         .catch(console.error)
     }
@@ -55,7 +58,7 @@ export default class SearchBar extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const {search} = {...this.state};
+        const {search} = this.state;
         const filter = this.state.filter === 'no filter' ? '' : this.state.filter;
         searchSocrataForDatasets(search, filter)
         .then(results => {
@@ -84,7 +87,7 @@ export default class SearchBar extends Component {
                             }
                         </select>
                     }
-                    <button type="submit">Search</button>
+                    <button type="submit" id="search-button">Search</button>
                 </form>
                 {this.state.showResults &&
                     <ShowSearchResults results={results} search={submittedSearch} />
