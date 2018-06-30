@@ -79,3 +79,39 @@ nav a {
   bottom: '0px';
   left: '0px';
 }
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.search-results-dataset {
+  width: 90%;
+  height: 30%;
+  margin: 10px;
+}
+
+.dataset-preview {
+  display: flex;
+  flex-direction: column;
+}
+
+.dataset-preview-link {
+  color: green;
+  margin: 2px;
+}
+
+.dataset-preview-permalink {
+  margin: 2px;
+  color: lightseagreen;
+}
+
+.dataset-preview-detail {
+  margin: 2px;
+}
+
+.dataset-preview-link:hover {
+  color: orangered;
+  transition: 1s;
+}
