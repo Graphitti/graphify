@@ -49,9 +49,10 @@ export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => 
 
 export const fetchAndSetDataFromS3 = awsId => dispatch => {
   axios.get(`/api/graphs/aws/${awsId}`).then(res => {
-    const {dataset} = res.data.dataset
+    const {dataset} = res.data
     dispatch(setData(dataset))
   })
+  .catch(console.error)
 }
 
 /**

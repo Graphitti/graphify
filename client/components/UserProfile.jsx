@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom'
 import store, {fetchAndSetDataFromS3} from '../store'
 
 const UserProfile = props => {
-  console.log('USER', props.user)
-  console.log(props)
   async function handleDatasetClick(awsId) {
     await store.dispatch(fetchAndSetDataFromS3(awsId))
     props.history.push('/graph-dataset')
