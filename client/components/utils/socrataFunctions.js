@@ -10,7 +10,6 @@ export const getSocrataCategories = () => {
 }
 
 export const searchSocrataForDatasets = (search, category) => {
-    console.log(search, category)
     return axios.get(`https://api.us.socrata.com/api/catalog/v1?only=datasets&q=${search}&categories=${category}`)
     .then(res => res.data)
     .catch(console.error);
