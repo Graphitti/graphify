@@ -47,21 +47,25 @@ class GraphDataset extends Component {
     //this will cause use to reuse that dataset for the graph
 
     //DELETE THESE CONSOLE LOGS IN FUTURE, useful for testing now
-    const awsId = crypto
+    //awsId will equal a new id or the one that the dataset already has
+    const awsId = !!dataset.awsId ? dataset.awsId :  
+    crypto
       .randomBytes(8)
       .toString('base64')
-      .replace(/\//g, '7')
+      .replace(/\//g, '7');
     console.log('awsId', awsId)
 
     const graphId = crypto
       .randomBytes(8)
       .toString('base64')
-      .replace(/\//g, '7')
+      .replace(/\//g, '7');
     console.log('graphId', graphId)
   
-     //Upload dataset to S3 AWS
-     //if the dataset already has an awsId we need to not do this
-    let AWSPost = axios.post(`api/graphs/aws/${awsId}`, {dataset})
+    //upload to AWS only if the dataset doesn't already have an awsId
+    let AWSPost = !dataset.awsId ? 
+    axios.post(`api/graphs/aws/${awsId}`, {dataset}) :
+    AWSPost = Promise.resolve();
+
     let databasePost = axios.post(`api/graphs/${graphId}`, {
       xAxis: currentX,
       yAxis: currentY,
