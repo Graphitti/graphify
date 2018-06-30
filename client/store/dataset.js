@@ -52,7 +52,7 @@ export const fetchAndSetDataFromS3 = awsId => dispatch => {
   axios.get(`/api/graphs/aws/${awsId}`).then(res => {
     const {dataset} = res.data.dataset
     dispatch(setData(dataset))
-  })
+  }).then(() => history.push('/graph-dataset'))
 }
 
 /**
