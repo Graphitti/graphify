@@ -57,7 +57,7 @@ export const fetchAndSetGraph = graphId => dispatch => {
     .get(`/api/graphs/${graphId}`)
     .then(res => {
       dispatch(fetchAndSetGraphFromDatabase(res.data.graph));
-      dispatch(setData(res.data.dataset));
+      dispatch(setData(res.data.dataset.dataset));
     })
     .catch(err => console.log(err))
 }
@@ -94,7 +94,6 @@ export default (state = graphSettings, action) => {
       })
       return {...state, colors: newColors}
     case FETCH_AND_SET_GRAPH:
-      console.log('GRAPHSETTINGS', action.graph)
       const {xAxis, yAxes, graphType} = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {...state, currentX: xAxis, currentY: YAxisNames, graphType}

@@ -45,23 +45,27 @@ class GraphDataset extends Component {
     const datasetName = dataset.name
     //if the dataset already has an aws then we want to make that the awsId
     //this will cause use to reuse that dataset for the graph
-    const awsId = crypto
+
+    //DELETE THESE CONSOLE LOGS IN FUTURE, useful for testing now
+    //awsId will equal a new id or the one that the dataset already has
+    const awsId = !!dataset.awsId ? dataset.awsId :  
+    crypto
       .randomBytes(8)
       .toString('base64')
-      .replace(/\//g, '7')
+      .replace(/\//g, '7');
     console.log('awsId', awsId)
 
     const graphId = crypto
       .randomBytes(8)
       .toString('base64')
-      .replace(/\//g, '7')
+      .replace(/\//g, '7');
     console.log('graphId', graphId)
   
-     //Upload dataset to S3 AWS
-     //if the dataset already has an awsId we need to not do this
-    let AWSPost = axios.post(`api/graphs/aws/${awsId}`, {
-      dataset
-    })
+    //upload to AWS only if the dataset doesn't already have an awsId
+    let AWSPost = !dataset.awsId ? 
+    axios.post(`api/graphs/aws/${awsId}`, {dataset}) :
+    AWSPost = Promise.resolve();
+
     let databasePost = axios.post(`api/graphs/${graphId}`, {
       xAxis: currentX,
       yAxis: currentY,
@@ -72,7 +76,6 @@ class GraphDataset extends Component {
     })
     Promise.all([AWSPost, databasePost])
       .then(() => {
-        console.log("S3, GRAPH CREATED")
         this.props.history.push(`/graph-dataset/customize/${graphId}`)
       })
       .catch(console.error)
@@ -86,7 +89,7 @@ class GraphDataset extends Component {
       handleYCategory
     } = this.props
     const { currentX, currentY } = graphSettings
-    const columnObj = dataset.length > 0 ? dataset.columnObj : {}
+    const columnObj = dataset.dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
       return (
@@ -104,11 +107,11 @@ class GraphDataset extends Component {
     return (
       <div className="graphContainer">
         <h1>{dataset.name}</h1>
-        {dataset.length &&
+        {dataset.dataset.length &&
           xAxis.length && (
             <div>
               <ReactTable
-                data={dataset}
+                data={dataset.dataset}
                 columns={columns}
                 defaultPageSize={5}
               />
@@ -116,7 +119,7 @@ class GraphDataset extends Component {
           )}
 
         <h1>Select the Data to Graph</h1>
-        {dataset.length && (
+        {dataset.dataset.length && (
           <div>
             <div>
               <div>

@@ -23,7 +23,7 @@ export const RadarChartGraph = props => {
         outerRadius={250}
         width={600}
         height={600}
-        data={dataset}
+        data={dataset.dataset}
       >
         <Tooltip />
         <Legend align='right'/>

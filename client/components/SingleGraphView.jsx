@@ -18,7 +18,7 @@ import {
   fetchAndSetDataFromS3
 } from '../store'
 import {HuePicker} from 'react-color'
-// import * from '../public/style.css'
+
 
 class SingleGraphView extends Component {
   constructor(props) {
@@ -35,8 +35,6 @@ class SingleGraphView extends Component {
     const {graphId} = this.props.match.params
     const {getGraphId} = this.props
     getGraphId(graphId)
-    // const {awsId} = this.props.graphSettings
-    // getDataset(awsId)
   }
 
   handleChange(event) {
@@ -53,7 +51,6 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    console.log('index', idx)
     this.setState({legend: idx})
   }
 
