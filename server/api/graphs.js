@@ -116,8 +116,10 @@ router.put('/:graphId', (req, res, next) => {
 })
 
 router.get('/aws/:awsId', (req, res, next) => {
+  console.log('hitting our route')
   //have some kind of security so that we don't do this if the user doesn't have access to the graph
   const {awsId} = req.params
+  console.log(awsId)
   let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
   //this makes the promise to do the actual request, get object is a get request
   let findDatasetPromise = new AWS.S3({apiVersion: '2006-03-01'})
@@ -126,6 +128,7 @@ router.get('/aws/:awsId', (req, res, next) => {
   findDatasetPromise
     .then(result => {
       let parsedDataset = JSON.parse(result.Body)
+      console.log(parsedDataset)
       res.json(parsedDataset)
     })
     .catch(next)
