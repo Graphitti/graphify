@@ -4,7 +4,6 @@ import store from '../store'
 
 const DatasetPreview = (props) => {
     const { result } = props;
-    console.log('RESULT ---->>>> ', result)
     const description = result.resource.description.split(' ').slice(0, 25);
     return (
         <div className="dataset-preview">
