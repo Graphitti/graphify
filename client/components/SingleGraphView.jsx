@@ -109,6 +109,7 @@ class SingleGraphView extends Component {
                 </div>
               ))}
             </div>
+            <button type='submit'>{`Save`}</button>
         </div>
       </div>
     )}
