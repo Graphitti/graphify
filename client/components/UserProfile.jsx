@@ -5,7 +5,7 @@ import store, {fetchAndSetDataFromS3} from '../store'
 
 const UserProfile = props => {
   console.log('USER', props.user)
-  const handleDatasetClick = (awsId) => {
+  const handleDatasetClick = awsId => {
     store.dispatch(fetchAndSetDataFromS3(awsId))
   }
   const {email, graphs, datasets} = props.user
@@ -21,7 +21,11 @@ const UserProfile = props => {
           {datasets &&
             datasets.map(dataset => (
               <div key={dataset.id}>
-                <h3 onClick={() => handleDatasetClick(dataset.awsId)}>{dataset.name}</h3>
+                <a onClick={() => handleDatasetClick(dataset.awsId)}>
+                  <h3 >
+                    {dataset.name}
+                  </h3>
+                </a>
               </div>
             ))}
         </div>

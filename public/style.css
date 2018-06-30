@@ -55,6 +55,15 @@ nav a {
   margin: 1em;
 }
 
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: linear-gradient(45deg, #f3faff, #2c88b1);
+  border-radius: 0 0 1em 0;
+  transition: transform 0.5s ease;
+}
+
 #profile {
  margin: 50px;
 }
