@@ -15,6 +15,7 @@ export const LineChartGraph = props => {
   const {dataset, graphSettings} = props
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
 
+  console.log('---->>>>>>',dataset.dataset)
   return (
     <div>
       <h4>{title}</h4>
