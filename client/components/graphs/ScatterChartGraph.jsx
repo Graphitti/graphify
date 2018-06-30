@@ -26,7 +26,7 @@ export const ScatterChartGraph = props => {
         <Tooltip cursor={{strokeDasharray: '3 3'}} />
         <Legend align='right'/>
         {currentY.length && currentY.map((yAxis, idx) =>(
-          <Scatter yAxisId={idx} key={idx} name={yAxis} data={dataset} fill={colors[idx]} />
+          <Scatter yAxisId={idx} key={idx} name={yAxis} data={dataset.dataset} fill={colors[idx]} />
         ))}
       </ScatterChart>
     </div>

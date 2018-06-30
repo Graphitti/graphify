@@ -17,7 +17,7 @@ export const AreaChartGraph = props => {
   return (
     <div>
       <h4>{title}</h4>
-      <AreaChart width={600} height={600} data={dataset}>
+      <AreaChart width={600} height={600} data={dataset.dataset}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
