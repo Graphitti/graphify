@@ -37,12 +37,15 @@ export function uploadedDataFormatter(dataset) {
 }
 
 export function filteringSizeDataset(dataset) {
-    //mutate those values into numbers
+    //setting maximun num of rows to 30
     let maxRows = 30;
     const newDataset = [];
+
+    //taking info for the rows in a new arr
     for (let j = 0; j < maxRows; j++){
         newDataset.push(dataset[j]);
     }
-    //add the columnObj onto the dataset
+
+    console.log('data filtradaaaaaaaaaa', newDataset);
     return newDataset;
 }

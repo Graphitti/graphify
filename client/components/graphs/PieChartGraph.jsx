@@ -18,7 +18,7 @@ export const PieChartGraph = props => {
     let objArr = Object.keys(quantityObj).map(name => {
       return {
         name: name,
-        value: quantityObj[name]
+        value: Math.round(quantityObj[name]*100 / arr.length)
       }
     })
     return objArr
@@ -39,6 +39,7 @@ export const PieChartGraph = props => {
           cy={200}
           outerRadius={60}
           fill={colors[0]}
+          label
         />
         {currentY.map((yAxis, idx) => (
           <Pie
