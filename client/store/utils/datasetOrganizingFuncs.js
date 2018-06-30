@@ -12,7 +12,7 @@ export function datasetColumnFormatter(dataset, columnObj) {
         }
     }
     //add the columnObj onto the dataset
-    return {dataset, columnObj}
+    return {dataset: filteringSizeDataset(dataset), columnObj}
 }
 
 //change uploaded data from array of arrays into an array of objects
@@ -36,4 +36,13 @@ export function uploadedDataFormatter(dataset) {
     return datasetColumnFormatter(newDataset, columnObj);
 }
 
-
+export function filteringSizeDataset(dataset) {
+    //mutate those values into numbers
+    let maxRows = 30;
+    const newDataset = [];
+    for (let j = 0; j < maxRows; j++){
+        newDataset.push(dataset[j]);
+    }
+    //add the columnObj onto the dataset
+    return newDataset;
+}

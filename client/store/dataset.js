@@ -40,6 +40,7 @@ export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => 
     .csv(`https://${domain}/resource/${id}.csv`)
     .then(res => {
       let processedData = datasetColumnFormatter(res, columnObj)
+      console.log('ProCESSED DATA --->>> ', processedData)
       processedData.name = datasetName
       dispatch(setData(processedData))
       history.push('/graph-dataset')
