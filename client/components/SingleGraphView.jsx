@@ -18,6 +18,7 @@ import {
   fetchAndSetDataFromS3
 } from '../store'
 import {HuePicker} from 'react-color'
+// import * from '../public/style.css'
 
 class SingleGraphView extends Component {
   constructor(props) {
@@ -101,10 +102,13 @@ class SingleGraphView extends Component {
                 <div key={idx}>
                   <label>{`Change the color of the legend of '${yAxis}'`}</label>
                   <button onClick={ () => this.handleClick(idx) }>Pick Color</button>
-                  <HuePicker
+                  { this.state.legend !== -1 ? <div className="popover" >
+                    <div className="cover" onClick={ this.handleClose }/>
+                    <HuePicker
                     color={ colors[idx] }
                     onChangeComplete={this.handleChangeColor }
-                  />
+                    />
+                  </div> : null }
                 </div>
               ))}
             </div>
