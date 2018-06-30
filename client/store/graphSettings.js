@@ -57,7 +57,7 @@ export const fetchAndSetGraph = graphId => dispatch => {
     .get(`/api/graphs/${graphId}`)
     .then(res => {
       dispatch(fetchAndSetGraphFromDatabase(res.data.graph));
-      dispatch(setData(res.data.dataset));
+      dispatch(setData(res.data.dataset.dataset));
     })
     .catch(err => console.log(err))
 }

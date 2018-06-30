@@ -18,7 +18,7 @@ export const LineChartGraph = props => {
   return (
     <div>
       <h4>{title}</h4>
-      <LineChart width={600} height={600} data={dataset}>
+      <LineChart width={600} height={600} data={dataset.dataset}>
         {currentY.length && currentY.map((yAxis, idx) => (
           <Line key={idx} type="monotone" dataKey={yAxis} stroke={colors[idx]} />
         ))}

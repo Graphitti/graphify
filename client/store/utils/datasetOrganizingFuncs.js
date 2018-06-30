@@ -12,8 +12,7 @@ export function datasetColumnFormatter(dataset, columnObj) {
         }
     }
     //add the columnObj onto the dataset
-    dataset.columnObj = columnObj;
-    return dataset;
+    return {dataset, columnObj}
 }
 
 //change uploaded data from array of arrays into an array of objects

@@ -83,11 +83,7 @@ router.put('/:graphId', (req, res, next) => {
       //update the found graph
       .then(foundGraph => {
         let effectedGraph = foundGraph.update({
-          xAxis,
-          xAxisLabel,
-          yAxisLabel,
-          title,
-          graphType
+          xAxis, xAxisLabel, yAxisLabel, title, graphType
         })
         //destroy the current yAxes
         foundGraph.yAxes.map(yAxis => {
@@ -137,8 +133,8 @@ router.get('/aws/:awsId', (req, res, next) => {
 router.post('/aws/:awsId', (req, res, next) => {
   if (req.user) {
     const {awsId} = req.params
-    const {dataset} = req.body
-    const stringifiedDataset = JSON.stringify(dataset)
+    const {dataset, columnObj} = req.body
+    const stringifiedDataset = JSON.stringify({dataset, columnObj})
     let datasetParams = {
       Bucket: AWS_BUCKET,
       Key: awsId,

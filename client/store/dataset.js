@@ -14,7 +14,11 @@ const SET_DATA = 'SET_DATA'
 /**
  * INITIAL STATE
  */
-const defaultData = []
+const defaultData = {
+  dataset: [],
+  columnObj: {},
+  name: '' 
+}
 
 /**
  * ACTION CREATORS
@@ -31,12 +35,7 @@ export const uploadData = (data, fileName) => dispatch => {
   history.push('/graph-dataset')
 }
 
-export const getAsyncData = (
-  domain,
-  id,
-  columnObj,
-  datasetName
-) => dispatch => {
+export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => {
   return d3
     .csv(`https://${domain}/resource/${id}.csv`)
     .then(res => {

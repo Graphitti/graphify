@@ -19,7 +19,7 @@ export const BarChartGraph = props => {
   return (
     <div>
       <h4>{title}</h4>
-      <BarChart width={600} height={600} data={dataset}>
+      <BarChart width={600} height={600} data={dataset.dataset}>
         <CartesianGrid strokeDasharray="3 3" />
         {
           currentX.toLowerCase() !== 'number' ?
