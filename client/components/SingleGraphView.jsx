@@ -89,6 +89,7 @@ class SingleGraphView extends PureComponent {
     })
     .then(() => {
       this.props.history.push(`/graph-dataset/customize/${graphId}`);
+      location.reload();
     })
     .catch(console.error)
   }
