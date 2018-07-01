@@ -31,6 +31,7 @@ router.get('/:graphId', (req, res, next) => {
 })
 
 router.post('/:graphId', (req, res, next) => {
+  console.log('hitting the right route')
   if (req.user) {
     const {graphId} = req.params
     const {xAxis, yAxis, title, graphType, datasetName, awsId} = req.body
