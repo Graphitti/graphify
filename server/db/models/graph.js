@@ -38,6 +38,9 @@ const Graph = db.define('graph', {
   thumbnail: {
     type: Sequelize.STRING,
     defaultValue: '/graph.gif'
+  },
+  colors: {
+    type: Sequelize.ARRAY(Sequelize.STRING)
   }
 })
 

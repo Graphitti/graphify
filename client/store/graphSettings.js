@@ -53,7 +53,6 @@ export const fetchAndSetGraph = graphId => dispatch => {
 }
 
 export const saveGraphSettingToDB = (graphId, settings) => dispatch => {
-  console.log('save setting', graphId, settings)
   axios
     .put(`/api/graphs/${graphId}`, {
       xAxis: settings.currentX,
@@ -61,7 +60,8 @@ export const saveGraphSettingToDB = (graphId, settings) => dispatch => {
       xAxisLabel: settings.xAxisName,
       yAxisLabel: settings.yAxisName,
       title: settings.title,
-      graphType: settings.graphType
+      graphType: settings.graphType,
+      colors: settings.colors
     })
     .then(res => console.log(res))
     .catch(err => console.log(err))
