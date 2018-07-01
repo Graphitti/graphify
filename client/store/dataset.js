@@ -17,7 +17,7 @@ const SET_DATA = 'SET_DATA'
 const defaultData = {
   dataset: [],
   columnObj: {},
-  name: '' 
+  name: ''
 }
 
 /**
