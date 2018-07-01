@@ -11,6 +11,12 @@ export function datasetColumnFormatter(dataset, columnObj) {
             dataset[j][columnKeys[i]] = Number(dataset[j][columnKeys[i]]);
         }
     }
+
+    let newDataset = [...dataset];
+    if(newDataset.length > 30) {
+        newDataset.splice(30, newDataset.length-30)
+    }
+
     //add the columnObj onto the dataset
     return {dataset: filteringSizeDataset(dataset), columnObj}
 }
@@ -39,13 +45,9 @@ export function uploadedDataFormatter(dataset) {
 export function filteringSizeDataset(dataset) {
     //setting maximun num of rows to 30
     let maxRows = 30;
-    const newDataset = [];
-
-    //taking info for the rows in a new arr
-    for (let j = 0; j < maxRows; j++){
-        newDataset.push(dataset[j]);
+    let newDataset = [...dataset];
+    if(newDataset.length > maxRows) {
+        newDataset.splice(maxRows, newDataset.length-maxRows)
     }
-
-    console.log('data filtradaaaaaaaaaa', newDataset);
     return newDataset;
 }
