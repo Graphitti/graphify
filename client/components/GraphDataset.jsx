@@ -40,19 +40,19 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick(graphType) {
-    const {dataset, graphSettings} = this.props
-    const {currentX, currentY} = graphSettings
+    const { dataset, graphSettings } = this.props
+    const { currentX, currentY } = graphSettings
     const datasetName = dataset.name
     //if the dataset already has an aws then we want to make that the awsId
     //this will cause use to reuse that dataset for the graph
 
     //DELETE THESE CONSOLE LOGS IN FUTURE, useful for testing now
     //awsId will equal a new id or the one that the dataset already has
-    const awsId = !!dataset.awsId ? dataset.awsId :  
-    crypto
-      .randomBytes(8)
-      .toString('base64')
-      .replace(/\//g, '7');
+    const awsId = !!dataset.awsId ? dataset.awsId :
+      crypto
+        .randomBytes(8)
+        .toString('base64')
+        .replace(/\//g, '7');
     console.log('awsId', awsId)
 
     const graphId = crypto
@@ -60,11 +60,11 @@ class GraphDataset extends Component {
       .toString('base64')
       .replace(/\//g, '7');
     console.log('graphId', graphId)
-  
+
     //upload to AWS only if the dataset doesn't already have an awsId
-    let AWSPost = !dataset.awsId ? 
-    axios.post(`api/graphs/aws/${awsId}`, {dataset}) :
-    AWSPost = Promise.resolve();
+    let AWSPost = !dataset.awsId ?
+      axios.post(`api/graphs/aws/${awsId}`, { dataset }) :
+      AWSPost = Promise.resolve();
 
     let databasePost = axios.post(`api/graphs/${graphId}`, {
       xAxis: currentX,
@@ -121,8 +121,8 @@ class GraphDataset extends Component {
         <h1>Select the Data to Graph</h1>
         {dataset.dataset.length && (
           <div>
-            <div>
-              <div>
+            <div className="graphdataset-options">
+              <div className="graphdataset-options-xaxis">
                 <h2>X Axis Data</h2>
                 <select onChange={handleXCategory}>
                   <option hidden>choose X</option>
@@ -131,9 +131,8 @@ class GraphDataset extends Component {
                   ))}
                 </select>
               </div>
-              <div>
+              <div className="graphdataset-options-yaxis">
                 <h2>Y Axis Data</h2>
-                <button onClick={this.addYCategory}>+</button>
                 {this.state.yCategQuantity.map((n, idx) => {
                   return (
                     <div key={idx}>
@@ -149,6 +148,7 @@ class GraphDataset extends Component {
                     </div>
                   )
                 })}
+                <button onClick={this.addYCategory}>+</button>
               </div>
             </div>
             {

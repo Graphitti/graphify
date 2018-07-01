@@ -115,3 +115,12 @@ nav a {
   color: orangered;
   transition: 1s;
 }
+
+.graphdataset-options {
+  display: flex;
+  flex-direction: row;
+}
+
+.graphdataset-options-xaxis, .graphdataset-options-xaxis {
+  margin: 5px;
+}
