@@ -14,7 +14,11 @@ const SET_DATA = 'SET_DATA'
 /**
  * INITIAL STATE
  */
-const defaultData = []
+const defaultData = {
+  dataset: [],
+  columnObj: {},
+  name: '' 
+}
 
 /**
  * ACTION CREATORS
@@ -31,12 +35,7 @@ export const uploadData = (data, fileName) => dispatch => {
   history.push('/graph-dataset')
 }
 
-export const getAsyncData = (
-  domain,
-  id,
-  columnObj,
-  datasetName
-) => dispatch => {
+export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => {
   return d3
     .csv(`https://${domain}/resource/${id}.csv`)
     .then(res => {
@@ -49,11 +48,12 @@ export const getAsyncData = (
 }
 
 export const fetchAndSetDataFromS3 = awsId => dispatch => {
-  axios.get(`/api/graphs/aws/${awsId}`).then(res => {
-    const {dataset} = res.data.dataset
+  return axios.get(`/api/graphs/aws/${awsId}`).then(res => {
+    const {dataset} = res.data
     dispatch(setData(dataset))
-    history.push('/graph-dataset')
   })
+  .then(() => history.push('/graph-dataset'))
+  .catch(console.error)
 }
 
 /**

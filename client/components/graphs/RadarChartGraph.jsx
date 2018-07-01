@@ -15,18 +15,18 @@ export const RadarChartGraph = props => {
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
 
   return (
-    <div>
-      <h4>{title}</h4>
+    <div className="graph-dataset-graphs-single">
+      <h3>{title || 'Radar Chart'}</h3>
       <RadarChart
         cx={300}
         cy={300}
         outerRadius={250}
         width={600}
         height={600}
-        data={dataset}
+        data={dataset.dataset}
       >
         <Tooltip />
-        <Legend align='right'/>
+        <Legend align='center'/>
         <PolarGrid />
         <PolarAngleAxis dataKey={currentX} />
         <PolarRadiusAxis />
@@ -45,11 +45,9 @@ export const RadarChartGraph = props => {
   )
 }
 
-const mapState = state => {
-  return {
+const mapState = state => ({
     dataset: state.dataset,
     graphSettings: state.graphSettings
-  }
-}
+  })
 
 export default connect(mapState)(RadarChartGraph)

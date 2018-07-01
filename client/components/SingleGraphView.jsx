@@ -19,6 +19,7 @@ import {
 } from '../store'
 import {HuePicker} from 'react-color'
 
+
 class SingleGraphView extends Component {
   constructor(props) {
     super(props)
@@ -34,8 +35,6 @@ class SingleGraphView extends Component {
     const {graphId} = this.props.match.params
     const {getGraphId} = this.props
     getGraphId(graphId)
-    // const {awsId} = this.props.graphSettings
-    // getDataset(awsId)
   }
 
   handleChange(event) {
@@ -52,7 +51,6 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    console.log('index', idx)
     this.setState({legend: idx})
   }
 
@@ -101,10 +99,13 @@ class SingleGraphView extends Component {
                 <div key={idx}>
                   <label>{`Change the color of the legend of '${yAxis}'`}</label>
                   <button onClick={ () => this.handleClick(idx) }>Pick Color</button>
-                  <HuePicker
+                  { this.state.legend !== -1 ? <div className="popover" >
+                    <div className="cover" onClick={ this.handleClose }/>
+                    <HuePicker
                     color={ colors[idx] }
                     onChangeComplete={this.handleChangeColor }
-                  />
+                    />
+                  </div> : null }
                 </div>
               ))}
             </div>

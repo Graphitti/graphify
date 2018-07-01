@@ -6,22 +6,17 @@ body {
   font-family: sans-serif;
 }
 
-.container {
-  text-align: center;
-  padding: 15px;
-  margin: 20px auto;
-  display: flex;
-  flex-direction: row;
-}
-
-.graphContainer {
-  display: flex;
-  flex-direction: column;
-}
-
 .container p {
   padding-top: 10px;
   color: #666;
+}
+
+.cover {
+  position: 'fixed';
+  top: '0px';
+  right: '0px';
+  bottom: '0px';
+  left: '0px';
 }
 
 .csv-input {
@@ -32,14 +27,179 @@ body {
   border-radius: 5px;
 }
 
-form div {
-  margin: 1em;
-  display: inline-block;
+.dataset-preview {
+  display: flex;
+  flex-direction: column;
 }
 
-#graphs {
+.dataset-preview-link {
+  color: green;
+  margin: 2px;
+}
+
+.dataset-preview-permalink {
+  margin: 2px;
+  color: lightseagreen;
+}
+
+.dataset-preview-detail {
+  margin: 2px;
+}
+
+.dataset-preview-link:hover {
+  color: orangered;
+  transition: 1s;
+}
+
+#graph-dataset {
+  margin: 50px;
+}
+
+
+#graph-dataset-table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#graph-dataset-table-container-name {
+  border-bottom: double 3px rgb(42, 216, 127);
+}
+
+#graph-dataset-table-container-table {
+  width: 100%;
+}
+
+.graph-dataset-graphs {
   display: flex;
   flex-wrap: wrap;
+}
+
+.graph-dataset-graphs-single {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: inset 3px #617180;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+}
+
+.graph-dataset-graphs-single:hover {
+  text-shadow: 0px 0px 2px rgb(19, 247, 100);
+  box-shadow: 0px 0px 5px 0.2px rgb(19, 247, 100);
+  border: inset 3px #318f57;
+}
+
+#graph-dataset-select {
+  display: flex;
+  flex-direction: column;
+}
+
+#graph-dataset-select-name {
+  align-self: center;
+  border-bottom: double 3px rgb(42, 216, 127);
+}
+
+#graph-dataset-select-x-y {
+  width: fit-content;
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
+  border: inset 1px #318f41;
+  padding: 10px 40px;
+  border-radius: 5px;
+}
+
+.graph-dataset-select-y {
+  display: flex;
+  align-items: center;
+}
+
+#graph-dataset-select-y-add {
+  align-self: center;
+  margin: 0px 15px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: color 1s, background-image 1.5s;
+}
+
+#graph-dataset-select-y-add:hover {
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
+}
+
+#graph-dataset-select-y-delete {
+  margin: 0px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #8f3131;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(109, 20, 20) 45%,
+    rgb(255, 0, 0) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(247, 19, 19);
+  transition: color 1s, background-image 1.5s;
+}
+
+#graph-dataset-select-y-delete:hover {
+  color: #000000;
+  background-image: linear-gradient(45deg, #ffdddd, #cc4949);
+}
+
+.graph-dataset-select-x-y-input {
+  height: 25px;
+  width: 300px;
+  margin: 0px 0px 15px;
+}
+
+#home {
+  text-align: center;
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+#home-name {
+  text-shadow: 0px 0px 10px rgb(19, 247, 100);
+  font-size: 60px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.home-buttons {
+  width: 13em;
+  font-size: 30px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 10px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: color 1s, background-image 1.5s;
+  text-shadow: 0px 0px 10px rgb(19, 247, 100);
+}
+
+.home-buttons:hover {
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
+}
+
+#home-buttons-container {
+  justify-content: space-around;
+  display: flex;
+  margin: 80px;
 }
 
 img {
@@ -59,13 +219,50 @@ nav a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: linear-gradient(45deg, #f3faff, #2c88b1);
+  background-image: linear-gradient(45deg, #f3fffa, #1d6142);
   border-radius: 0 0 1em 0;
   transition: transform 0.5s ease;
 }
 
+#navbar-img {
+  margin: 0px 20px;
+  height: calc(13vw - 8em);
+}
+
+#navbar-name {
+  font-weight: bold;
+  font-style: italic;
+  color: white;
+  transition: 0.5s;
+}
+
+#navbar-name:hover {
+  text-shadow: 0px 0px 14px rgb(19, 247, 100);
+}
+
+#navbar-options {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.navbar-options-buttons {
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
+  border: inset 1px #318f41;
+  font-size: 1.3em;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px;
+  border-radius: 5px;
+  transition: color 1s, background-color 0.5s;
+}
+.navbar-options-buttons:hover {
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffe7, #42d46f);
+}
+
 #profile {
- margin: 50px;
+  margin: 50px;
 }
 
 #profile-content {
@@ -73,6 +270,7 @@ nav a {
 }
 
 #profile-datasets {
+  width: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,7 +289,29 @@ nav a {
 }
 
 #profile-graphs-single {
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.search-results-dataset {
+  width: 90%;
+  height: 30%;
+  margin: 10px;
+}
+
+#single-graph {
+  display: flex;
+}
+
+#single-graph-chart{
+  width: 70%;
+  margin: 20px;
 }

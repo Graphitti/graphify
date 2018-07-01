@@ -15,14 +15,14 @@ export const AreaChartGraph = props => {
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
 
   return (
-    <div>
-      <h4>{title}</h4>
-      <AreaChart width={600} height={600} data={dataset}>
+    <div className="graph-dataset-graphs-single">
+      <h3>{title || 'Area Chart'}</h3>
+      <AreaChart width={600} height={600} data={dataset.dataset}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
         <Tooltip />
-        <Legend align='right'/>
+        <Legend align='center'/>
         {currentY.map((yAxis, idx) => (
           <Area
             key={idx}

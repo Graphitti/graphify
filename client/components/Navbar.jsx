@@ -3,28 +3,36 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import axios from 'axios'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div id="navbar">
+    <img id="navbar-img" src="/graph-icon.png"/>
     <Link to="/">
-      <h1>GRAPHIFY</h1>
+      <h1 id="navbar-name">GRAPHIFY</h1>
     </Link>
-    <nav>
+    <nav id="navbar-options">
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
-          <Link to="/profile">Profile</Link>
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
+          <Link className="navbar-options-buttons" to="/profile">
+            My Account
+          </Link>
+          <Link className="navbar-options-buttons" to="/home">
+            Home
+          </Link>
+          <a className="navbar-options-buttons" href="/" onClick={handleClick}>
             Logout
           </a>
         </div>
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
+          <Link className="navbar-options-buttons" to="/login">
+            Login
+          </Link>
+          <Link className="navbar-options-buttons" to="/signup">
+            Sign Up
+          </Link>
         </div>
       )}
     </nav>

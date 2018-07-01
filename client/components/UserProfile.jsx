@@ -4,8 +4,7 @@ import {Link} from 'react-router-dom'
 import store, {fetchAndSetDataFromS3} from '../store'
 
 const UserProfile = props => {
-  console.log('USER', props.user)
-  const handleDatasetClick = awsId => {
+  const handleDatasetClick = (awsId) => {
     store.dispatch(fetchAndSetDataFromS3(awsId))
   }
   const {email, graphs, datasets} = props.user
@@ -17,7 +16,7 @@ const UserProfile = props => {
       <h1>Hi, {name}!</h1>
       <div id="profile-content">
         <div id="profile-datasets">
-          <h2>Datasets</h2>
+          <h2>My Datasets</h2>
           {datasets &&
             datasets.map(dataset => (
               <div key={dataset.id}>
@@ -30,7 +29,7 @@ const UserProfile = props => {
             ))}
         </div>
         <div id="profile-graphs">
-          <h2>Graphs</h2>
+          <h2>My Graphs</h2>
           <div id="profile-graphs-wrap">
             {graphs &&
               graphs.map(graph => (

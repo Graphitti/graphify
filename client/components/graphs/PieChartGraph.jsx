@@ -28,15 +28,15 @@ export const PieChartGraph = props => {
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
 
   return (
-    <div>
-      <h4>{title}</h4>
+    <div className="graph-dataset-graphs-single">
+      <h3>{title || 'Pie Chart'}</h3>
       <PieChart width={600} height={600}>
         <Pie
           isAnimationActive={true}
-          data={quantityMaker(dataset, currentX)}
+          data={quantityMaker(dataset.dataset, currentX)}
           dataKey="value"
           cx={200}
-          cy={200}
+         ß cy={200}
           outerRadius={60}
           fill={colors[0]}
         />
@@ -44,7 +44,7 @@ export const PieChartGraph = props => {
           <Pie
             key={idx}
             isAnimationActive={true}
-            data={quantityMaker(dataset, yAxis)}
+            data={quantityMaker(dataset.dataset, yAxis)}
             dataKey="value"
             cx={200}
             cy={200}
@@ -55,7 +55,7 @@ export const PieChartGraph = props => {
           />
         ))}
         <Tooltip />
-        <Legend />
+        <Legend align="center" />
       </PieChart>
     </div>
   )
