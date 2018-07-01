@@ -18,7 +18,7 @@ export const PieChartGraph = props => {
     let objArr = Object.keys(quantityObj).map(name => {
       return {
         name: name,
-        value: quantityObj[name]
+        value: Math.round(quantityObj[name]*100 / arr.length)
       }
     })
     return objArr
@@ -35,12 +35,14 @@ export const PieChartGraph = props => {
           isAnimationActive={true}
           data={quantityMaker(dataset.dataset, currentX)}
           dataKey="value"
-          cx={200}
-          cy={200}
-          outerRadius={60}
+          cx={300}
+          cy={300}
+          innerRadius={150}
+          // outerRadius={150}
           fill={colors[0]}
+          label
         />
-        {currentY.map((yAxis, idx) => (
+        {/* {currentY.map((yAxis, idx) => (
           <Pie
             key={idx}
             isAnimationActive={true}
@@ -53,7 +55,7 @@ export const PieChartGraph = props => {
             fill={colors[idx + 1]}
             label
           />
-        ))}
+        ))} */}
         <Tooltip />
         <Legend />
       </PieChart>

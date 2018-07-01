@@ -13,6 +13,7 @@ module.exports = router;
 
 router.get('/:awsId', (req, res, next) => {
     //have some kind of security so that we don't do this if the user doesn't have access to the graph
+    console.log('AWS_BUCKET', AWS_BUCKET);
     const {awsId} = req.params
     let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
     //this makes the promise to do the actual request, get object is a get request

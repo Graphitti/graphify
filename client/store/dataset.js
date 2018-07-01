@@ -47,10 +47,13 @@ export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => 
     .catch(console.error)
 }
 
-export const fetchAndSetDataFromS3 = graphId => dispatch => {
-  axios.get(`/api/graphs/aws/${graphId}`).then(res => {
-    dispatch(setData(res.data))
+export const fetchAndSetDataFromS3 = awsId => dispatch => {
+  return axios.get(`/api/graphs/aws/${awsId}`).then(res => {
+    const {dataset} = res.data
+    dispatch(setData(dataset))
   })
+  .then(() => history.push('/graph-dataset'))
+  .catch(console.error)
 }
 
 /**

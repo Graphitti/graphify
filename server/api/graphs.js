@@ -103,7 +103,7 @@ router.put('/:graphId', (req, res, next) => {
       .then(([updatedGraph, createdAxes]) => {
         return updatedGraph.setYAxes(createdAxes)
       })
-      .then(something => {
+      .then(() => {
         res.send('hello')
       })
       .catch(next)
@@ -123,6 +123,7 @@ router.get('/aws/:awsId', (req, res, next) => {
   findDatasetPromise
     .then(result => {
       let parsedDataset = JSON.parse(result.Body)
+      console.log(parsedDataset)
       res.json(parsedDataset)
     })
     .catch(next)
@@ -138,6 +139,7 @@ router.post('/aws/:awsId', (req, res, next) => {
       Key: awsId,
       Body: stringifiedDataset
     }
+
     //this creates or updates the desired object
     let uploadDatasetPromise = new AWS.S3({apiVersion: '2006-03-01'})
       .putObject(datasetParams)

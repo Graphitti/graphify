@@ -1,6 +1,5 @@
-import React, { Component, PureComponent } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -25,7 +24,7 @@ import axios from 'axios'
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
-class SingleGraphView extends PureComponent {
+class SingleGraphView extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -187,4 +186,4 @@ const mapDispatch = dispatch => ({
   }
 })
 
-export default withRouter(connect(mapState, mapDispatch)(SingleGraphView))
+export default connect(mapState, mapDispatch)(SingleGraphView)
