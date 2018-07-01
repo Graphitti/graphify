@@ -16,7 +16,9 @@ module.exports = {
       .promise()
     return findDatasetPromise
       .then(result => {
-        return JSON.parse(result.Body)
+        let parsedDataset = JSON.parse(result.Body)
+        parsedDataset.dataset.awsId = awsId;
+        return parsedDataset
       })
       .catch(err => console.log(err))
   }
