@@ -180,7 +180,7 @@ body {
 
 .graph-dataset-graphs-single:hover {
   text-shadow: 0px 0px 2px rgb(19, 247, 100);
-  box-shadow: 0px 0px 5px 0.2px rgb(19, 247, 100);
+  box-shadow: 0px 0px 5px 0.4px rgb(19, 247, 100);
   border: inset 3px #318f57;
 }
 
