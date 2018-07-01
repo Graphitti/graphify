@@ -56,8 +56,8 @@ export const fetchAndSetGraph = graphId => dispatch => {
   axios
     .get(`/api/graphs/${graphId}`)
     .then(res => {
-      dispatch(fetchAndSetGraphFromDatabase(res.data.graph));
-      dispatch(setData(res.data.dataset.dataset));
+      dispatch(fetchAndSetGraphFromDatabase(res.data.graph))
+      dispatch(setData(res.data.dataset.dataset))
     })
     .catch(err => console.log(err))
 }
@@ -98,7 +98,16 @@ export default (state = graphSettings, action) => {
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {...state, currentX: xAxis, currentY: YAxisNames, graphType}
     case RESET_GRAPH_SETTINGS:
-      return {...state, currentX: '', currentY: [], graphType: ''}
+      return {
+        ...state,
+        currentX: '',
+        currentY: [],
+        graphType: '',
+        title: '',
+        xAxisName: '',
+        yAxisName: '',
+        colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+      }
     default:
       return state
   }

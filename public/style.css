@@ -136,7 +136,7 @@ body {
 }
 
 #graph-dataset-select-y-delete {
-  margin: 0px 20px;
+  margin: 0px 20px 15px;
   font-size: 15px;
   color: white;
   border: inset 2px #8f3131;
@@ -224,6 +224,11 @@ nav a {
   transition: transform 0.5s ease;
 }
 
+#navbar div {
+  display: flex;
+  align-items: center;
+}
+
 #navbar-img {
   margin: 0px 20px;
   height: calc(13vw - 8em);
@@ -244,6 +249,10 @@ nav a {
   display: flex;
   align-items: center;
   flex-direction: row;
+}
+
+#navbar-options div {
+  margin: 0px 20px;
 }
 
 .navbar-options-buttons {

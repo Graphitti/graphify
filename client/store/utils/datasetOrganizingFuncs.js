@@ -11,8 +11,14 @@ export function datasetColumnFormatter(dataset, columnObj) {
             dataset[j][columnKeys[i]] = Number(dataset[j][columnKeys[i]]);
         }
     }
+
+    let newDataset = [...dataset];
+    if(newDataset.length > 30) {
+        newDataset.splice(30, newDataset.length-30)
+    }
+
     //add the columnObj onto the dataset
-    return {dataset, columnObj}
+    return {dataset: filteringSizeDataset(dataset), columnObj}
 }
 
 //change uploaded data from array of arrays into an array of objects
@@ -36,4 +42,12 @@ export function uploadedDataFormatter(dataset) {
     return datasetColumnFormatter(newDataset, columnObj);
 }
 
-
+export function filteringSizeDataset(dataset) {
+    //setting maximun num of rows to 30
+    let maxRows = 30;
+    let newDataset = [...dataset];
+    if(newDataset.length > maxRows) {
+        newDataset.splice(maxRows, newDataset.length-maxRows)
+    }
+    return newDataset;
+}
