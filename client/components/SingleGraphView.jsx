@@ -66,8 +66,6 @@ class SingleGraphView extends Component {
   }
 
   handleClone() {
-    console.log('#########',this.props.graphSettings)
-    console.log('####444444##',this.props.dataset)
     const graphId = crypto
       .randomBytes(8)
       .toString('base64')
@@ -78,6 +76,7 @@ class SingleGraphView extends Component {
     axios.post(`api/graphs/${graphId}`, {
       xAxis: currentX,
       yAxis: currentY,
+      //comment in when the models support these
       // xAxisLabel: xAxisName,
       // yAxisLabel: yAxisName,
       // colors,
