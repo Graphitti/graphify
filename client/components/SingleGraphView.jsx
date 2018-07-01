@@ -15,7 +15,8 @@ import {
   updateYAxisName,
   updateColor,
   fetchAndSetGraph,
-  fetchAndSetDataFromS3
+  fetchAndSetDataFromS3,
+  saveGraphSettingToDB
 } from '../store'
 import {HuePicker} from 'react-color'
 
@@ -29,6 +30,7 @@ class SingleGraphView extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleChangeColor = this.handleChangeColor.bind(this)
+    this.handleSave = this.handleSave.bind(this)
   }
 
   componentDidMount() {
@@ -59,8 +61,14 @@ class SingleGraphView extends Component {
     this.setState({legend: -1})
   }
 
+  handleSave(graphId) {
+    const settings = this.props.graphSettings
+    this.props.saveGraphSetting(graphId, settings)
+  }
+
   render() {
     let {currentY, graphType, colors} = this.props.graphSettings
+    const {graphId} = this.props.match.params
 
     return (
       <div>
@@ -109,7 +117,7 @@ class SingleGraphView extends Component {
                 </div>
               ))}
             </div>
-            <button type='submit'>{`Save`}</button>
+            <button type='submit' onClick={() => this.handleSave(graphId)}>{`Save`}</button>
         </div>
       </div>
     )}
@@ -139,6 +147,9 @@ const mapDispatch = dispatch => ({
   },
   getDataset: graphId => {
     dispatch(fetchAndSetDataFromS3(graphId))
+  },
+  saveGraphSetting: (graphId, settings) => {
+    dispatch(saveGraphSettingToDB(graphId, settings))
   }
 })
 

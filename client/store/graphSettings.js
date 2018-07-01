@@ -1,3 +1,5 @@
+import { puts } from "util";
+
 import axios from 'axios'
 import {setData} from './dataset'
 
@@ -47,6 +49,21 @@ export const fetchAndSetGraph = graphId => dispatch => {
       dispatch(fetchAndSetGraphFromDatabase(res.data.graph))
       dispatch(setData(res.data.dataset.dataset))
     })
+    .catch(err => console.log(err))
+}
+
+export const saveGraphSettingToDB = (graphId, settings) => dispatch => {
+  console.log('save setting', graphId, settings)
+  axios
+    .put(`/api/graphs/${graphId}`, {
+      xAxis: settings.currentX,
+      yAxis: settings.currentY,
+      xAxisLabel: settings.xAxisName,
+      yAxisLabel: settings.yAxisName,
+      title: settings.title,
+      graphType: settings.graphType
+    })
+    .then(res => console.log(res))
     .catch(err => console.log(err))
 }
 
