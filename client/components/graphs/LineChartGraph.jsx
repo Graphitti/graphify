@@ -16,8 +16,8 @@ export const LineChartGraph = props => {
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
 
   return (
-    <div>
-      <h4>{title}</h4>
+    <div className="graph-dataset-graphs-single">
+      <h3>{title || 'Line Chart'}</h3>
       <LineChart width={600} height={600} data={dataset.dataset}>
         {currentY.length && currentY.map((yAxis, idx) => (
           <Line key={idx} type="monotone" dataKey={yAxis} stroke={colors[idx]} />
@@ -31,7 +31,7 @@ export const LineChartGraph = props => {
         }
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}}/>
         <Tooltip />
-        <Legend align='right'/>
+        <Legend align='center'/>
       </LineChart>
     </div>
   )

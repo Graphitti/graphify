@@ -10,26 +10,37 @@ export default class Home extends Component {
     this.handleSearch = this.handleSearch.bind(this)
   }
 
-  handleUpload (data, fileName) {
+  handleUpload(data, fileName) {
     store.dispatch(resetGraphSettings())
     store.dispatch(uploadData(data, fileName))
   }
 
-  handleSearch (event) {
-    event.preventDefault();
+  handleSearch(event) {
+    event.preventDefault()
     store.dispatch(resetGraphSettings())
-    history.push("/search");
+    history.push('/search')
   }
 
   render() {
     return (
-      <div className="container">
-        <button type="button" onClick={this.handleSearch}>Search</button>
-        <CSVReader
-          cssClass="react-csv-input"
-          label="Select CSV"
-          onFileLoaded={this.handleUpload}
-        />
+      <div id="home">
+        <div>
+          <h1 id="home-name">GRAPHIFY</h1>
+          <h3>Graph Your World</h3>
+        </div>
+        <div id="home-buttons-container">
+          <button
+            className="home-buttons"
+            type="button"
+            onClick={this.handleSearch}
+          >
+            Search Our Datasets
+          </button>
+          <CSVReader
+            cssClass="home-buttons react-csv-input"
+            onFileLoaded={this.handleUpload}
+          />
+        </div>
       </div>
     )
   }
