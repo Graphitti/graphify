@@ -90,7 +90,7 @@ export default (state = graphSettings, action) => {
         title: '',
         xAxisName: '',
         yAxisName: '',
-        color: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+        colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
       }
     default:
       return state

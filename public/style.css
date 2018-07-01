@@ -2,6 +2,100 @@ a {
   text-decoration: none;
 }
 
+#auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#auth-info {
+  display: flex;
+  margin: 30px;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 35px;
+  background: -webkit-linear-gradient(top, #75ff8c, #2488ef);
+}
+
+#auth-info-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: white;
+  padding: 25px;
+}
+
+#auth-info-title {
+  font-size: 30px;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-form-input {
+  outline: none;
+  width: 21em;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 16px;
+  color: white;
+  line-height: 1.2;
+  display: block;
+  height: 45px;
+  background: transparent;
+}
+
+.auth-form-input::placeholder {
+  color: white;
+}
+
+#auth-form-button {
+  margin: 30px;
+  width: 35%;
+  padding: 10px;
+  border-radius: 25px;
+  font-size: 1.3em;
+  transition: 0.4s;
+}
+
+#auth-form-button:hover {
+  color: white;
+  background: -webkit-linear-gradient(top, #75ff8c, #2488ef);
+}
+
+#auth-form-or {
+  margin: auto;
+  color: white;
+}
+
+#auth-form-google {
+  margin: 30px;
+  width: 50px;
+  height: 50px;
+}
+
+#auth-form-error {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: linear-gradient(
+    45deg,
+    rgb(154, 54, 54) 40%,
+    rgb(255, 59, 0) 100%
+  );
+}
+
 body {
   font-family: sans-serif;
 }
@@ -54,7 +148,6 @@ body {
 #graph-dataset {
   margin: 50px;
 }
-
 
 #graph-dataset-table-container {
   display: flex;
@@ -187,11 +280,11 @@ body {
     rgb(0, 255, 126) 105%
   );
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
-  transition: color 1s, background-image 1.5s;
-  text-shadow: 0px 0px 10px rgb(19, 247, 100);
+  transition: 1s;
 }
 
 .home-buttons:hover {
+  text-shadow: 0px 0px 10px rgb(19, 247, 100);
   color: #202b47;
   background-image: linear-gradient(45deg, #ddffee, #49cc7e);
 }
@@ -320,7 +413,7 @@ nav a {
   display: flex;
 }
 
-#single-graph-chart{
+#single-graph-chart {
   width: 70%;
   margin: 20px;
 }
