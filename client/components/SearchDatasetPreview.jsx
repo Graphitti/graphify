@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
-import store from '../store'
+import React from 'react'
+
 
 const DatasetPreview = (props) => {
     const { result } = props;

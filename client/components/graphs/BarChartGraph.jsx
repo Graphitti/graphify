@@ -17,8 +17,8 @@ export const BarChartGraph = props => {
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
 
   return (
-    <div>
-      <h4>{title}</h4>
+    <div className="graph-dataset-graphs-single">
+      <h3>{title || 'Bar Chart'}</h3>
       <BarChart width={600} height={600} data={dataset.dataset}>
         <CartesianGrid strokeDasharray="3 3" />
         {
@@ -29,7 +29,7 @@ export const BarChartGraph = props => {
         }
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
         <Tooltip />
-        <Legend align='right'/>
+        <Legend align='center'/>
         {currentY.map((yAxis, idx) => (
           <Bar
             key={idx}
