@@ -25,14 +25,14 @@ const graphSettings = {
 }
 
 //ACTION CREATORS
-const setXAxisToStore = xAxis => ({type: SET_X_AXIS, xAxis})
-const addYAxisToStore = (yAxis, idx) => ({type: ADD_Y_AXIS, yAxis, idx})
-const deleteYAxisFromState = deletedYIdx => ({type: DELETE_Y_AXIS, deletedYIdx})
+export const setXAxis = xAxis => ({type: SET_X_AXIS, xAxis})
+export const addYAxis = (yAxis, idx) => ({type: ADD_Y_AXIS, yAxis, idx})
+export const deleteYAxis = deletedYIdx => ({type: DELETE_Y_AXIS, deletedYIdx})
 const fetchAndSetGraphFromDatabase = graph => ({
   type: FETCH_AND_SET_GRAPH,
   graph
 })
-const resetGraphSettingsState = () => ({type: RESET_GRAPH_SETTINGS})
+export const resetGraphSettings = () => ({type: RESET_GRAPH_SETTINGS})
 
 export const updateTitle = title => ({type: UPDATE_TITLE, title})
 export const updateXAxisName = name => ({type: UPDATE_XAXIS_NAME, name})
@@ -40,18 +40,6 @@ export const updateYAxisName = name => ({type: UPDATE_YAXIS_NAME, name})
 export const updateColor = (color, idx) => ({type: UPDATE_COLOR, color, idx})
 
 // THUNK CREATORS
-export const setXAxis = xAxis => dispatch => {
-  dispatch(setXAxisToStore(xAxis))
-}
-
-export const addYAxis = (yAxis, idx) => dispatch => {
-  dispatch(addYAxisToStore(yAxis, idx))
-}
-
-export const deleteYAxis = deletedYIdx => dispatch => {
-  dispatch(deleteYAxisFromState(deletedYIdx))
-}
-
 export const fetchAndSetGraph = graphId => dispatch => {
   axios
     .get(`/api/graphs/${graphId}`)
@@ -60,10 +48,6 @@ export const fetchAndSetGraph = graphId => dispatch => {
       dispatch(setData(res.data.dataset.dataset))
     })
     .catch(err => console.log(err))
-}
-
-export const resetGraphSettings = () => dispatch => {
-  dispatch(resetGraphSettingsState())
 }
 
 // REDUCER
@@ -106,7 +90,7 @@ export default (state = graphSettings, action) => {
         title: '',
         xAxisName: '',
         yAxisName: '',
-        colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
+        color: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
       }
     default:
       return state
