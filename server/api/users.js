@@ -2,6 +2,7 @@ const router = require('express').Router()
 const {User, Graph, YAxis} = require('../db/models')
 module.exports = router
 
+// CG: unnecessary route
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -16,6 +17,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// CG: do req.user.getGraphs method exists through the associations *****
 router.get('/:userId/graphs', (req, res, next) => {
   const userId = Number(req.params.userId);
   if (req.user && req.user.dataValues.id === userId) {

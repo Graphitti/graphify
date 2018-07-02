@@ -21,7 +21,7 @@ router.get('/:graphId', (req, res, next) => {
     .then(graph => {
       const {awsId} = graph.dataset.dataValues
       const graphDataObj = {}
-      getDatasetFromS3(awsId).then(dataset => {
+      getDatasetFromS3(awsId).then(dataset => { // CG: nested Promise
         graphDataObj.dataset = dataset
         graphDataObj.graph = graph
         res.send(graphDataObj)
@@ -30,25 +30,26 @@ router.get('/:graphId', (req, res, next) => {
     .catch(next)
 })
 
+// CG: post to /graphs ... put to /graphs/:graphId
 router.post('/:graphId', (req, res, next) => {
   if (req.user) {
     const {graphId} = req.params
     const {xAxis, yAxis, title, graphType, datasetName, awsId} = req.body
     const userId = req.user.id
 
-    let makingGraph = Graph.create({
+    let makingGraph = Graph.create({ // CG: promiseForGraph
       userId,
       graphId,
       xAxis,
       title,
       graphType
     })
-    let makingYAxes = Promise.all(
+    let makingYAxes = Promise.all( // CG: promiseForYAxis
       yAxis.map(name => {
         return YAxis.create({name})
       })
     )
-    let makingDataset = Dataset.findOrCreate({
+    let makingDataset = Dataset.findOrCreate({ // OR JUST USE ASYNC AWAIT
       where : {
         name: datasetName,
         userId,
@@ -61,7 +62,7 @@ router.post('/:graphId', (req, res, next) => {
         let setDataset = newGraph.setDataset(newDataset[0])
         return Promise.all([setY, setDataset])
       })
-      .then(() => res.send('worked'))
+      .then(() => res.send('worked')) // NL: SEND STATUS INSTEAD (201 for created)
       .catch(next)
   } else {
     res.send('You need to be a user to save graph data')
@@ -96,20 +97,26 @@ router.put('/:graphId', (req, res, next) => {
           })
         )
         //return everything in a promise
-        return Promise.all([effectedGraph, newYAxes])
+        return Promise.all([effectedGraph, newYAxes]) // CG: AFFECTED GRAPH!
       })
       //set the newYAxes as connected to the graph
       .then(([updatedGraph, createdAxes]) => {
         return updatedGraph.setYAxes(createdAxes)
       })
       .then(() => {
-        res.send('hello')
+        res.send('hello') // NL: SEND SOMETHING ELSE... LIKE STATUS
       })
       .catch(next)
   } else {
     res.send('You need to be a user to edit this graph')
   }
 })
+
+//////////////////////////////////////////
+// CG: DO NOT EXPOSE ROUTES TO AWS      //
+// Do this in the loading of the graph  //
+// For example in an AWS utils file     //
+//////////////////////////////////////////
 
 router.get('/aws/:awsId', (req, res, next) => {
   //have some kind of security so that we don't do this if the user doesn't have access to the graph
