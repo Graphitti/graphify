@@ -11,6 +11,7 @@ import {
 
 import {
   updateTitle,
+  updateDescription,
   updateXAxisName,
   updateYAxisName,
   updateColor,
@@ -55,7 +56,7 @@ class SingleGraphView extends Component {
     // which holds the chart. We can access this SVG by calling upon the first child/
     // let chartSVG = ReactDOM.findDOMNode(this.currentChart).children[0];
     let chartSVG = document.getElementById('current-chart').children[0]
-    if (asSVG) {
+    if (true) {
       let svgURL = new XMLSerializer().serializeToString(chartSVG)
       let svgBlob = new Blob([svgURL], {type: 'image/svg+xml;charset=utf-8'})
       FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
@@ -81,6 +82,8 @@ class SingleGraphView extends Component {
     switch (name) {
       case 'title':
         return this.props.changeTitle(value)
+      case 'description':
+        return this.props.addDescription(value)
       case 'XAxis':
         return this.props.changeXAxisName(value)
       case 'YAxis':
@@ -144,7 +147,7 @@ class SingleGraphView extends Component {
 
   render() {
     const {graphId} = this.props.match.params
-    let { currentY, graphType, colors } = this.props.graphSettings
+    let {currentY, graphType, colors, description} = this.props.graphSettings
 
     return (
       <div>
@@ -182,9 +185,15 @@ class SingleGraphView extends Component {
             </div>
           ) : (
             <div>
+              <div className="current-chart-description">
+                <h3>Description</h3>
+                <p>{description}</p>
+              </div>
               <form>
                 <label>{`Change title`}</label>
                 <input type="text" name="title" onChange={this.handleChange} />
+                <label>{`Add description`}</label>
+                <input type="text" name="description" onChange={this.handleChange} />
                 <label>{`Change the name of X axis`}</label>
                 <input type="text" name="XAxis" onChange={this.handleChange} />
                 <label>{`Change the name of Y axis`}</label>
@@ -193,8 +202,11 @@ class SingleGraphView extends Component {
               <div>
                 {currentY.map((yAxis, idx) => (
                   <div key={idx}>
-                    <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                    <button onClick={() => this.handleClick(idx)}>Pick Color</button>
+                    <label
+                    >{`Change the color of the legend of '${yAxis}'`}</label>
+                    <button onClick={() => this.handleClick(idx)}>
+                      Pick Color
+                    </button>
                     {this.state.legend !== -1 ? (
                       <div className="popover">
                         <div className="cover" onClick={this.handleClose} />
@@ -202,17 +214,22 @@ class SingleGraphView extends Component {
                           color={colors[idx]}
                           onChangeComplete={this.handleChangeColor}
                         />
-                      </div>) : null}
+                      </div>
+                    ) : null}
                   </div>
                 ))}
               </div>
-              <button type='submit' onClick={() => this.handleSave(graphId)}>{`Save`}</button>
+              <button
+                type="submit"
+                onClick={() => this.handleSave(graphId)}
+              >{`Save`}</button>
             </div>
           )}
         </div>
         <ToastContainer className="toast" />
       </div>
-    )}
+    )
+  }
 }
 
 const mapState = state => {
@@ -225,6 +242,9 @@ const mapState = state => {
 const mapDispatch = dispatch => ({
   changeTitle(title) {
     dispatch(updateTitle(title))
+  },
+  addDescription(description) {
+    dispatch(updateDescription(description))
   },
   changeXAxisName(name) {
     dispatch(updateXAxisName(name))

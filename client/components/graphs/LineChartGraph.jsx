@@ -32,7 +32,10 @@ export const LineChartGraph = props => {
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}}/>
         <Tooltip />
         <Legend align='center'/>
-      </LineChart>
+        <Text style={{fontSize:3}} width={100} textAnchor="middle" scaleToFit={true}>
+          <tspan>what a wonderful day</tspan>
+        </Text>
+        </LineChart>
     </div>
   )
 }

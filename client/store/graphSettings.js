@@ -13,6 +13,7 @@ const FETCH_AND_SET_GRAPH = 'FETCH_AND_SET_GRAPH'
 const RESET_GRAPH_SETTINGS = 'RESET_GRAPH_SETTINGS'
 
 const UPDATE_TITLE = 'UPDATE_TITLE'
+const UPDATE_DESCRIPTION = 'UPDATE_DESCRIPTION'
 const UPDATE_XAXIS_NAME = 'UPDATE_XAXIS_NAME'
 const UPDATE_YAXIS_NAME = 'UPDATE_YAXIS_NAME'
 const UPDATE_COLOR = 'UPDATE_COLOR'
@@ -22,6 +23,7 @@ const graphSettings = {
   currentX: '',
   currentY: [],
   title: '',
+  description: '',
   xAxisName: '',
   yAxisName: '',
   colors: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042'],
@@ -39,6 +41,7 @@ const fetchAndSetGraphFromDatabase = graph => ({
 export const resetGraphSettings = () => ({type: RESET_GRAPH_SETTINGS})
 
 export const updateTitle = title => ({type: UPDATE_TITLE, title})
+export const updateDescription = description => ({type: UPDATE_DESCRIPTION, description})
 export const updateXAxisName = name => ({type: UPDATE_XAXIS_NAME, name})
 export const updateYAxisName = name => ({type: UPDATE_YAXIS_NAME, name})
 export const updateColor = (color, idx) => ({type: UPDATE_COLOR, color, idx})
@@ -86,6 +89,8 @@ export default (state = graphSettings, action) => {
       return {...state, currentY: yAxisDeleted}
     case UPDATE_TITLE:
       return {...state, title: action.title}
+    case UPDATE_DESCRIPTION:
+      return {...state, description: action.description}
     case UPDATE_XAXIS_NAME:
       return {...state, xAxisName: action.name}
     case UPDATE_YAXIS_NAME:
