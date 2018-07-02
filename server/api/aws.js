@@ -14,11 +14,32 @@ module.exports = router;
 
 router.post('/', (req, res, next) => {
     if (req.user) {
-        const awsId = crypto
-            .randomBytes(8)
-            .toString('base64')
-            .replace(/\//g, '7');
+        let ready = false;
+        let awsId = 'cat';
+        // let awsId = crypto
+        //     .randomBytes(8)
+        //     .toString('base64')
+        //     .replace(/\//g, '7');
         console.log('awsId', awsId);
+        const createAWSId = new Promise()
+        while (ready === false) {
+            Dataset.findOne({ where: { awsId } })
+            .then(dataset => {
+                console.log('found dataset',dataset)
+                if (!dataset) ready = true;
+                else {
+                awsId = crypto
+                .randomBytes(8)
+                .toString('base64')
+                .replace(/\//g, '7');
+                }
+            })
+            return awsId
+        }
+            .then(awsId => {
+
+        console.log('awsId', awsId)
+
         const { dataset, columnObj } = req.body;
         const stringifiedDataset = JSON.stringify({ dataset, columnObj });
         let datasetParams = {
@@ -34,6 +55,7 @@ router.post('/', (req, res, next) => {
             .then(data => {
                 res.status(200).send(awsId);
             })
+        })
             .catch(next);
     } else {
         res.status(401).send('Please Log In to save your data');

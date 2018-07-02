@@ -7,7 +7,7 @@ const Dataset = db.define('dataset', {
     },
     awsId: {
         type: Sequelize.STRING,
-        // unique: true
+        unique: true
     }
 })
 
