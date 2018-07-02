@@ -187,7 +187,7 @@ class SingleGraphView extends Component {
             <div>
               <div className="current-chart-description">
                 <h3>Description</h3>
-                <p>{description}</p>
+                <textarea value={description}></textarea>
               </div>
               <form>
                 <label>{`Change title`}</label>
