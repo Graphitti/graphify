@@ -14,8 +14,7 @@ import {
   updateXAxisName,
   updateYAxisName,
   updateColor,
-  fetchAndSetGraph,
-  fetchAndSetDataFromS3
+  fetchAndSetGraph
 } from '../store'
 import { HuePicker } from 'react-color'
 import history from '../history'
@@ -94,14 +93,9 @@ class SingleGraphView extends Component {
   }
 
   handleClone() {
-    const graphId = crypto
-      .randomBytes(8)
-      .toString('base64')
-      .replace(/\//g, '7');
-    console.log('graphId', graphId)
     const { currentX, currentY, title, xAxisName, yAxisName, colors, graphType } = this.props.graphSettings;
     const { awsId, name } = this.props.dataset;
-    axios.post(`api/graphs/${graphId}`, {
+    axios.post('api/graphs', {
       xAxis: currentX,
       yAxis: currentY,
       //comment in when the models support these
@@ -113,7 +107,8 @@ class SingleGraphView extends Component {
       datasetName: name,
       awsId
     })
-      .then(() => {
+      .then(res => {
+        const graphId = res.data;
         this.props.history.push(`/graph-dataset/customize/${graphId}`);
         location.reload();
       })
@@ -212,9 +207,6 @@ const mapDispatch = dispatch => ({
   },
   getGraphId: graphid => {
     dispatch(fetchAndSetGraph(graphid))
-  },
-  getDataset: graphId => {
-    dispatch(fetchAndSetDataFromS3(graphId))
   }
 })
 

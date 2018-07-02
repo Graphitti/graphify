@@ -1,12 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import store, {fetchAndSetDataFromS3, resetGraphSettings} from '../store'
+import store, {resetGraphSettings} from '../store'
 
 const UserProfile = props => {
   const handleDatasetClick = awsId => {
     store.dispatch(resetGraphSettings())
-    store.dispatch(fetchAndSetDataFromS3(awsId))
   }
   const {email, graphs, datasets} = props.user
   const name = email
@@ -21,9 +20,12 @@ const UserProfile = props => {
           {datasets &&
             datasets.map(dataset => (
               <div key={dataset.id}>
-                <a onClick={() => handleDatasetClick(dataset.awsId)}>
+                <Link to={`/graph-dataset/${dataset.awsId}`}>
                   <h3>{dataset.name}</h3>
-                </a>
+                </Link>
+                {/* <a onClick={() => handleDatasetClick(dataset.awsId)}>
+                  <h3>{dataset.name}</h3>
+                </a> */}
               </div>
             ))}
         </div>

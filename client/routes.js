@@ -24,6 +24,7 @@ class Routes extends Component {
         <Route path="/search" component={SearchBar} />
         <Route path='/graph-dataset/customize/:graphId' component={SingleGraphView} />
         <Route exact path="/graph-dataset" component={GraphDataset} />
+        <Route exact path="/graph-dataset/:datasetId" component={GraphDataset} />
         <Route path="/profile" component={UserProfile} />
         <Route path="/" component ={Home}/>
         {isLoggedIn && (

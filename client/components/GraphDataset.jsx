@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -9,10 +9,9 @@ import {
   PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
-import {setXAxis, addYAxis, deleteYAxis} from '../store'
+import { setXAxis, addYAxis, deleteYAxis, fetchAndSetDataFromS3 } from '../store'
 import axios from 'axios'
 import crypto from 'crypto'
-
 
 
 class GraphDataset extends Component {
@@ -22,9 +21,16 @@ class GraphDataset extends Component {
       yCategQuantity: ['']
     }
 
-    this.addYCategory = this.addYCategory.bind(this)
-    this.handleDeleteY = this.handleDeleteY.bind(this)
-    this.handleGraphClick = this.handleGraphClick.bind(this)
+    this.addYCategory = this.addYCategory.bind(this);
+    this.handleDeleteY = this.handleDeleteY.bind(this);
+    this.handleGraphClick = this.handleGraphClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { datasetId } = this.props.match.params;
+    if (datasetId) {
+      this.props.getDataset(datasetId)
+    }
   }
 
   addYCategory() {
@@ -34,7 +40,7 @@ class GraphDataset extends Component {
   }
 
   handleDeleteY(idx) {
-    const {deleteY} = this.props
+    const { deleteY } = this.props
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
@@ -42,56 +48,50 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick(graphType) {
-    const {dataset, graphSettings} = this.props
-    const {currentX, currentY} = graphSettings
+    const { dataset, graphSettings } = this.props
+    const { currentX, currentY } = graphSettings
     const datasetName = dataset.name
     //if the dataset already has an aws then we want to make that the awsId
     //this will cause use to reuse that dataset for the graph
 
-    //awsId will equal a new id or the one that the dataset already has
-    const awsId = !!dataset.awsId
-      ? dataset.awsId
-      : crypto
-          .randomBytes(8)
-          .toString('base64')
-          .replace(/\//g, '7')
-    console.log('awsId', awsId)
-
-    const graphId = crypto
-      .randomBytes(8)
-      .toString('base64')
-      .replace(/\//g, '7')
-    console.log('graphId', graphId)
-
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
-      ? axios.post(`api/graphs/aws/${awsId}`, {dataset})
+      ? axios.post('api/aws', { dataset })
       : (AWSPost = Promise.resolve())
+    let { awsId } = dataset
 
-    let databasePost = axios.post(`api/graphs/${graphId}`, {
-      xAxis: currentX,
-      yAxis: currentY,
-      title: datasetName,
-      datasetName,
-      graphType,
-      awsId
-    })
-    Promise.all([AWSPost, databasePost])
-      .then(() => {
-        this.props.history.push(`/graph-dataset/customize/${graphId}`)
+    AWSPost
+      .then(res => {
+        if (res && res.status !== 200) {
+          //find something to do with message here
+          //maybe send a toast
+        } else {
+          //use awsId if it exists, otherwise use the one made by AWSPost
+          if (!awsId) awsId = res.data;
+          return axios.post('api/graphs', {
+            xAxis: currentX,
+            yAxis: currentY,
+            title: datasetName,
+            datasetName,
+            graphType,
+            awsId
+          })
+        }
+      })
+      .then(res => {
+        if (res.status !== 200) {
+
+        } else {
+          const graphId = res.data
+          this.props.history.push(`/graph-dataset/customize/${graphId}`)
+        }
       })
       .catch(console.error)
   }
 
   render() {
-    console.log('PROPS', this.props)
-    const {
-      dataset,
-      graphSettings,
-      handleXCategory,
-      handleYCategory
-    } = this.props
-    const {currentX, currentY} = graphSettings
+    const { dataset, graphSettings, handleXCategory, handleYCategory } = this.props
+    const { currentX, currentY } = graphSettings
     const columnObj = dataset.dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
@@ -236,6 +236,9 @@ const mapDispatch = dispatch => ({
   },
   deleteY(idx) {
     dispatch(deleteYAxis(idx))
+  },
+  getDataset(awsId) {
+    dispatch(fetchAndSetDataFromS3(awsId))
   }
 })
 
