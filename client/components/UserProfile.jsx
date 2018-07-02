@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import store, {fetchAndSetDataFromS3, resetGraphSettings} from '../store'
+import {ToastContainer} from 'react-toastify'
 
 const UserProfile = props => {
   const handleDatasetClick = awsId => {
@@ -42,6 +43,8 @@ const UserProfile = props => {
           </div>
         </div>
       </div>
+      <ToastContainer
+          />
     </div>
   )
 }

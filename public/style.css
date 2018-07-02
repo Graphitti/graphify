@@ -417,3 +417,10 @@ nav a {
   width: 70%;
   margin: 20px;
 }
+
+.toast div {
+  font-size: 25px;
+  background: url(https://l7.alamy.com/zooms/82f9a4f…/blue-and-green-speed-blur-background-jacadb.jpg);
+  filter: hue-rotate(-50deg);
+  color: white;
+}
