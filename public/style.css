@@ -180,7 +180,7 @@ body {
 
 .graph-dataset-graphs-single:hover {
   text-shadow: 0px 0px 2px rgb(19, 247, 100);
-  box-shadow: 0px 0px 5px 0.4px rgb(19, 247, 100);
+  box-shadow: 0px 0px 10px 0.4px rgb(19, 247, 100);
   border: inset 3px #318f57;
 }
 
@@ -416,4 +416,14 @@ nav a {
 #single-graph-chart {
   width: 70%;
   margin: 20px;
+}
+
+.toast > div {
+  opacity: 0.6;
+  top: 80px;
+  text-align: center;
+  font-size: 26px;
+  background: url(https://l7.alamy.com/zooms/82f9a4f…/blue-and-green-speed-blur-background-jacadb.jpg);
+  filter: hue-rotate(-50deg);
+  color: white;
 }
