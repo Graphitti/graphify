@@ -96,7 +96,6 @@ class GraphDataset extends Component {
   }
 
   render() {
-    console.log('PROPS', this.props)
     const {
       dataset,
       graphSettings,
