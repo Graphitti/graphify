@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {Graph, YAxis, Dataset} = require('../db/models')
-const {AWS_KEY, AWS_SECRET, AWS_BUCKET} = require('../../secrets')
+const {AWS_KEY, AWS_SECRET, AWS_BUCKET} = process.env || require('../../secrets')
 const AWS = require('aws-sdk')
 // set all the keys and region here
 AWS.config.update({
