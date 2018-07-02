@@ -24,20 +24,28 @@ const Graph = db.define('graph', {
   //   defaultValue: false
   // },
   title: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: ''
   },
   xAxisLabel: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: ''
   },
   yAxisLabel: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: ''
   },
   graphType: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: ''
   },
   thumbnail: {
     type: Sequelize.STRING,
     defaultValue: '/graph.gif'
+  },
+  colors: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    defaultValue: ['#8884d8', '#82ca9d', '#ffc658', '#FF8042']
   }
 })
 

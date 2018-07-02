@@ -15,7 +15,8 @@ import {
   updateYAxisName,
   updateColor,
   fetchAndSetGraph,
-  fetchAndSetDataFromS3
+  fetchAndSetDataFromS3,
+  saveGraphSettingToDB
 } from '../store'
 import {HuePicker} from 'react-color'
 import crypto from 'crypto'
@@ -36,6 +37,7 @@ class SingleGraphView extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleChangeColor = this.handleChangeColor.bind(this)
+    this.handleSave = this.handleSave.bind(this)
     this.handleClone = this.handleClone.bind(this)
     this.exportChart = this.exportChart.bind(this)
     this.exportSVG = this.exportSVG.bind(this)
@@ -135,8 +137,14 @@ class SingleGraphView extends Component {
       .catch(console.error)
   }
 
+  handleSave(graphId) {
+    const settings = this.props.graphSettings
+    this.props.saveGraphSetting(graphId, settings)
+  }
+
   render() {
-    let {currentY, graphType, colors} = this.props.graphSettings
+    const {graphId} = this.props.match.params
+    let { currentY, graphType, colors } = this.props.graphSettings
 
     return (
       <div>
@@ -185,11 +193,8 @@ class SingleGraphView extends Component {
               <div>
                 {currentY.map((yAxis, idx) => (
                   <div key={idx}>
-                    <label
-                    >{`Change the color of the legend of '${yAxis}'`}</label>
-                    <button onClick={() => this.handleClick(idx)}>
-                      Pick Color
-                    </button>
+                    <label>{`Change the color of the legend of '${yAxis}'`}</label>
+                    <button onClick={() => this.handleClick(idx)}>Pick Color</button>
                     {this.state.legend !== -1 ? (
                       <div className="popover">
                         <div className="cover" onClick={this.handleClose} />
@@ -197,18 +202,17 @@ class SingleGraphView extends Component {
                           color={colors[idx]}
                           onChangeComplete={this.handleChangeColor}
                         />
-                      </div>
-                    ) : null}
+                      </div>) : null}
                   </div>
                 ))}
               </div>
+              <button type='submit' onClick={() => this.handleSave(graphId)}>{`Save`}</button>
             </div>
           )}
         </div>
         <ToastContainer className="toast" />
       </div>
-    )
-  }
+    )}
 }
 
 const mapState = state => {
@@ -236,6 +240,9 @@ const mapDispatch = dispatch => ({
   },
   getDataset: graphId => {
     dispatch(fetchAndSetDataFromS3(graphId))
+  },
+  saveGraphSetting: (graphId, settings) => {
+    dispatch(saveGraphSettingToDB(graphId, settings))
   }
 })
 

@@ -14,6 +14,7 @@ import {
 export const LineChartGraph = props => {
   const {dataset, graphSettings} = props
   const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
+  console.log('currentY', currentY)
 
   return (
     <div className="graph-dataset-graphs-single">

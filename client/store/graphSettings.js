@@ -1,3 +1,7 @@
+import { RSA_SSLV23_PADDING } from "constants";
+
+import { puts } from "util";
+
 import axios from 'axios'
 import {setData} from './dataset'
 
@@ -50,6 +54,21 @@ export const fetchAndSetGraph = graphId => dispatch => {
     .catch(err => console.log(err))
 }
 
+export const saveGraphSettingToDB = (graphId, settings) => dispatch => {
+  axios
+    .put(`/api/graphs/${graphId}`, {
+      xAxis: settings.currentX,
+      yAxis: settings.currentY,
+      xAxisLabel: settings.xAxisName,
+      yAxisLabel: settings.yAxisName,
+      title: settings.title,
+      graphType: settings.graphType,
+      colors: settings.colors
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+}
+
 // REDUCER
 
 export default (state = graphSettings, action) => {
@@ -78,9 +97,18 @@ export default (state = graphSettings, action) => {
       })
       return {...state, colors: newColors}
     case FETCH_AND_SET_GRAPH:
-      const {xAxis, yAxes, graphType} = action.graph
+      const {xAxis, yAxes, graphType, xAxisLabel, yAxisLabel, title, colors} = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
-      return {...state, currentX: xAxis, currentY: YAxisNames, graphType}
+      return {
+        ...state,
+        currentX: xAxis,
+        currentY: YAxisNames,
+        xAxisName: xAxisLabel,
+        yAxisName: yAxisLabel,
+        graphType,
+        title,
+        colors
+      }
     case RESET_GRAPH_SETTINGS:
       return {
         ...state,
