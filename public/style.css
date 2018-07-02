@@ -395,6 +395,7 @@ nav a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 }
 
 .search-results {
@@ -427,3 +428,4 @@ nav a {
   filter: hue-rotate(-50deg);
   color: white;
 }
+
