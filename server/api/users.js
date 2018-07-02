@@ -1,5 +1,6 @@
+
 const router = require('express').Router()
-const {User, Graph, YAxis} = require('../db/models')
+const {User, Graph, YAxis, Dataset} = require('../db/models')
 module.exports = router
 
 // CG: unnecessary route
@@ -17,7 +18,49 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// CG: do req.user.getGraphs method exists through the associations *****
+router.delete('/dataset/:datasetId', (req, res, next) => {
+  if (req.user) {
+    const {datasetId} = req.params;
+    const userId = req.user.id;
+    Dataset.findById(datasetId)
+    .then(dataset => {
+      if (dataset.userId === userId) {
+        const awsId =  dataset.awsId;
+        dataset.update({userId : null})
+        .then(result => {
+          res.status(200).send(awsId)
+        })
+        .catch(next);
+      } else {
+        res.status(401).send('You do not have permission to access this data')
+      }
+    })
+  } else {
+    res.status(401).send('You must login to effect datasets')
+  }
+})
+
+router.delete('/graph/:graphId', (req, res, next) => {
+  if (req.user) {
+    const {graphId} = req.params;
+    const userId = req.user.id;
+    Graph.findById(graphId)
+    .then(graph => {
+      if (graph.userId === userId) {
+        graph.destroy()
+        .then(result => {
+          res.status(200).send('Graph deleted')
+        })
+        .catch(next);
+      } else {
+        res.status(401).send('You do not have permission to access this data')
+      }
+    })
+  } else {
+    res.status(401).send('You must login to effect datasets')
+  }
+})
+
 router.get('/:userId/graphs', (req, res, next) => {
   const userId = Number(req.params.userId);
   if (req.user && req.user.dataValues.id === userId) {
