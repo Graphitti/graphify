@@ -123,7 +123,6 @@ router.get('/aws/:awsId', (req, res, next) => {
   findDatasetPromise
     .then(result => {
       let parsedDataset = JSON.parse(result.Body)
-      console.log(parsedDataset)
       res.json(parsedDataset)
     })
     .catch(next)

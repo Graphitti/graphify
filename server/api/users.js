@@ -40,17 +40,14 @@ router.delete('/dataset/:datasetId', (req, res, next) => {
 })
 
 router.delete('/graph/:graphId', (req, res, next) => {
-  console.log('hitting graph delete route')
   if (req.user) {
     const {graphId} = req.params;
     const userId = req.user.id;
     Graph.findById(graphId)
     .then(graph => {
-      console.log('found graph', graph)
       if (graph.userId === userId) {
         graph.destroy()
         .then(result => {
-          console.log('what deleted graph returns',result)
           res.status(200).send('Graph deleted')
         })
         .catch(next);
