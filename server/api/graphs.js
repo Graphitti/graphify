@@ -31,7 +31,6 @@ router.get('/:graphId', (req, res, next) => {
 })
 
 router.post('/:graphId', (req, res, next) => {
-  console.log('hitting the right route')
   if (req.user) {
     const {graphId} = req.params
     const {xAxis, yAxis, title, graphType, datasetName, awsId} = req.body
@@ -123,7 +122,6 @@ router.get('/aws/:awsId', (req, res, next) => {
   findDatasetPromise
     .then(result => {
       let parsedDataset = JSON.parse(result.Body)
-      console.log(parsedDataset)
       res.json(parsedDataset)
     })
     .catch(next)
