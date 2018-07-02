@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -17,12 +17,11 @@ import {
   fetchAndSetGraph,
   fetchAndSetDataFromS3
 } from '../store'
-import { HuePicker } from 'react-color'
-import history from '../history'
+import {HuePicker} from 'react-color'
 import crypto from 'crypto'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'http://localhost:8080'
 
 class SingleGraphView extends Component {
   constructor(props) {
@@ -38,8 +37,8 @@ class SingleGraphView extends Component {
   }
 
   componentDidMount() {
-    const { graphId } = this.props.match.params
-    const { getGraphId } = this.props
+    const {graphId} = this.props.match.params
+    const {getGraphId} = this.props
     getGraphId(graphId)
   }
 
@@ -57,48 +56,57 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    this.setState({ legend: idx })
+    this.setState({legend: idx})
   }
 
   handleChangeColor(color) {
     this.props.changeColor(color.hex, this.state.legend)
-    this.setState({ legend: -1 })
+    this.setState({legend: -1})
   }
 
   handleClone() {
     const graphId = crypto
       .randomBytes(8)
       .toString('base64')
-      .replace(/\//g, '7');
+      .replace(/\//g, '7')
     console.log('graphId', graphId)
-    const { currentX, currentY, title, xAxisName, yAxisName, colors, graphType } = this.props.graphSettings;
-    const {awsId, name } = this.props.dataset;
-    axios.post(`api/graphs/${graphId}`, {
-      xAxis: currentX,
-      yAxis: currentY,
-      //comment in when the models support these
-      // xAxisLabel: xAxisName,
-      // yAxisLabel: yAxisName,
-      // colors,
-      title: title,
-      graphType,
-      datasetName: name,
-      awsId
-    })
-    .then(() => {
-      this.props.history.push(`/graph-dataset/customize/${graphId}`);
-      location.reload();
-    })
-    .catch(console.error)
+    const {
+      currentX,
+      currentY,
+      title,
+      xAxisName,
+      yAxisName,
+      colors,
+      graphType
+    } = this.props.graphSettings
+    const {awsId, name} = this.props.dataset
+    axios
+      .post(`api/graphs/${graphId}`, {
+        xAxis: currentX,
+        yAxis: currentY,
+        //comment in when the models support these
+        // xAxisLabel: xAxisName,
+        // yAxisLabel: yAxisName,
+        // colors,
+        title: title,
+        graphType,
+        datasetName: name,
+        awsId
+      })
+      .then(() => {
+        this.props.history.push(`/graph-dataset/customize/${graphId}`)
+        location.reload()
+      })
+      .catch(console.error)
   }
 
   render() {
-    let { currentY, graphType, colors } = this.props.graphSettings
+    let {currentY, graphType, colors} = this.props.graphSettings
 
     return (
       <div>
         <div>
-          {(function () {
+          {(function() {
             switch (graphType) {
               case 'Line':
                 return <LineChartGraph />
@@ -119,38 +127,43 @@ class SingleGraphView extends Component {
         </div>
 
         <div>
-          {
-            this.state.edit === false ?
+          {this.state.edit === false ? (
+            <div>
+              <button onClick={() => this.setState({edit: true})}>Edit</button>
+              <button onClick={this.handleClone}>Clone</button>
+            </div>
+          ) : (
+            <div>
+              <form>
+                <label>{`Change title`}</label>
+                <input type="text" name="title" onChange={this.handleChange} />
+                <label>{`Change the name of X axis`}</label>
+                <input type="text" name="XAxis" onChange={this.handleChange} />
+                <label>{`Change the name of Y axis`}</label>
+                <input type="text" name="YAxis" onChange={this.handleChange} />
+              </form>
               <div>
-                <button onClick={() => this.setState({ edit: true })}>Edit</button>
-                <button onClick={this.handleClone}>Clone</button>
-              </div> :
-              <div>
-                <form>
-                  <label>{`Change title`}</label>
-                  <input type='text' name='title' onChange={this.handleChange} />
-                  <label>{`Change the name of X axis`}</label>
-                  <input type='text' name='XAxis' onChange={this.handleChange} />
-                  <label>{`Change the name of Y axis`}</label>
-                  <input type='text' name='YAxis' onChange={this.handleChange} />
-                </form>
-                <div>
-                  {currentY.map((yAxis, idx) => (
-                    <div key={idx}>
-                      <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                      <button onClick={() => this.handleClick(idx)}>Pick Color</button>
-                      {this.state.legend !== -1 ? <div className="popover" >
+                {currentY.map((yAxis, idx) => (
+                  <div key={idx}>
+                    <label
+                    >{`Change the color of the legend of '${yAxis}'`}</label>
+                    <button onClick={() => this.handleClick(idx)}>
+                      Pick Color
+                    </button>
+                    {this.state.legend !== -1 ? (
+                      <div className="popover">
                         <div className="cover" onClick={this.handleClose} />
                         <HuePicker
                           color={colors[idx]}
                           onChangeComplete={this.handleChangeColor}
                         />
-                      </div> : null}
-                    </div>
-                  ))}
-                </div>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
-          }
+            </div>
+          )}
         </div>
       </div>
     )
