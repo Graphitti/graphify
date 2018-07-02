@@ -46,7 +46,7 @@ export class UserProfile extends Component {
             <h2>My Datasets</h2>
             {datasets &&
               datasets.map(dataset => (
-                <div key={dataset.id}>
+                <div key={dataset.id} id="dataset-link">
                   <a onClick={() => this.handleDatasetClick(dataset.awsId)}>
                     <h3>{dataset.name}</h3>
                   </a>

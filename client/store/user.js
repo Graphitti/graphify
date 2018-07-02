@@ -58,19 +58,13 @@ export const logout = () => async dispatch => {
 
 export const deleteDataset = datasetId => dispatch => {
   return axios.delete(`/api/users/dataset/${datasetId}`)
-  .then(awsId => {
-    console.log('in thunk for dataset',awsId)
-    dispatch(me())
-  })
+  .then(awsId => dispatch(me()))
   .catch(console.error)
 } 
 
 export const deleteGraph = graphId => dispatch => {
   return axios.delete(`/api/users/graph/${graphId}`)
-  .then(res => {
-    console.log('in thunk for graph',res)
-    dispatch(me())
-  })
+  .then(res => dispatch(me()))
   .catch(console.error)
 } 
 

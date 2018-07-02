@@ -95,7 +95,9 @@ a {
     rgb(255, 59, 0) 100%
   );
 }
-
+button {
+  cursor: pointer;
+}
 body {
   font-family: sans-serif;
 }
@@ -120,7 +122,9 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
+#dataset-link {
+  cursor: pointer;
+}
 .dataset-preview {
   display: flex;
   flex-direction: column;
@@ -129,6 +133,7 @@ body {
 .dataset-preview-link {
   color: green;
   margin: 2px;
+  cursor: pointer;
 }
 
 .dataset-preview-permalink {
@@ -253,7 +258,9 @@ body {
   width: 300px;
   margin: 0px 0px 15px;
 }
-
+#graph-link {
+  cursor: pointer;
+}
 #home {
   text-align: center;
   margin: 50px;
