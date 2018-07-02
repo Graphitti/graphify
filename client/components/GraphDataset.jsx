@@ -60,9 +60,8 @@ class GraphDataset extends Component {
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
       ? axios.post(`api/graphs/aws/${awsId}`, {dataset})
-      : (AWSPost = Promise.resolve()) // CG: CHECK THAT THIS WORKS
-      // ***** USE ASYNC AWAIT OR PROMISES *****
-
+      : (AWSPost = Promise.resolve()) 
+      
     let databasePost = axios.post(`api/graphs/${graphId}`, {
       xAxis: currentX,
       yAxis: currentY,

@@ -262,7 +262,6 @@ body {
 }
 
 #home-name {
-  text-shadow: 0px 0px 10px rgb(19, 247, 100);
   font-size: 60px;
   font-weight: bold;
   font-style: italic;
@@ -322,20 +321,26 @@ nav a {
   align-items: center;
 }
 
-#navbar-img {
-  margin: 0px 20px;
-  height: calc(13vw - 8em);
+#navbar-home {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#navbar-name {
+#navbar-home-img {
+  margin: 0px 20px;
+  height: 3em;
+}
+
+#navbar-home-name {
   font-weight: bold;
   font-style: italic;
-  color: white;
+  color: black;
   transition: 0.5s;
 }
 
-#navbar-name:hover {
-  text-shadow: 0px 0px 14px rgb(19, 247, 100);
+#navbar-home-name:hover {
+  text-shadow: 0px 0px 14px rgb(22, 199, 85);
 }
 
 #navbar-options {
@@ -410,20 +415,28 @@ nav a {
 }
 
 #single-graph {
-  display: flex;
-}
-
-#single-graph-chart {
-  width: 70%;
   margin: 20px;
 }
 
+#single-graph-container {
+  display: flex;
+}
+
+#single-graph-container-chart {
+  width: 75%
+}
+
+#single-graph-container-settings {
+  width: 25%;
+  margin: 20px, 50px;
+}
+
 .toast > div {
-  opacity: 0.6;
+  opacity: 0.9;
   top: 80px;
   text-align: center;
   font-size: 26px;
-  background: url(https://l7.alamy.com/zooms/82f9a4f…/blue-and-green-speed-blur-background-jacadb.jpg);
+  background: url(toast.jpg);
   filter: hue-rotate(-50deg);
   color: white;
 }

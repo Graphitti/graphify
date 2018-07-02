@@ -7,9 +7,9 @@ import {logout} from '../store'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div id="navbar">
     <div>
-      <img id="navbar-img" src="/graph-icon.png" />
-      <Link to="/">
-        <h1 id="navbar-name">GRAPHIFY</h1>
+      <Link id="navbar-home" to="/">
+        <img id="navbar-home-img" src="/graph-icon.png" />
+        <h1 id="navbar-home-name">GRAPHIFY</h1>
       </Link>
     </div>
     <nav id="navbar-options">
