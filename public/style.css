@@ -419,6 +419,7 @@ nav a {
 }
 
 .toast > div {
+  opacity: 0.6;
   top: 80px;
   text-align: center;
   font-size: 26px;
