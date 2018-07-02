@@ -12,17 +12,6 @@ const Graph = db.define('graph', {
   xAxis: {
     type: Sequelize.STRING
   },
-  // datasetUrl: {
-  //     type: Sequelize.STRING,
-  //     allowNull: false,
-  //     validate: {
-  //         isUrl: true
-  //     }
-  // },
-  // shareable: {
-  //   type: Sequelize.BOOLEAN,
-  //   defaultValue: false
-  // },
   title: {
     type: Sequelize.STRING,
     defaultValue: ''
