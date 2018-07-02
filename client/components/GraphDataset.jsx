@@ -12,8 +12,7 @@ import ReactTable from 'react-table'
 import {setXAxis, addYAxis, deleteYAxis} from '../store'
 import axios from 'axios'
 import crypto from 'crypto'
-
-
+import {toast} from 'react-toastify'
 
 class GraphDataset extends Component {
   constructor(props) {
@@ -45,23 +44,18 @@ class GraphDataset extends Component {
     const {dataset, graphSettings} = this.props
     const {currentX, currentY} = graphSettings
     const datasetName = dataset.name
-    //if the dataset already has an aws then we want to make that the awsId
-    //this will cause use to reuse that dataset for the graph
-
-    //awsId will equal a new id or the one that the dataset already has
+    // Reuses dataset if already exists
     const awsId = !!dataset.awsId
       ? dataset.awsId
       : crypto
           .randomBytes(8)
           .toString('base64')
           .replace(/\//g, '7')
-    console.log('awsId', awsId)
 
     const graphId = crypto
       .randomBytes(8)
       .toString('base64')
       .replace(/\//g, '7')
-    console.log('graphId', graphId)
 
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
@@ -81,6 +75,24 @@ class GraphDataset extends Component {
         this.props.history.push(`/graph-dataset/customize/${graphId}`)
       })
       .catch(console.error)
+
+    setTimeout(() => {
+      toast('Dataset Saved', {
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true
+      })
+    }, 500)
+
+    setTimeout(() => {
+      toast('Graph Saved', {
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true
+      })
+    }, 1000)
   }
 
   render() {

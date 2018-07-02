@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import CSVReader from 'react-csv-reader'
 import store, {uploadData, resetGraphSettings} from '../store'
 import history from '../history'
-import {ToastContainer, toast} from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css';
 
 export default class Home extends Component {
   constructor(props) {
@@ -23,14 +21,6 @@ export default class Home extends Component {
     history.push('/search')
   }
 
-  handleToast = () =>
-    toast('Dataset Saved', {
-      autoClose: false,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true
-    })
-
   render() {
     return (
       <div id="home">
@@ -46,12 +36,6 @@ export default class Home extends Component {
             cssClass="home-buttons react-csv-input"
             onFileLoaded={this.handleUpload}
           />
-        </div>
-        <div>
-          <button className="home-buttons" onClick={this.handleToast}>
-            Toast
-          </button>
-          <ToastContainer className="toast" />
         </div>
       </div>
     )
