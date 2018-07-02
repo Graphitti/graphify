@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import ShowSearchResults from './ShowSearchResults.jsx'
 import history from '../history'
 import { getSocrataCategories, searchSocrataForDatasets } from './utils/socrataFunctions'

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -17,13 +17,13 @@ import {
   fetchAndSetGraph,
   fetchAndSetDataFromS3
 } from '../store'
-import { HuePicker } from 'react-color'
-import history from '../history'
+import {HuePicker} from 'react-color'
 import crypto from 'crypto'
 import axios from 'axios'
 import FileSaver from 'file-saver'
+import {toast, ToastContainer} from 'react-toastify'
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'http://localhost:8080'
 
 class SingleGraphView extends Component {
   constructor(props) {
@@ -42,33 +42,35 @@ class SingleGraphView extends Component {
   }
 
   componentDidMount() {
-    const { graphId } = this.props.match.params
-    const { getGraphId } = this.props
+    const {graphId} = this.props.match.params
+    const {getGraphId} = this.props
     getGraphId(graphId)
   }
-  
+
   // Exports the graph as embedded JS or PNG
   exportChart(asSVG) {
     // A Recharts component is rendered as a div that contains namely an SVG
     // which holds the chart. We can access this SVG by calling upon the first child/
     // let chartSVG = ReactDOM.findDOMNode(this.currentChart).children[0];
-    let chartSVG = document.getElementById('current-chart').children[0];
+    let chartSVG = document.getElementById('current-chart').children[0]
     if (asSVG) {
-      let svgURL = new XMLSerializer().serializeToString(chartSVG);
-      let svgBlob = new Blob([svgURL], { type: "image/svg+xml;charset=utf-8" });
-      FileSaver.saveAs(svgBlob, this.state.uuid + ".svg");
+      let svgURL = new XMLSerializer().serializeToString(chartSVG)
+      let svgBlob = new Blob([svgURL], {type: 'image/svg+xml;charset=utf-8'})
+      FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
     } else {
-      let svgBlob = new Blob([chartSVG.outerHTML], { type: "text/html;charset=utf-8" });
-      FileSaver.saveAs(svgBlob, this.state.uuid + ".html");
+      let svgBlob = new Blob([chartSVG.outerHTML], {
+        type: 'text/html;charset=utf-8'
+      })
+      FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
     }
   }
 
   exportSVG() {
-    let chartSVG = document.getElementById('current-chart').children[0];
-    let input = document.getElementById('svg-copy');
-    this.state.svgDisplay = true;
-    let svgURL = new XMLSerializer().serializeToString(chartSVG);
-    input.value = svgURL;
+    let chartSVG = document.getElementById('current-chart').children[0]
+    let input = document.getElementById('svg-copy')
+    this.state.svgDisplay = true
+    let svgURL = new XMLSerializer().serializeToString(chartSVG)
+    input.value = svgURL
   }
 
   handleChange(event) {
@@ -85,53 +87,66 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    this.setState({ legend: idx })
+    this.setState({legend: idx})
   }
 
   handleChangeColor(color) {
     this.props.changeColor(color.hex, this.state.legend)
-    this.setState({ legend: -1 })
+    this.setState({legend: -1})
   }
 
   handleClone() {
     const graphId = crypto
       .randomBytes(8)
       .toString('base64')
-      .replace(/\//g, '7');
-    console.log('graphId', graphId)
-    const { currentX, currentY, title, xAxisName, yAxisName, colors, graphType } = this.props.graphSettings;
-    const { awsId, name } = this.props.dataset;
-    axios.post(`api/graphs/${graphId}`, {
-      xAxis: currentX,
-      yAxis: currentY,
-      //comment in when the models support these
-      // xAxisLabel: xAxisName,
-      // yAxisLabel: yAxisName,
-      // colors,
-      title: title,
-      graphType,
-      datasetName: name,
-      awsId
-    })
+      .replace(/\//g, '7')
+    const {
+      currentX,
+      currentY,
+      title,
+      xAxisName,
+      yAxisName,
+      colors,
+      graphType
+    } = this.props.graphSettings
+    const {awsId, name} = this.props.dataset
+    return axios
+      .post(`api/graphs/${graphId}`, {
+        xAxis: currentX,
+        yAxis: currentY,
+        //comment in when the models support these
+        // xAxisLabel: xAxisName,
+        // yAxisLabel: yAxisName,
+        // colors,
+        title,
+        graphType,
+        datasetName: name,
+        awsId
+      })
       .then(() => {
-        this.props.history.push(`/graph-dataset/customize/${graphId}`);
-        location.reload();
+        this.props.history.push(`/graph-dataset/customize/${graphId}`)
+        return toast('Graph Cloned', {
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true
+        })
       })
       .catch(console.error)
   }
 
   render() {
-    let { currentY, graphType, colors } = this.props.graphSettings
+    let {currentY, graphType, colors} = this.props.graphSettings
 
     return (
       <div>
         {/* this is the code for exporting the image */}
         <button onClick={() => this.exportChart()}>Download Image</button>
         <button onClick={() => this.exportSVG()}>Get SVG</button>
-        <input id="svg-copy" style={{height: "30px", width: "400px"}}></input>
+        <input id="svg-copy" style={{height: '30px', width: '400px'}} />
 
         <div id="current-chart">
-          {(function () {
+          {(function() {
             switch (graphType) {
               case 'Line':
                 return <LineChartGraph />
@@ -152,39 +167,45 @@ class SingleGraphView extends Component {
         </div>
 
         <div>
-          {
-            this.state.edit === false ?
+          {this.state.edit === false ? (
+            <div>
+              <button onClick={() => this.setState({edit: true})}>Edit</button>
+              <button onClick={this.handleClone}>Clone</button>
+            </div>
+          ) : (
+            <div>
+              <form>
+                <label>{`Change title`}</label>
+                <input type="text" name="title" onChange={this.handleChange} />
+                <label>{`Change the name of X axis`}</label>
+                <input type="text" name="XAxis" onChange={this.handleChange} />
+                <label>{`Change the name of Y axis`}</label>
+                <input type="text" name="YAxis" onChange={this.handleChange} />
+              </form>
               <div>
-                <button onClick={() => this.setState({ edit: true })}>Edit</button>
-                <button onClick={this.handleClone}>Clone</button>
-              </div> :
-              <div>
-                <form>
-                  <label>{`Change title`}</label>
-                  <input type='text' name='title' onChange={this.handleChange} />
-                  <label>{`Change the name of X axis`}</label>
-                  <input type='text' name='XAxis' onChange={this.handleChange} />
-                  <label>{`Change the name of Y axis`}</label>
-                  <input type='text' name='YAxis' onChange={this.handleChange} />
-                </form>
-                <div>
-                  {currentY.map((yAxis, idx) => (
-                    <div key={idx}>
-                      <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                      <button onClick={() => this.handleClick(idx)}>Pick Color</button>
-                      {this.state.legend !== -1 ? <div className="popover" >
+                {currentY.map((yAxis, idx) => (
+                  <div key={idx}>
+                    <label
+                    >{`Change the color of the legend of '${yAxis}'`}</label>
+                    <button onClick={() => this.handleClick(idx)}>
+                      Pick Color
+                    </button>
+                    {this.state.legend !== -1 ? (
+                      <div className="popover">
                         <div className="cover" onClick={this.handleClose} />
                         <HuePicker
                           color={colors[idx]}
                           onChangeComplete={this.handleChangeColor}
                         />
-                      </div> : null}
-                    </div>
-                  ))}
-                </div>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
-          }
+            </div>
+          )}
         </div>
+        <ToastContainer className="toast" />
       </div>
     )
   }
@@ -217,8 +238,5 @@ const mapDispatch = dispatch => ({
     dispatch(fetchAndSetDataFromS3(graphId))
   }
 })
-
-
-
 
 export default connect(mapState, mapDispatch)(SingleGraphView)

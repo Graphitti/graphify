@@ -29,11 +29,7 @@ export default class Home extends Component {
           <h3>Graph Your World</h3>
         </div>
         <div id="home-buttons-container">
-          <button
-            className="home-buttons"
-            type="button"
-            onClick={this.handleSearch}
-          >
+          <button className="home-buttons" onClick={this.handleSearch}>
             Search Our Datasets
           </button>
           <CSVReader

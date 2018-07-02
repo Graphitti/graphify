@@ -58,6 +58,7 @@
     "react-redux": "^5.0.2",
     "react-router-dom": "^4.1.1",
     "react-table": "^6.8.6",
+    "react-toastify": "^4.1.0",
     "recharts": "^1.0.0-beta.10",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
