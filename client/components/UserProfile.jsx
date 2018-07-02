@@ -43,8 +43,7 @@ const UserProfile = props => {
           </div>
         </div>
       </div>
-      <ToastContainer
-          />
+      <ToastContainer />
     </div>
   )
 }
