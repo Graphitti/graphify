@@ -31,8 +31,7 @@ class SingleGraphView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      legend: -1,
-      svgDisplay: false
+      legend: -1
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -72,11 +71,7 @@ class SingleGraphView extends Component {
   exportSVG() {
     let chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
-    let input = document.getElementById('svg-copy')
-    this.state.svgDisplay = true
-    let svgURL = new XMLSerializer().serializeToString(chartSVG)
-    input.value = svgURL;
-    return svgURL;
+    return new XMLSerializer().serializeToString(chartSVG);
   }
 
   handleChange(event) {
@@ -239,9 +234,6 @@ class SingleGraphView extends Component {
                 ))}
               </div>
             </div>
-            <button onClick={() => this.exportChart()}>Download Image</button>
-            <button onClick={() => this.exportSVG()}>Get SVG</button>
-            <input id="svg-copy" style={{height: '30px', width: '400px'}} />
           </div>
         </div>
 
