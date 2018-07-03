@@ -21,26 +21,36 @@ export const BarChartGraph = props => {
     yAxisName,
     colors
   } = graphSettings
-
+  console.log('PROPS', props)
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Bar Chart'}</h2>
       <ResponsiveContainer width="85%" height={550}>
         <BarChart align="center" data={dataset.dataset}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey={currentX}
+          <YAxis
             label={{
-              value: `${xAxisName}`,
-              offset: -20,
-              position: 'bottom'
+              value: `${yAxisName}`,
+              angle: -90,
+              position: 'insideLeft'
             }}
           />
-          <YAxis
-            label={{value: `${yAxisName}`, angle: -90, position: 'insideLeft'}}
-          />
           <Tooltip />
-          <Legend align="center" />
+          {xAxisName ? (
+            <XAxis
+              dataKey={currentX}
+              label={{
+                value: `${xAxisName}`,
+                offset: -15,
+                position: 'insideBottom'
+              }}
+            />
+          ) : (
+            <div />
+          )}
+
+          {xAxisName ? <Legend align="right" /> : <Legend align="center" />}
+
           {currentY.map((yAxis, idx) => (
             <Bar
               key={idx}

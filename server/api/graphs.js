@@ -8,7 +8,7 @@ AWS.config.update({
   secretAccessKey: AWS_SECRET,
   region: 'us-east-2'
 })
-const { getDatasetFromS3, getGraphImgFromS3 } = require('../utils')
+const { getDatasetFromS3 } = require('../utils')
 const crypto = require('crypto')
 
 module.exports = router
@@ -31,12 +31,7 @@ router.get('/:graphId', (req, res, next) => {
     .catch(next)
 })
 
-<<<<<<< HEAD
-// CG: post to /graphs ... put to /graphs/:graphId
-router.post('/:graphId', (req, res, next) => {
-=======
 router.post('/', (req, res, next) => {
->>>>>>> master
   if (req.user) {
     const graphId = crypto
       .randomBytes(8)
@@ -70,11 +65,7 @@ router.post('/', (req, res, next) => {
         let setDataset = newGraph.setDataset(newDataset[0])
         return Promise.all([setY, setDataset])
       })
-<<<<<<< HEAD
-      .then(() => res.send('worked')) // NL: SEND STATUS INSTEAD (201 for created)
-=======
       .then(() => res.status(200).send(graphId))
->>>>>>> master
       .catch(next)
   } else {
     res.status(401).send('You need to be a user to save graph data')
@@ -116,11 +107,7 @@ router.put('/:graphId', (req, res, next) => {
         return updatedGraph.setYAxes(createdAxes)
       })
       .then(() => {
-<<<<<<< HEAD
-        res.send('hello') // NL: SEND SOMETHING ELSE... LIKE STATUS
-=======
         res.status(200).send('graph updated')
->>>>>>> master
       })
       .catch(next)
   } else {
