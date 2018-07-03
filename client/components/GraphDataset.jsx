@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -9,15 +9,13 @@ import {
   PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
-import { setXAxis, addYAxis, deleteYAxis } from '../store'
+import {setXAxis, addYAxis, deleteYAxis} from '../store'
 import axios from 'axios'
-import crypto from 'crypto'
-import { toast } from 'react-toastify'
-
+import {toast} from 'react-toastify'
 
 const contentStyle = {
-  maxWidth: "600px",
-  width: "90%"
+  maxWidth: '600px',
+  width: '90%'
 }
 
 class GraphDataset extends Component {
@@ -39,7 +37,7 @@ class GraphDataset extends Component {
   }
 
   handleDeleteY(idx) {
-    const { deleteY } = this.props
+    const {deleteY} = this.props
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
@@ -47,27 +45,25 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick(graphType) {
-    const { dataset, graphSettings } = this.props
-    const { currentX, currentY } = graphSettings
+    const {dataset, graphSettings} = this.props
+    const {currentX, currentY} = graphSettings
     const datasetName = dataset.name
 
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
-      ? axios.post(`api/graphs/aws`, { dataset })
-      : (AWSPost = Promise.resolve({ data: dataset.awsId }))
+      ? axios.post(`api/graphs/aws`, {dataset})
+      : (AWSPost = Promise.resolve({data: dataset.awsId}))
 
-
-    AWSPost
-      .then(res => {
-        return axios.post(`api/graphs`, {
-          xAxis: currentX,
-          yAxis: currentY,
-          title: datasetName,
-          datasetName,
-          graphType,
-          awsId: res.data
-        })
+    AWSPost.then(res => {
+      return axios.post(`api/graphs`, {
+        xAxis: currentX,
+        yAxis: currentY,
+        title: datasetName,
+        datasetName,
+        graphType,
+        awsId: res.data
       })
+    })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
@@ -101,7 +97,7 @@ class GraphDataset extends Component {
       handleXCategory,
       handleYCategory
     } = this.props
-    const { currentX, currentY } = graphSettings
+    const {currentX, currentY} = graphSettings
     const columnObj = dataset.dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
