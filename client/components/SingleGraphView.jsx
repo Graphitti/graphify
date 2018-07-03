@@ -56,165 +56,174 @@ class SingleGraphView extends Component {
     // which holds the chart. We can access this SVG by calling upon the first child/
     // let chartSVG = ReactDOM.findDOMNode(this.currentChart).children[0];
     let chartSVG = document.getElementById('current-chart').children[0]
-    if (asSVG) {
-      let svgURL = new XMLSerializer().serializeToString(chartSVG)
-      let svgBlob = new Blob([svgURL], { type: 'image/svg+xml;charset=utf-8' })
-      FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
-    } else {
-      let svgBlob = new Blob([chartSVG.outerHTML], {
-        type: 'text/html;charset=utf-8'
-      })
-      FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
-    }
+    let svgBlob = new Blob([chartSVG.outerHTML], {
+      type: 'text/html;charset=utf-8'
+    })
+    FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
   }
+}
 
-  exportSVG() {
-    let chartSVG = document.getElementById('current-chart').children[0]
-    let input = document.getElementById('svg-copy')
-    this.setState({svgDisplay: true})
-    let svgURL = new XMLSerializer().serializeToString(chartSVG)
-    input.value = svgURL
+exportSVG() {
+  let chartSVG = document.getElementById('current-chart').children[0]
+  // let input = document.getElementById('svg-copy')
+  // this.setState({svgDisplay: true})
+  // let svgURL = new XMLSerializer().serializeToString(chartSVG)
+  // input.value = svgURL
+  htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    .then(function (dataUrl) {
+      var link = document.createElement('a');
+      link.download = 'my-image-name.jpeg';
+      link.href = dataUrl;
+      link.click();
+    });
+}
+
+mappingImage(){
+  let chartSVG = document.getElementById('current-chart').children[0]
+  htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    .then(dataUrl => {
+      //Add this to the store
+    });
+}
+
+handleChange(event) {
+  const name = event.target.name
+  const value = event.target.value
+  switch (name) {
+    case 'title':
+      return this.props.changeTitle(value)
+    case 'XAxis':
+      return this.props.changeXAxisName(value)
+    case 'YAxis':
+      return this.props.changeYAxisName(value)
   }
+}
 
-  handleChange(event) {
-    const name = event.target.name
-    const value = event.target.value
-    switch (name) {
-      case 'title':
-        return this.props.changeTitle(value)
-      case 'XAxis':
-        return this.props.changeXAxisName(value)
-      case 'YAxis':
-        return this.props.changeYAxisName(value)
-    }
-  }
+handleClick(idx) {
+  this.setState({ legend: idx })
+}
 
-  handleClick(idx) {
-    this.setState({ legend: idx })
-  }
+handleChangeColor(color) {
+  this.props.changeColor(color.hex, this.state.legend)
+  this.setState({ legend: -1 })
+}
 
-  handleChangeColor(color) {
-    this.props.changeColor(color.hex, this.state.legend)
-    this.setState({ legend: -1 })
-  }
-
-  handleClone() {
-    const graphId = crypto
-      .randomBytes(8)
-      .toString('base64')
-      .replace(/\//g, '7')
-    const {
-      currentX,
-      currentY,
+handleClone() {
+  const graphId = crypto
+    .randomBytes(8)
+    .toString('base64')
+    .replace(/\//g, '7')
+  const {
+    currentX,
+    currentY,
+    title,
+    xAxisName,
+    yAxisName,
+    colors,
+    graphType
+  } = this.props.graphSettings
+  const { awsId, name } = this.props.dataset
+  return axios
+    .post(`api/graphs/${graphId}`, {
+      xAxis: currentX,
+      yAxis: currentY,
+      //comment in when the models support these
+      // xAxisLabel: xAxisName,
+      // yAxisLabel: yAxisName,
+      // colors,
       title,
-      xAxisName,
-      yAxisName,
-      colors,
-      graphType
-    } = this.props.graphSettings
-    const { awsId, name } = this.props.dataset
-    return axios
-      .post(`api/graphs/${graphId}`, {
-        xAxis: currentX,
-        yAxis: currentY,
-        //comment in when the models support these
-        // xAxisLabel: xAxisName,
-        // yAxisLabel: yAxisName,
-        // colors,
-        title,
-        graphType,
-        datasetName: name,
-        awsId
+      graphType,
+      datasetName: name,
+      awsId
+    })
+    .then(() => {
+      this.props.history.push(`/graph-dataset/customize/${graphId}`)
+      return toast('Graph Cloned', {
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true
       })
-      .then(() => {
-        this.props.history.push(`/graph-dataset/customize/${graphId}`)
-        return toast('Graph Cloned', {
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true
-        })
-      })
-      .catch(console.error)
-  }
+    })
+    .catch(console.error)
+}
 
-  handleSave(graphId) {
-    const settings = this.props.graphSettings
-    this.props.saveGraphSetting(graphId, settings)
-  }
+handleSave(graphId) {
+  const settings = this.props.graphSettings
+  this.props.saveGraphSetting(graphId, settings)
+}
 
-  render() {
-    const { graphId } = this.props.match.params
-    let { currentY, graphType, colors } = this.props.graphSettings
+render() {
+  const { graphId } = this.props.match.params
+  let { currentY, graphType, colors } = this.props.graphSettings
 
-    return (
-      <div>
-        {/* this is the code for exporting the image */}
-        <button onClick={() => this.exportChart(true)}>Download Image</button>
-        <button onClick={() => this.exportSVG()}>Get SVG</button>
-        <input id="svg-copy" style={{ height: '30px', width: '400px' }} />
+  return (
+    <div>
+      {/* this is the code for exporting the image */}
+      <button onClick={() => this.exportChart()}>Download as html</button>
+      <button onClick={() => this.exportSVG()}>Download as image</button>
 
-        <div id="current-chart">
-          {(function () {
-            switch (graphType) {
-              case 'Line':
-                return <LineChartGraph />
-              case 'Bar':
-                return <BarChartGraph />
-              case 'Area':
-                return <AreaChartGraph />
-              case 'Radar':
-                return <RadarChartGraph />
-              case 'Scatter':
-                return <ScatterChartGraph />
-              case 'Pie':
-                return <PieChartGraph />
-              default:
-                return null
-            }
-          })()}
-        </div>
-
-        <div>
-          {this.state.edit === false ? (
-            <div>
-              <button onClick={() => this.setState({ edit: true })}>Edit</button>
-              <button onClick={this.handleClone}>Clone</button>
-            </div>
-          ) : (
-              <div>
-                <form>
-                  <label>Change title</label>
-                  <input type="text" name="title" onChange={this.handleChange} />
-                  <label>Change the name of X axis</label>
-                  <input type="text" name="XAxis" onChange={this.handleChange} />
-                  <label>Change the name of Y axis</label>
-                  <input type="text" name="YAxis" onChange={this.handleChange} />
-                </form>
-                <div>
-                  {currentY.map((yAxis, idx) => (
-                    <div key={idx}>
-                      <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                      <button onClick={() => this.handleClick(idx)}>Pick Color</button>
-                      {this.state.legend !== -1 ? (
-                        <div className="popover">
-                          <div className="cover" onClick={this.handleClose} />
-                          <HuePicker
-                            color={colors[idx]}
-                            onChangeComplete={this.handleChangeColor}
-                          />
-                        </div>) : null}
-                    </div>
-                  ))}
-                </div>
-                <button type='submit' onClick={() => this.handleSave(graphId)}>Save</button>
-              </div>
-            )}
-        </div>
-        <ToastContainer className="toast" />
+      <div id="current-chart">
+        {(function () {
+          switch (graphType) {
+            case 'Line':
+              return <LineChartGraph />
+            case 'Bar':
+              return <BarChartGraph />
+            case 'Area':
+              return <AreaChartGraph />
+            case 'Radar':
+              return <RadarChartGraph />
+            case 'Scatter':
+              return <ScatterChartGraph />
+            case 'Pie':
+              return <PieChartGraph />
+            default:
+              return null
+          }
+        })()}
       </div>
-    )
-  }
+
+      <div>
+        {this.state.edit === false ? (
+          <div>
+            <button onClick={() => this.setState({ edit: true })}>Edit</button>
+            <button onClick={this.handleClone}>Clone</button>
+          </div>
+        ) : (
+            <div>
+              <form>
+                <label>Change title</label>
+                <input type="text" name="title" onChange={this.handleChange} />
+                <label>Change the name of X axis</label>
+                <input type="text" name="XAxis" onChange={this.handleChange} />
+                <label>Change the name of Y axis</label>
+                <input type="text" name="YAxis" onChange={this.handleChange} />
+              </form>
+              <div>
+                {currentY.map((yAxis, idx) => (
+                  <div key={idx}>
+                    <label>{`Change the color of the legend of '${yAxis}'`}</label>
+                    <button onClick={() => this.handleClick(idx)}>Pick Color</button>
+                    {this.state.legend !== -1 ? (
+                      <div className="popover">
+                        <div className="cover" onClick={this.handleClose} />
+                        <HuePicker
+                          color={colors[idx]}
+                          onChangeComplete={this.handleChangeColor}
+                        />
+                      </div>) : null}
+                  </div>
+                ))}
+              </div>
+              <button type='submit' onClick={() => this.handleSave(graphId)}>Save</button>
+            </div>
+          )}
+      </div>
+      <ToastContainer className="toast" />
+    </div>
+  )
+}
 }
 
 const mapState = state => {
