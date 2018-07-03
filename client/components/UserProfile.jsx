@@ -41,31 +41,33 @@ export class UserProfile extends Component {
       : ''
     return (
       <div id="profile">
-        <h1>Hi, {name}!</h1>
+        <div className="profile-select-name">
+          <h1>Hi, {name}!</h1>
+        </div>
         <div id="profile-content">
           <div id="profile-datasets">
-            <h2>My Datasets</h2>
+            <h2 className="profile-select-name">My Datasets</h2>
             {datasets &&
               datasets.map(dataset => (
-                <div key={dataset.id} id="dataset-link">
+                <div key={dataset.id} className="dataset-link">
                   <a onClick={() => this.handleDatasetClick(dataset.awsId)}>
                     <h3>{dataset.name}</h3>
                   </a>
-                  {DeletePopup(<button>Delete Dataset</button>, this.handleDeleteDataset, dataset.id, 'dataset')}
+                  {DeletePopup(<button className="delete-dataset-and-graph">x</button>, this.handleDeleteDataset, dataset.id, 'dataset')}
                 </div>
               ))}
           </div>
           <div id="profile-graphs">
-            <h2>My Graphs</h2>
+            <h2 className="profile-select-name">My Graphs</h2>
             <div id="profile-graphs-wrap">
               {graphs &&
                 graphs.map(graph => (
-                  <div key={graph.id} id="profile-graphs-single">
+                  <div key={graph.id} className="profile-graphs-single">
                     <h2>{graph.title}</h2>
                     <Link to={`/graph-dataset/customize/${graph.graphId}`}>
                       <img src={graph.thumbnail} />
                     </Link>
-                    {DeletePopup(<button>Delete Graph</button>, this.handleDeleteGraph, graph.id, 'graph')}
+                    {DeletePopup(<button className="delete-dataset-and-graph">Delete graph</button>, this.handleDeleteGraph, graph.id, 'graph')}
                   </div>
                 ))}
             </div>

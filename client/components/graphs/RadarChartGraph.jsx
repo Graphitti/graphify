@@ -25,8 +25,8 @@ export const RadarChartGraph = props => {
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Radar Chart'}</h2>
-      <ResponsiveContainer width="85%" height={550}>
-        <RadarChart cx={300} cy={300} outerRadius={250} data={dataset.dataset}>
+      <ResponsiveContainer width="95%" height={550}>
+        <RadarChart cx={250} cy={250} outerRadius={200} data={dataset.dataset}>
           <Tooltip />
           <Legend align="center" />
           <PolarGrid />
