@@ -1,3 +1,3 @@
 
-export * from './graphPopup'
+export * from './popupCreators'
 export * from './socrataFunctions'
