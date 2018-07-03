@@ -56,7 +56,7 @@ class SingleGraphView extends Component {
     // which holds the chart. We can access this SVG by calling upon the first child/
     // let chartSVG = ReactDOM.findDOMNode(this.currentChart).children[0];
     let chartSVG = document.getElementById('current-chart').children[0]
-    if (true) {
+    if (asSVG) {
       let svgURL = new XMLSerializer().serializeToString(chartSVG)
       let svgBlob = new Blob([svgURL], { type: 'image/svg+xml;charset=utf-8' })
       FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
