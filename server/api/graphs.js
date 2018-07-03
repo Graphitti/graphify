@@ -75,7 +75,7 @@ router.post('/', (req, res, next) => {
 router.put('/:graphId', (req, res, next) => {
   if (req.user) {
     const {graphId} = req.params
-    const {xAxis, yAxis, xAxisLabel, yAxisLabel, title, graphType, colors} = req.body
+    const {xAxis, yAxis, xAxisLabel, yAxisLabel, title, description, graphType, colors} = req.body
     const userId = req.user.id
     //find the graph you need
     Graph.findOne({
@@ -87,7 +87,7 @@ router.put('/:graphId', (req, res, next) => {
       //update the found graph
       .then(foundGraph => {
         let effectedGraph = foundGraph.update({
-          xAxis, xAxisLabel, yAxisLabel, title, graphType, colors
+          xAxis, xAxisLabel, yAxisLabel, title, description, graphType, colors
         })
         //destroy the current yAxes
         foundGraph.yAxes.map(yAxis => {
