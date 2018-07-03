@@ -31,7 +31,7 @@ export const PieChartGraph = props => {
   return (
     <div>
       <h2>{title}</h2>
-      <ResponsiveContainer width="85%" height={550}>
+      <ResponsiveContainer width="90%" height={550}>
         <PieChart>
           <Pie
             isAnimationActive={true}

@@ -21,11 +21,10 @@ export const BarChartGraph = props => {
     yAxisName,
     colors
   } = graphSettings
-  console.log('PROPS', props)
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Bar Chart'}</h2>
-      <ResponsiveContainer width="85%" height={550}>
+      <ResponsiveContainer width="90%" height={550}>
         <BarChart align="center" data={dataset.dataset}>
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis

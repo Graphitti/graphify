@@ -25,7 +25,7 @@ export const ScatterChartGraph = props => {
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Scatter Chart'}</h2>
-      <ResponsiveContainer width="85%" height={550}>
+      <ResponsiveContainer width="90%" height={550}>
         <ScatterChart>
           <CartesianGrid />
           {xAxisName ? (
