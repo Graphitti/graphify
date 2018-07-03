@@ -28,14 +28,19 @@ export const ScatterChartGraph = props => {
       <ResponsiveContainer width="85%" height={550}>
         <ScatterChart>
           <CartesianGrid />
-          <XAxis
-            dataKey={currentX}
-            type="number"
-            label={{
-              value: `${xAxisName}`,
-              offset: -20,
-              position: 'insideBottom'
-            }}
+          {xAxisName ? (
+            <XAxis
+              dataKey={currentX}
+              label={{
+                value: `${xAxisName}`,
+                offset: -15,
+                position: 'insideBottom'
+              }}
+            />
+          ) : (
+            <div />
+          )}
+          {xAxisName ? <Legend align="right" /> : <Legend align="center" />}
           />
           {currentY.length &&
             currentY.map((yAxis, idx) => (

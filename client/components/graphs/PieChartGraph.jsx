@@ -45,7 +45,6 @@ export const PieChartGraph = props => {
             label
           />
           <Tooltip />
-          <Legend />
         </PieChart>
       </ResponsiveContainer>
     </div>

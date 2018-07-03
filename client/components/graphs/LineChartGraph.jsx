@@ -37,29 +37,20 @@ export const LineChartGraph = props => {
               />
             ))}
           <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-          {currentX.toLowerCase() !== 'number' ? (
+          {xAxisName ? (
             <XAxis
               dataKey={currentX}
               label={{
                 value: `${xAxisName}`,
-                offset: -20,
+                offset: -15,
                 position: 'insideBottom'
               }}
-              allowDuplicatedCategory={false}
-              type="category"
             />
           ) : (
-            <XAxis
-              dataKey={currentX}
-              label={{
-                value: `${xAxisName}`,
-                offset: -20,
-                position: 'insideBottom'
-              }}
-              allowDataOverflow={false}
-              type="number"
-            />
+            <div />
           )}
+
+          {xAxisName ? <Legend align="right" /> : <Legend align="center" />}
           <YAxis
             label={{value: `${yAxisName}`, angle: -90, position: 'insideLeft'}}
           />

@@ -13,28 +13,50 @@ import {
 
 export const AreaChartGraph = props => {
   const {dataset, graphSettings} = props
-  const {currentX, currentY, title, xAxisName, yAxisName, colors} = graphSettings
+  const {
+    currentX,
+    currentY,
+    title,
+    xAxisName,
+    yAxisName,
+    colors
+  } = graphSettings
 
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Area Chart'}</h2>
       <ResponsiveContainer width="85%" height={550}>
-      <AreaChart data={dataset.dataset}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
-        <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
-        <Tooltip />
-        <Legend align='center'/>
-        {currentY.map((yAxis, idx) => (
-          <Area
-            key={idx}
-            type="monotone"
-            dataKey={yAxis}
-            stroke={colors[idx]}
-            fill={colors[idx]}
+        <AreaChart data={dataset.dataset}>
+          <CartesianGrid strokeDasharray="3 3" />
+          {xAxisName ? (
+            <XAxis
+              dataKey={currentX}
+              label={{
+                value: `${xAxisName}`,
+                offset: -15,
+                position: 'insideBottom'
+              }}
+            />
+          ) : (
+            <div />
+          )}
+
+          {xAxisName ? <Legend align="right" /> : <Legend align="center" />}
+          <YAxis
+            label={{value: `${yAxisName}`, angle: -90, position: 'insideLeft'}}
           />
-        ))}
-      </AreaChart>
+          <Tooltip />
+          <Legend align="center" />
+          {currentY.map((yAxis, idx) => (
+            <Area
+              key={idx}
+              type="monotone"
+              dataKey={yAxis}
+              stroke={colors[idx]}
+              fill={colors[idx]}
+            />
+          ))}
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   )
