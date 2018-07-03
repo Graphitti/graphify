@@ -107,14 +107,6 @@ body {
   color: #666;
 }
 
-.cover {
-  position: 'fixed';
-  top: '0px';
-  right: '0px';
-  bottom: '0px';
-  left: '0px';
-}
-
 .csv-input {
   padding: 10px;
   display: block;
@@ -169,19 +161,30 @@ body {
   width: 100%;
 }
 
+.graph-dataset-headers {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+
 .graph-dataset-graphs {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .graph-dataset-graphs-single {
-  margin: 20px;
+  margin: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: inset 3px #617180;
   border-radius: 5px;
   transition: 0.3s ease-in-out;
+}
+
+.graph-dataset-single-container {
+  width: 33%;
 }
 
 .graph-dataset-graphs-single:hover {
@@ -201,6 +204,14 @@ body {
 }
 
 #graph-dataset-select-x-y {
+  width: fit-content;
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
+  border: inset 1px #318f41;
+  padding: 10px 40px;
+  border-radius: 5px;
+}
+
+#graph-dataset-message {
   width: fit-content;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
@@ -270,7 +281,6 @@ body {
 }
 
 #home-name {
-  text-shadow: 0px 0px 10px rgb(19, 247, 100);
   font-size: 60px;
   font-weight: bold;
   font-style: italic;
@@ -330,20 +340,26 @@ nav a {
   align-items: center;
 }
 
-#navbar-img {
-  margin: 0px 20px;
-  height: calc(13vw - 8em);
+#navbar-home {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#navbar-name {
+#navbar-home-img {
+  margin: 0px 20px;
+  height: 3em;
+}
+
+#navbar-home-name {
   font-weight: bold;
   font-style: italic;
-  color: white;
+  color: black;
   transition: 0.5s;
 }
 
-#navbar-name:hover {
-  text-shadow: 0px 0px 14px rgb(19, 247, 100);
+#navbar-home-name:hover {
+  text-shadow: 0px 0px 14px rgb(22, 199, 85);
 }
 
 #navbar-options {
@@ -362,7 +378,7 @@ nav a {
   font-size: 1.3em;
   color: #fff;
   text-decoration: none;
-  padding: 5px;
+  padding: 5px 7px;
   border-radius: 5px;
   transition: color 1s, background-color 0.5s;
 }
@@ -425,20 +441,99 @@ nav a {
 }
 
 #single-graph {
+  margin: 50px;
+}
+
+#single-graph-buttons {
+  display: flex;
+  margin: 30px;
+}
+
+#single-graph-buttons-save {
+  padding: 5px 25px;
+  margin: 0px 10px;
+  font-size: 25px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 10px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: 1s;
+}
+
+#single-graph-buttons-save:hover {
+  text-shadow: 0px 0px 10px rgb(19, 247, 100);
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
+}
+
+#single-graph-buttons-clone {
+  padding: 5px 15px;
+  margin: 0px 10px;
+  font-size: 25px;
+  color: white;
+  border: inset 2px #318b8f;
+  border-radius: 10px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 54) 45%,
+    rgb(0, 208, 255) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 215, 247);
+  transition: 1s;
+}
+
+#single-graph-buttons-clone:hover {
+  text-shadow: 0px 0px 10px rgb(19, 215, 247);
+  color: #203a47;
+  background-image: linear-gradient(45deg, #ddf4ff, #49a2cc);
+}
+
+#single-graph-buttons-share {
+  padding: 5px 15px;
+  margin: 0px 10px;
+  font-size: 25px;
+  color: white;
+  border: inset 2px #31418f;
+  border-radius: 10px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(15, 17, 80) 45%,
+    rgb(0, 78, 255) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(44, 19, 247);
+  transition: 1s;
+}
+
+#single-graph-buttons-share:hover {
+  text-shadow: 0px 0px 1px rgb(19, 26, 247);
+  color: #202747;
+  background-image: linear-gradient(45deg, #e2ddff73, #5a66f3);
+}
+
+#single-graph-container {
   display: flex;
 }
 
-#single-graph-chart {
-  width: 70%;
-  margin: 20px;
+#single-graph-container-chart {
+  width: 75%;
+}
+
+#single-graph-container-settings {
+  width: 25%;
+  margin: 20px 50px;
 }
 
 .toast > div {
-  opacity: 0.6;
+  opacity: 0.9;
   top: 80px;
   text-align: center;
   font-size: 26px;
-  background: url(https://l7.alamy.com/zooms/82f9a4f…/blue-and-green-speed-blur-background-jacadb.jpg);
+  background: url(toast.jpg);
   filter: hue-rotate(-50deg);
   color: white;
 }
@@ -467,4 +562,14 @@ nav a {
 .delete-dataset-and-graph:hover {
   color: #000000;
   background-image: linear-gradient(45deg, #ffdddd, #cc4949);
+}
+@media (max-width: 1500px) {
+  .graph-dataset-single-container {
+    width: 50%;
+  }
+}
+@media (max-width: 900px) {
+  .graph-dataset-single-container {
+    width: 80%;
+  }
 }

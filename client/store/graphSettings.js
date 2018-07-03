@@ -1,6 +1,6 @@
-import { RSA_SSLV23_PADDING } from "constants";
+import {RSA_SSLV23_PADDING} from 'constants'
 
-import { puts } from "util";
+import {puts} from 'util'
 
 import axios from 'axios'
 import {setData} from './dataset'
@@ -41,7 +41,10 @@ const fetchAndSetGraphFromDatabase = graph => ({
 export const resetGraphSettings = () => ({type: RESET_GRAPH_SETTINGS})
 
 export const updateTitle = title => ({type: UPDATE_TITLE, title})
-export const updateDescription = description => ({type: UPDATE_DESCRIPTION, description})
+export const updateDescription = description => ({
+  type: UPDATE_DESCRIPTION,
+  description
+})
 export const updateXAxisName = name => ({type: UPDATE_XAXIS_NAME, name})
 export const updateYAxisName = name => ({type: UPDATE_YAXIS_NAME, name})
 export const updateColor = (color, idx) => ({type: UPDATE_COLOR, color, idx})
@@ -58,16 +61,26 @@ export const fetchAndSetGraph = graphId => dispatch => {
 }
 
 export const saveGraphSettingToDB = (graphId, settings) => dispatch => {
+  const {
+    currentX,
+    currentY,
+    xAxisName,
+    yAxisName,
+    title,
+    graphType,
+    colors,
+    description
+  } = settings
   axios
     .put(`/api/graphs/${graphId}`, {
-      xAxis: settings.currentX,
-      yAxis: settings.currentY,
-      xAxisLabel: settings.xAxisName,
-      yAxisLabel: settings.yAxisName,
-      title: settings.title,
-      description: settings.description,
-      graphType: settings.graphType,
-      colors: settings.colors
+      xAxis: currentX,
+      yAxis: currentY,
+      xAxisLabel: xAxisName,
+      yAxisLabel: yAxisName,
+      title,
+      graphType,
+      description,
+      colors
     })
     .then(res => console.log(res))
     .catch(err => console.log(err))
@@ -103,7 +116,16 @@ export default (state = graphSettings, action) => {
       })
       return {...state, colors: newColors}
     case FETCH_AND_SET_GRAPH:
-      const {xAxis, yAxes, graphType, xAxisLabel, yAxisLabel, title, colors, description} = action.graph
+      const {
+        xAxis,
+        yAxes,
+        graphType,
+        xAxisLabel,
+        yAxisLabel,
+        title,
+        colors,
+        description
+      } = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {
         ...state,

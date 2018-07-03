@@ -11,13 +11,11 @@ import {
 import ReactTable from 'react-table'
 import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
-import crypto from 'crypto'
 import { toast } from 'react-toastify'
 
-
 const contentStyle = {
-  maxWidth: "600px",
-  width: "90%"
+  maxWidth: '600px',
+  width: '90%'
 }
 
 class GraphDataset extends Component {
@@ -56,18 +54,16 @@ class GraphDataset extends Component {
       ? axios.post(`api/graphs/aws`, { dataset })
       : (AWSPost = Promise.resolve({ data: dataset.awsId }))
 
-
-    AWSPost
-      .then(res => {
-        return axios.post(`api/graphs`, {
-          xAxis: currentX,
-          yAxis: currentY,
-          title: datasetName,
-          datasetName,
-          graphType,
-          awsId: res.data
-        })
+    AWSPost.then(res => {
+      return axios.post(`api/graphs`, {
+        xAxis: currentX,
+        yAxis: currentY,
+        title: datasetName,
+        datasetName,
+        graphType,
+        awsId: res.data
       })
+    })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
@@ -117,6 +113,13 @@ class GraphDataset extends Component {
         width: 'auto'
       }
     })
+    const displayScatter = currentY.length > 0 && currentX && yAxis.includes(currentX);
+    const displayGroup = currentY.length > 0 && currentX;
+    const displayRadar = currentY.length > 0 && currentX && !yAxis.includes(currentX);
+    const displayPie = currentY.length === 0 && currentX && !yAxis.includes(currentX);
+    const recommendation = displayScatter ? 'A Scatter Chart may be best for this data' : 
+      displayPie ? 'A Pie Chart may be best for this data' : 
+      displayGroup ? 'A Bar Chart may be best for this data' : null;
     return (
       <div id="graph-dataset">
         <div id="graph-dataset-table-container">
@@ -136,92 +139,87 @@ class GraphDataset extends Component {
           <h1 id="graph-dataset-select-name">Select the Data to Graph</h1>
           {dataset.dataset.length && (
             <div>
-              <div id="graph-dataset-select-x-y">
-                <div>
-                  <h3>X Axis Data</h3>
-                  <select
-                    className="graph-dataset-select-x-y-input"
-                    onChange={handleXCategory}
-                  >
-                    <option hidden>choose X</option>
-                    {xAxis.map(xCategory => (
-                      <option key={xCategory}>{xCategory}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <div className="graph-dataset-select-y">
-                    <h3>Y Axis Data</h3>
-                    <button
-                      id="graph-dataset-select-y-add"
-                      onClick={this.addYCategory}
+              <div className="graph-dataset-headers">
+                <div id="graph-dataset-select-x-y">
+                  <div>
+                    <h3>X Axis Data</h3>
+                    <select
+                      className="graph-dataset-select-x-y-input"
+                      onChange={handleXCategory}
                     >
-                      +
-                    </button>
+                      <option hidden>choose X</option>
+                      {xAxis.map(xCategory => (
+                        <option key={xCategory}>{xCategory}</option>
+                      ))}
+                    </select>
                   </div>
-                  {this.state.yCategQuantity.map((n, idx) => {
-                    return (
-                      <div className="graph-dataset-select-y" key={idx}>
-                        <select
-                          className="graph-dataset-select-x-y-input"
-                          onChange={e => handleYCategory(e.target.value, idx)}
-                        >
-                          <option hidden>choose Y</option>
-                          {yAxis.map(yCategory => (
-                            <option key={yCategory}>{yCategory}</option>
-                          ))}
-                        </select>
-                        <button
-                          id="graph-dataset-select-y-delete"
-                          onClick={() => this.handleDeleteY(idx)}
-                        >
-                          x
+                  <div>
+                    <div className="graph-dataset-select-y">
+                      <h3>Y Axis Data</h3>
+                      <button
+                        id="graph-dataset-select-y-add"
+                        onClick={this.addYCategory}
+                      >
+                        +
+                    </button>
+                    </div>
+                    {this.state.yCategQuantity.map((n, idx) => {
+                      return (
+                        <div className="graph-dataset-select-y" key={idx}>
+                          <select
+                            className="graph-dataset-select-x-y-input"
+                            onChange={e => handleYCategory(e.target.value, idx)}
+                          >
+                            <option hidden>choose Y</option>
+                            {yAxis.map(yCategory => (
+                              <option key={yCategory}>{yCategory}</option>
+                            ))}
+                          </select>
+                          <button
+                            id="graph-dataset-select-y-delete"
+                            onClick={() => this.handleDeleteY(idx)}
+                          >
+                            x
                         </button>
-                      </div>
-                    )
-                  })}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+                <div id="graph-dataset-message">
+                  <div id="click-message">
+                    <h2>Click on a graph to edit it</h2>
+                    <p><strong>Recommendation: </strong>{recommendation}</p>
+                  </div>
                 </div>
               </div>
-              {currentY.length > 0 &&
-                currentX &&
-                yAxis.includes(currentX) && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Scatter')}>
-                      <ScatterChartGraph />
-                    </div>
-                  </div>
-                )}
-              {currentY.length > 0 &&
-                currentX && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Line')}>
-                      <LineChartGraph />
-                    </div>
-                    <div onClick={() => this.handleGraphClick('Bar')}>
-                      <BarChartGraph />
-                    </div>
-                    <div onClick={() => this.handleGraphClick('Area')}>
-                      <AreaChartGraph />
-                    </div>
-                  </div>
-                )}
-              {currentY.length > 0 &&
-                currentX &&
-                !yAxis.includes(currentX) && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Radar')}>
-                      <RadarChartGraph />
-                    </div>
-                  </div>
-                )}
-              {currentY.length === 0 &&
-                currentX && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Pie')}>
-                      <PieChartGraph />
-                    </div>
-                  </div>
-                )}
+              <div className="graph-dataset-graphs">
+                <div onClick={() => this.handleGraphClick('Scatter')} className="graph-dataset-single-container"
+                  style={{ display: displayScatter ? 'inline' : 'none' }}
+                >
+                  <ScatterChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Line')} className="graph-dataset-single-container"
+                  style={{ display: displayGroup ? 'inline' : 'none' }}>
+                  <LineChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Bar')} className="graph-dataset-single-container"
+                  style={{ display: displayGroup ? 'inline' : 'none' }}>
+                  <BarChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Area')} className="graph-dataset-single-container"
+                  style={{ display: displayGroup ? 'inline' : 'none' }}>
+                  <AreaChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Radar')} className="graph-dataset-single-container"
+                  style={{ display: displayRadar ? 'inline' : 'none' }}>
+                  <RadarChartGraph />
+                </div>
+                <div onClick={() => this.handleGraphClick('Pie')} className="graph-dataset-single-container"
+                  style={{ display: displayPie ? 'inline' : 'none' }}>
+                  <PieChartGraph />
+                </div>
+              </div>
             </div>
           )}
         </div>
