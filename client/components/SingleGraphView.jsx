@@ -109,7 +109,8 @@ class SingleGraphView extends Component {
       xAxisName,
       yAxisName,
       colors,
-      graphType
+      graphType,
+      description
     } = this.props.graphSettings
     const {awsId, name} = this.props.dataset
     return axios
@@ -122,6 +123,7 @@ class SingleGraphView extends Component {
         title,
         graphType,
         datasetName: name,
+        description,
         awsId
       })
       .then(res => {

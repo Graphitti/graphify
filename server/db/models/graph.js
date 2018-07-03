@@ -39,7 +39,7 @@ const Graph = db.define('graph', {
   // CG: defaultValue --> get rid of '/'
   thumbnail: {
     type: Sequelize.STRING,
-    defaultValue: '/graph.gif'
+    defaultValue: 'graph.gif'
   },
   colors: {
     type: Sequelize.ARRAY(Sequelize.STRING),

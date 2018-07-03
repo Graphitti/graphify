@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {Graph, YAxis, Dataset} = require('../db/models')
-const {AWS_KEY, AWS_SECRET, AWS_BUCKET} = process.env || require('../../secrets')
+const {AWS_KEY, AWS_SECRET, AWS_BUCKET} =
+  process.env || require('../../secrets')
 const AWS = require('aws-sdk')
 // set all the keys and region here
 AWS.config.update({
@@ -8,7 +9,7 @@ AWS.config.update({
   secretAccessKey: AWS_SECRET,
   region: 'us-east-2'
 })
-const { getDatasetFromS3 } = require('../utils')
+const {getDatasetFromS3} = require('../utils')
 const crypto = require('crypto')
 
 module.exports = router
@@ -22,7 +23,8 @@ router.get('/:graphId', (req, res, next) => {
     .then(graph => {
       const {awsId} = graph.dataset.dataValues
       const graphDataObj = {}
-      getDatasetFromS3(awsId).then(dataset => { // CG: nested Promise
+      getDatasetFromS3(awsId).then(dataset => {
+        // CG: nested Promise
         graphDataObj.dataset = dataset
         graphDataObj.graph = graph
         res.send(graphDataObj)
@@ -37,23 +39,41 @@ router.post('/', (req, res, next) => {
       .randomBytes(8)
       .toString('base64')
       .replace(/\//g, '7')
-    const {xAxis, yAxis, title, graphType, datasetName, awsId} = req.body
+    const {
+      xAxis,
+      yAxis,
+      title,
+      graphType,
+      datasetName,
+      xAxisLabel,
+      yAxisLabel,
+      colors,
+      description,
+      awsId
+    } = req.body
     const userId = req.user.id
 
-    let makingGraph = Graph.create({ // CG: promiseForGraph
+    let makingGraph = Graph.create({
+      // CG: promiseForGraph
       userId,
       graphId,
       xAxis,
       title,
-      graphType
+      graphType,
+      xAxisLabel,
+      yAxisLabel,
+      colors,
+      description
     })
-    let makingYAxes = Promise.all( // CG: promiseForYAxis
+    let makingYAxes = Promise.all(
+      // CG: promiseForYAxis
       yAxis.map(name => {
         return YAxis.create({name})
       })
     )
-    let makingDataset = Dataset.findOrCreate({ // OR JUST USE ASYNC AWAIT
-      where : {
+    let makingDataset = Dataset.findOrCreate({
+      // OR JUST USE ASYNC AWAIT
+      where: {
         name: datasetName,
         userId,
         awsId
@@ -75,7 +95,16 @@ router.post('/', (req, res, next) => {
 router.put('/:graphId', (req, res, next) => {
   if (req.user) {
     const {graphId} = req.params
-    const {xAxis, yAxis, xAxisLabel, yAxisLabel, title, description, graphType, colors} = req.body
+    const {
+      xAxis,
+      yAxis,
+      xAxisLabel,
+      yAxisLabel,
+      title,
+      description,
+      graphType,
+      colors
+    } = req.body
     const userId = req.user.id
     //find the graph you need
     Graph.findOne({
@@ -87,7 +116,13 @@ router.put('/:graphId', (req, res, next) => {
       //update the found graph
       .then(foundGraph => {
         let effectedGraph = foundGraph.update({
-          xAxis, xAxisLabel, yAxisLabel, title, description, graphType, colors
+          xAxis,
+          xAxisLabel,
+          yAxisLabel,
+          title,
+          description,
+          graphType,
+          colors
         })
         //destroy the current yAxes
         foundGraph.yAxes.map(yAxis => {
@@ -123,20 +158,20 @@ router.put('/:graphId', (req, res, next) => {
 
 router.get('/aws/:awsId', (req, res, next) => {
   if (req.user) {
-  //have some kind of security so that we don't do this if the user doesn't have access to the graph
-  const {awsId} = req.params
-  let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
-  //this makes the promise to do the actual request, get object is a get request
-  let findDatasetPromise = new AWS.S3({apiVersion: '2006-03-01'})
-    .getObject(datasetParams)
-    .promise()
-  findDatasetPromise
-    .then(result => {
-      let parsedDataset = JSON.parse(result.Body)
-      parsedDataset.dataset.awsId = awsId;
-      res.json(parsedDataset);
-    })
-    .catch(next)
+    //have some kind of security so that we don't do this if the user doesn't have access to the graph
+    const {awsId} = req.params
+    let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
+    //this makes the promise to do the actual request, get object is a get request
+    let findDatasetPromise = new AWS.S3({apiVersion: '2006-03-01'})
+      .getObject(datasetParams)
+      .promise()
+    findDatasetPromise
+      .then(result => {
+        let parsedDataset = JSON.parse(result.Body)
+        parsedDataset.dataset.awsId = awsId
+        res.json(parsedDataset)
+      })
+      .catch(next)
   } else {
     res.send(401).send('You must be logged in to access a dataset')
   }
@@ -145,9 +180,9 @@ router.get('/aws/:awsId', (req, res, next) => {
 router.post('/aws', (req, res, next) => {
   if (req.user) {
     const awsId = crypto
-        .randomBytes(8)
-        .toString('base64')
-        .replace(/\//g, '7')
+      .randomBytes(8)
+      .toString('base64')
+      .replace(/\//g, '7')
     const {dataset, columnObj} = req.body
     const stringifiedDataset = JSON.stringify({dataset, columnObj})
     let datasetParams = {
