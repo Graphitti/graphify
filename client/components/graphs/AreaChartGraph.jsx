@@ -25,7 +25,7 @@ export const AreaChartGraph = props => {
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Area Chart'}</h2>
-      <ResponsiveContainer width="85%" height={550}>
+      <ResponsiveContainer width="90%" height={550}>
         <AreaChart data={dataset.dataset}>
           <CartesianGrid strokeDasharray="3 3" />
           {xAxisName ? (

@@ -25,7 +25,7 @@ export const LineChartGraph = props => {
   return (
     <div className="graph-dataset-graphs-single">
       <h2>{title || 'Line Chart'}</h2>
-      <ResponsiveContainer width="85%" height={550}>
+      <ResponsiveContainer width="90%" height={550}>
         <LineChart data={dataset.dataset}>
           {currentY.length &&
             currentY.map((yAxis, idx) => (
