@@ -117,6 +117,10 @@ class GraphDataset extends Component {
         width: 'auto'
       }
     })
+    const displayScatter = currentY.length > 0 &&currentX && yAxis.includes(currentX);
+    const displayGroup = currentY.length > 0 && currentX;
+    const displayRadar = currentY.length > 0 &&currentX && !yAxis.includes(currentX);
+    const displayPie = currentY.length > 0 && currentX && !yAxis.includes(currentX);
     return (
       <div id="graph-dataset">
         <div id="graph-dataset-table-container">
@@ -132,7 +136,7 @@ class GraphDataset extends Component {
               </div>
             )}
         </div>
-        <div id="graph-dataset-select">
+        {/* <div id="graph-dataset-select"> */}
           <h1 id="graph-dataset-select-name">Select the Data to Graph</h1>
           {dataset.dataset.length && (
             <div>
@@ -182,49 +186,55 @@ class GraphDataset extends Component {
                   })}
                 </div>
               </div>
-              {currentY.length > 0 &&
-                currentX &&
-                yAxis.includes(currentX) && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Scatter')}>
-                      <ScatterChartGraph />
-                    </div>
-                  </div>
-                )}
-              {currentY.length > 0 &&
-                currentX && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Line')}>
-                      <LineChartGraph />
-                    </div>
-                    <div onClick={() => this.handleGraphClick('Bar')}>
-                      <BarChartGraph />
-                    </div>
-                    <div onClick={() => this.handleGraphClick('Area')}>
-                      <AreaChartGraph />
-                    </div>
-                  </div>
-                )}
-              {currentY.length > 0 &&
-                currentX &&
-                !yAxis.includes(currentX) && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Radar')}>
-                      <RadarChartGraph />
-                    </div>
-                  </div>
-                )}
-              {currentY.length === 0 &&
-                currentX && (
-                  <div className="graph-dataset-graphs">
-                    <div onClick={() => this.handleGraphClick('Pie')}>
-                      <PieChartGraph />
-                    </div>
-                  </div>
-                )}
+              <div className="graph-dataset-graphs" id="all-graphs">
+                {/* {currentY.length > 0 &&
+                  currentX &&
+                  yAxis.includes(currentX) && ( */}
+                      <div onClick={() => this.handleGraphClick('Scatter')} className="graph"
+                      style={display="none"}
+                      >
+                      {/* display={displayScatter ? 'inline' : 'none'}> */}
+                        <ScatterChartGraph />
+                      </div>
+                  // )}
+                {/* {currentY.length > 0 &&
+                  currentX && ( */}
+                    {/* <div> */}
+                      <div onClick={() => this.handleGraphClick('Line')} className="graph"
+                      display={displayGroup ? 'inline' : 'none'}>
+                        <LineChartGraph />
+                      </div>
+                      <div onClick={() => this.handleGraphClick('Bar')} className="graph"
+                      display={displayGroup ? 'inline' : 'none'}>
+                        <BarChartGraph />
+                      </div>
+                      <div onClick={() => this.handleGraphClick('Area')} className="graph"
+                      display={displayGroup ? 'inline' : 'none'}>
+                        <AreaChartGraph />
+                      </div>
+                    {/* </div> */}
+                  {/* )} */}
+                {/* {currentY.length > 0 &&
+                  currentX &&
+                  !yAxis.includes(currentX) && ( */}
+                      <div onClick={() => this.handleGraphClick('Radar')} className="graph"
+                      display={displayRadar ? 'inline' : 'none'}>
+                        <RadarChartGraph />
+                      </div>
+                  {/* )} */}
+                {/* {currentY.length === 0 &&
+                  currentX && ( */}
+                    {/* <div> */}
+                      <div onClick={() => this.handleGraphClick('Pie')} className="graph"
+                      display={displayPie ? 'inline' : 'none'}>
+                        <PieChartGraph />
+                      </div>
+                    {/* </div> */}
+                  {/* )} */}
+              </div>
             </div>
           )}
-        </div>
+        {/* </div> */}
       </div>
     )
   }

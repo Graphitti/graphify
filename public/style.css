@@ -150,6 +150,8 @@ body {
   transition: 1s;
 }
 
+
+
 #graph-dataset {
   margin: 50px;
 }
@@ -167,7 +169,9 @@ body {
 #graph-dataset-table-container-table {
   width: 100%;
 }
-
+/* .graph-dataset-all-graphs {
+  display: flex;
+} */
 .graph-dataset-graphs {
   display: flex;
   flex-wrap: wrap;
@@ -434,5 +438,15 @@ nav a {
   background: url(https://l7.alamy.com/zooms/82f9a4f…/blue-and-green-speed-blur-background-jacadb.jpg);
   filter: hue-rotate(-50deg);
   color: white;
+}
+
+.graph {
+  flex: 0 0 33%;
+  display: inline-flex
+}
+
+#all-graphs {
+  display: flex;
+  flex-wrap: wrap;
 }
 
