@@ -51,46 +51,39 @@ class GraphDataset extends Component {
     const { dataset, graphSettings } = this.props
     const { currentX, currentY } = graphSettings
     const datasetName = dataset.name
-    // Reuses dataset if already exists
-    const awsId = !!dataset.awsId
-      ? dataset.awsId
-      : crypto
-        .randomBytes(8)
-        .toString('base64')
-        .replace(/\//g, '7')
-
-    const graphId = crypto
-      .randomBytes(8)
-      .toString('base64')
-      .replace(/\//g, '7')
 
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
-      ? axios.post(`api/graphs/aws/${awsId}`, { dataset })
-      : (AWSPost = Promise.resolve())
+      ? axios.post(`api/graphs/aws`, { dataset })
+      : (AWSPost = Promise.resolve({data: dataset.awsId}))
 
-    let databasePost = axios.post(`api/graphs/${graphId}`, {
-      xAxis: currentX,
-      yAxis: currentY,
-      title: datasetName,
-      datasetName,
-      graphType,
-      awsId
+
+    AWSPost
+    .then(res => {
+      return axios.post(`api/graphs`, {
+        xAxis: currentX,
+        yAxis: currentY,
+        title: datasetName,
+        datasetName,
+        graphType,
+        awsId: res.data
+      })
     })
-    Promise.all([AWSPost, databasePost])
-      .then(() => {
-        this.props.history.push(`/graph-dataset/customize/${graphId}`)
+      .then(res => {
+        this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
       .catch(console.error)
-
-    setTimeout(() => {
-      toast('Dataset Saved', {
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true
-      })
-    }, 500)
+      
+    if (!dataset.awsId) {
+      setTimeout(() => {
+        toast('Dataset Saved', {
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true
+        })
+      }, 500)
+    }
 
     setTimeout(() => {
       toast('Graph Saved', {
