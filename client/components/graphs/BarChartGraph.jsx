@@ -7,7 +7,8 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend
+  Legend,
+  ResponsiveContainer
 } from 'recharts'
 
 export const BarChartGraph = props => {
@@ -23,28 +24,34 @@ export const BarChartGraph = props => {
 
   return (
     <div className="graph-dataset-graphs-single">
-      <h3>{title || 'Bar Chart'}</h3>
-      <BarChart width={600} height={600} data={dataset.dataset}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey={currentX}
-          label={{value: `${xAxisName}`, offset: -20, position: 'insideBottom'}}
-        />
-        <YAxis
-          label={{value: `${yAxisName}`, angle: -90, position: 'insideLeft'}}
-        />
-        <Tooltip />
-        <Legend align="center" />
-        {currentY.map((yAxis, idx) => (
-          <Bar
-            key={idx}
-            type="monotone"
-            dataKey={yAxis}
-            fillOpacity={0.6}
-            fill={colors[idx]}
+      <h2>{title || 'Bar Chart'}</h2>
+      <ResponsiveContainer width="85%" height={550}>
+        <BarChart align="center" data={dataset.dataset}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey={currentX}
+            label={{
+              value: `${xAxisName}`,
+              offset: -20,
+              position: 'bottom'
+            }}
           />
-        ))}
-      </BarChart>
+          <YAxis
+            label={{value: `${yAxisName}`, angle: -90, position: 'insideLeft'}}
+          />
+          <Tooltip />
+          <Legend align="center" />
+          {currentY.map((yAxis, idx) => (
+            <Bar
+              key={idx}
+              type="monotone"
+              dataKey={yAxis}
+              fillOpacity={0.6}
+              fill={colors[idx]}
+            />
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   )
 }

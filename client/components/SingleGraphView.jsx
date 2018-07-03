@@ -155,11 +155,12 @@ class SingleGraphView extends Component {
 
     return (
       <div id="single-graph">
-        <div>
-          <button type="submit" onClick={() => this.handleSave(graphId)}>
+        <div id="single-graph-buttons">
+          <button id="single-graph-buttons-save" onClick={() => this.handleSave(graphId)}>
             Save
           </button>
-          <button onClick={this.handleClone}>Clone</button>
+          <button id="single-graph-buttons-clone" onClick={this.handleClone}>Clone</button>
+          <button id="single-graph-buttons-share">Share</button>
         </div>
 
         <div id="single-graph-container">
@@ -188,19 +189,19 @@ class SingleGraphView extends Component {
             <div>
               <div>
                 <form>
-                  <label>{`Change title`}</label>
+                  <label>Title</label>
                   <input
                     type="text"
                     name="title"
                     onChange={this.handleChange}
                   />
-                  <label>{`Change the name of X axis`}</label>
+                  <label>Name of X Axis`</label>
                   <input
                     type="text"
                     name="XAxis"
                     onChange={this.handleChange}
                   />
-                  <label>{`Change the name of Y axis`}</label>
+                  <label>Name of Y Axis`</label>
                   <input
                     type="text"
                     name="YAxis"
@@ -211,13 +212,13 @@ class SingleGraphView extends Component {
                   {currentY.map((yAxis, idx) => (
                     <div key={idx}>
                       <label
-                      >{`Change the color of the legend of '${yAxis}'`}</label>
+                      >{`${yAxis} Color`}</label>
                       <button onClick={() => this.handleClick(idx)}>
                         Pick Color
                       </button>
                       {this.state.legend !== -1 ? (
                         <div>
-                          <div className="cover" onClick={this.handleClose} />
+                          <div onClick={this.handleClose} />
                           <HuePicker
                             color={colors[idx]}
                             onChangeComplete={this.handleChangeColor}

@@ -7,7 +7,8 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend
+  Legend,
+  ResponsiveContainer
 } from 'recharts'
 
 export const AreaChartGraph = props => {
@@ -16,8 +17,9 @@ export const AreaChartGraph = props => {
 
   return (
     <div className="graph-dataset-graphs-single">
-      <h3>{title || 'Area Chart'}</h3>
-      <AreaChart width={600} height={600} data={dataset.dataset}>
+      <h2>{title || 'Area Chart'}</h2>
+      <ResponsiveContainer width="85%" height={550}>
+      <AreaChart data={dataset.dataset}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={currentX} label={{value:`${xAxisName}`, offset:-20, position:"insideBottom"}} />
         <YAxis label={{value:`${yAxisName}`, angle:-90, position:"insideLeft"}} />
@@ -33,6 +35,7 @@ export const AreaChartGraph = props => {
           />
         ))}
       </AreaChart>
+      </ResponsiveContainer>
     </div>
   )
 }
