@@ -175,3 +175,28 @@ router.post('/aws/:awsId', (req, res, next) => {
     res.status(401).send('Please Log In to save your data')
   }
 })
+
+router.post('/aws/thumbnail/:graphId', (req, res, next) => {
+  if (req.user) {
+    const { graphId } = req.params
+    const { thumbnail } = req.body
+    const stringifiedThumbnail = JSON.stringify({ thumbnail })
+    let datasetParams = {
+      Bucket: AWS_BUCKET,
+      Key: graphId,
+      Body: stringifiedThumbnail
+    }
+    //this creates or updates the desired object
+    let uploadThumbnailPromise = new AWS.S3({ apiVersion: '2006-03-01' })
+      .putObject(datasetParams)
+      .promise()
+    uploadThumbnailPromise
+      .then(data => {
+        console.log('data in thumbnail graphs api--->', data)
+        res.send(`Succesfully uploaded Thumbnail for Graph ${graphId} to ${AWS_BUCKET}`)
+      })
+      .catch(next)
+  } else {
+    res.status(401).send('Please Log In to save your data')
+  }
+})

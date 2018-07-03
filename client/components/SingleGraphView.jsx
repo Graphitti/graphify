@@ -24,7 +24,7 @@ import axios from 'axios'
 import FileSaver from 'file-saver'
 import { toast, ToastContainer } from 'react-toastify'
 import htmlToImage from 'html-to-image';
-import {setThumbnailToGraph} from '../componentUtils'
+// import {setThumbnailToGraph} from '../componentUtils'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -43,14 +43,14 @@ class SingleGraphView extends Component {
     this.handleClone = this.handleClone.bind(this)
     this.exportChart = this.exportChart.bind(this)
     this.exportSVG = this.exportSVG.bind(this)
-    this.saveThumbnail = this.saveThumbnail.bind(this)
+    // this.saveThumbnail = this.saveThumbnail.bind(this)
   }
 
   componentDidMount() {
     const { graphId } = this.props.match.params
     const { getGraphId } = this.props
     getGraphId(graphId)
-    this.saveThumbnail(graphId);
+    // this.saveThumbnail(graphId);
   }
 
   // Exports the graph as embedded JS or PNG
@@ -73,30 +73,42 @@ class SingleGraphView extends Component {
     // this.setState({svgDisplay: true})
     // let svgURL = new XMLSerializer().serializeToString(chartSVG)
     // input.value = svgURL
+    // setThumbnailToGraph(graphId, chartSVG);
     htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
       .then(function (dataUrl) {
         var link = document.createElement('a');
         link.download = 'my-image-name.jpeg';
         link.href = dataUrl;
         link.click();
-        setThumbnailToGraph(graphId, chartSVG)
+        let svgBlob = new Blob([chartSVG.outerHTML], {
+          type: 'text/html;charset=utf-8'
+        })
+        console.log('svgBlob in exportSVG--->>>', svgBlob);
+        axios
+        .post(`/api/graphs/aws/thumbnail/${graphId}`, {
+          thumbnail: svgBlob
+        })
+        .then(res => {
+          console.log('Thumbnail saved in AWS!', res)
+        })
+        .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   }
 
-  saveThumbnail(graphId) {
-    let chartSVG = document.getElementById('current-chart').children[0]
-    console.log('chartSVG in saveThumbnail--->>>', chartSVG)
-    console.log('graphId in saveThumbnail-->>', graphId);
-    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
-      .then(dataUrl => {
-        setThumbnailToGraph(graphId,dataUrl)
-        .then(res => {
-          console.log('Image by default saved', res)
-        })
-      })
-      .catch(err => console.log(err));
-  }
+  // saveThumbnail(graphId) {
+  //   let chartSVG = document.getElementById('current-chart').children[0]
+  //   console.log('chartSVG in saveThumbnail--->>>', chartSVG)
+  //   console.log('graphId in saveThumbnail-->>', graphId);
+  //   htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+  //     .then(dataUrl => {
+  //       setThumbnailToGraph(graphId,dataUrl)
+  //       .then(res => {
+  //         console.log('Image by default saved', res)
+  //       })
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
   handleChange(event) {
     const name = event.target.name
