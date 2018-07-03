@@ -29,8 +29,8 @@ const Graph = db.define('graph', {
     defaultValue: ''
   },
   thumbnail: {
-    type: Sequelize.STRING,
-    defaultValue: '/graph.gif'
+    type: Sequelize.BLOB,
+    defaultValue: '<div />'
   },
   colors: {
     type: Sequelize.ARRAY(Sequelize.STRING),
