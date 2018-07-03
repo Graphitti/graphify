@@ -8,7 +8,7 @@ AWS.config.update({
   secretAccessKey: AWS_SECRET,
   region: 'us-east-2'
 })
-const {getDatasetFromS3} = require('./utils')
+const { getDatasetFromS3, getGraphImgFromS3 } = require('../utils')
 
 module.exports = router
 
