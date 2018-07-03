@@ -11,6 +11,7 @@ import {
 
 import {
   updateTitle,
+  updateDescription,
   updateXAxisName,
   updateYAxisName,
   updateColor,
@@ -81,6 +82,8 @@ class SingleGraphView extends Component {
     switch (name) {
       case 'title':
         return this.props.changeTitle(value)
+      case 'description':
+        return this.props.addDescription(value)
       case 'XAxis':
         return this.props.changeXAxisName(value)
       case 'YAxis':
@@ -137,8 +140,8 @@ class SingleGraphView extends Component {
   }
 
   render() {
-    const { graphId } = this.props.match.params
-    let { currentY, graphType, colors } = this.props.graphSettings
+    const {graphId} = this.props.match.params
+    let {currentY, graphType, colors, description} = this.props.graphSettings
 
     return (
       <div>
@@ -167,6 +170,14 @@ class SingleGraphView extends Component {
             }
           })()}
         </div>
+        <div id='current-chart-description'>
+          { description.length !== '' ? (
+            <div className="current-chart-description">
+              <h3>Description</h3>
+              <p>{`${description}`}</p>
+            </div>
+          ) : null }
+        </div>
 
         <div>
           {this.state.edit === false ? (
@@ -175,34 +186,40 @@ class SingleGraphView extends Component {
               <button onClick={this.handleClone}>Clone</button>
             </div>
           ) : (
+            <div>
+              <form>
+                <label>{`Change title`}</label>
+                <input type="text" name="title" onChange={this.handleChange} />
+                <label>{`Add description`}</label>
+                <input type="text" name="description" onChange={this.handleChange} />
+                <label>{`Change the name of X axis`}</label>
+                <input type="text" name="XAxis" onChange={this.handleChange} />
+                <label>{`Change the name of Y axis`}</label>
+                <input type="text" name="YAxis" onChange={this.handleChange} />
+              </form>
               <div>
-                <form>
-                  <label>{`Change title`}</label>
-                  <input type="text" name="title" onChange={this.handleChange} />
-                  <label>{`Change the name of X axis`}</label>
-                  <input type="text" name="XAxis" onChange={this.handleChange} />
-                  <label>{`Change the name of Y axis`}</label>
-                  <input type="text" name="YAxis" onChange={this.handleChange} />
-                </form>
-                <div>
-                  {currentY.map((yAxis, idx) => (
-                    <div key={idx}>
-                      <label>{`Change the color of the legend of '${yAxis}'`}</label>
-                      <button onClick={() => this.handleClick(idx)}>Pick Color</button>
-                      {this.state.legend !== -1 ? (
-                        <div className="popover">
-                          <div className="cover" onClick={this.handleClose} />
-                          <HuePicker
-                            color={colors[idx]}
-                            onChangeComplete={this.handleChangeColor}
-                          />
-                        </div>) : null}
-                    </div>
-                  ))}
-                </div>
-                <button type='submit' onClick={() => this.handleSave(graphId)}>{`Save`}</button>
+                {currentY.map((yAxis, idx) => (
+                  <div key={idx}>
+                    <label
+                    >{`Change the color of the legend of '${yAxis}'`}</label>
+                    <button onClick={() => this.handleClick(idx)}>
+                      Pick Color
+                    </button>
+                    {this.state.legend !== -1 ? (
+                      <div className="popover">
+                        <div className="cover" onClick={this.handleClose} />
+                        <HuePicker
+                          color={colors[idx]}
+                          onChangeComplete={this.handleChangeColor}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
-            )}
+              <button type="submit" onClick={() => this.handleSave(graphId)}>{`Save`}</button>
+            </div>
+          )}
         </div>
         <ToastContainer className="toast" />
       </div>
@@ -220,6 +237,9 @@ const mapState = state => {
 const mapDispatch = dispatch => ({
   changeTitle(title) {
     dispatch(updateTitle(title))
+  },
+  addDescription(description) {
+    dispatch(updateDescription(description))
   },
   changeXAxisName(name) {
     dispatch(updateXAxisName(name))
@@ -242,3 +262,8 @@ const mapDispatch = dispatch => ({
 })
 
 export default connect(mapState, mapDispatch)(SingleGraphView)
+
+
+
+
+
