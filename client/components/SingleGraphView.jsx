@@ -148,7 +148,7 @@ class SingleGraphView extends Component {
   render() {
     const {graphId} = this.props.match.params
     let {currentY, graphType, colors, description} = this.props.graphSettings
-
+    console.log('description', description)
     return (
       <div>
         {/* this is the code for exporting the image */}
@@ -176,6 +176,14 @@ class SingleGraphView extends Component {
             }
           })()}
         </div>
+        <div id='current-chart-description'>
+          { description.length !== '' ? (
+            <div className="current-chart-description">
+              <h3>Description</h3>
+              <p>{`${description}`}</p>
+            </div>
+          ) : null }
+        </div>
 
         <div>
           {this.state.edit === false ? (
@@ -185,10 +193,6 @@ class SingleGraphView extends Component {
             </div>
           ) : (
             <div>
-              <div className="current-chart-description">
-                <h3>Description</h3>
-                <textarea value={description}></textarea>
-              </div>
               <form>
                 <label>{`Change title`}</label>
                 <input type="text" name="title" onChange={this.handleChange} />

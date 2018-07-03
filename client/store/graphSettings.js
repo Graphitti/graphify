@@ -65,6 +65,7 @@ export const saveGraphSettingToDB = (graphId, settings) => dispatch => {
       xAxisLabel: settings.xAxisName,
       yAxisLabel: settings.yAxisName,
       title: settings.title,
+      description: settings.description,
       graphType: settings.graphType,
       colors: settings.colors
     })
@@ -102,7 +103,7 @@ export default (state = graphSettings, action) => {
       })
       return {...state, colors: newColors}
     case FETCH_AND_SET_GRAPH:
-      const {xAxis, yAxes, graphType, xAxisLabel, yAxisLabel, title, colors} = action.graph
+      const {xAxis, yAxes, graphType, xAxisLabel, yAxisLabel, title, colors, description} = action.graph
       const YAxisNames = yAxes.map(yAxis => yAxis.name)
       return {
         ...state,
@@ -112,6 +113,7 @@ export default (state = graphSettings, action) => {
         yAxisName: yAxisLabel,
         graphType,
         title,
+        description,
         colors
       }
     case RESET_GRAPH_SETTINGS:
