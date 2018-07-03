@@ -8,7 +8,8 @@ AWS.config.update({
   secretAccessKey: AWS_SECRET,
   region: 'us-east-2'
 })
-const {getDatasetFromS3} = require('./utils')
+const { getDatasetFromS3, getGraphImgFromS3 } = require('../utils')
+const crypto = require('crypto')
 
 module.exports = router
 
@@ -30,9 +31,12 @@ router.get('/:graphId', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/:graphId', (req, res, next) => {
+router.post('/', (req, res, next) => {
   if (req.user) {
-    const {graphId} = req.params
+    const graphId = crypto
+      .randomBytes(8)
+      .toString('base64')
+      .replace(/\//g, '7')
     const {xAxis, yAxis, title, graphType, datasetName, awsId} = req.body
     const userId = req.user.id
 
@@ -61,10 +65,10 @@ router.post('/:graphId', (req, res, next) => {
         let setDataset = newGraph.setDataset(newDataset[0])
         return Promise.all([setY, setDataset])
       })
-      .then(() => res.send('worked'))
+      .then(() => res.status(200).send(graphId))
       .catch(next)
   } else {
-    res.send('You need to be a user to save graph data')
+    res.status(401).send('You need to be a user to save graph data')
   }
 })
 
@@ -103,15 +107,16 @@ router.put('/:graphId', (req, res, next) => {
         return updatedGraph.setYAxes(createdAxes)
       })
       .then(() => {
-        res.send('hello')
+        res.status(200).send('graph updated')
       })
       .catch(next)
   } else {
-    res.send('You need to be a user to edit this graph')
+    res.status(401).send('You need to be logged in to edit this graph')
   }
 })
 
 router.get('/aws/:awsId', (req, res, next) => {
+  if (req.user) {
   //have some kind of security so that we don't do this if the user doesn't have access to the graph
   const {awsId} = req.params
   let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
@@ -122,14 +127,21 @@ router.get('/aws/:awsId', (req, res, next) => {
   findDatasetPromise
     .then(result => {
       let parsedDataset = JSON.parse(result.Body)
-      res.json(parsedDataset)
+      parsedDataset.dataset.awsId = awsId;
+      res.json(parsedDataset);
     })
     .catch(next)
+  } else {
+    res.send(401).send('You must be logged in to access a dataset')
+  }
 })
 
-router.post('/aws/:awsId', (req, res, next) => {
+router.post('/aws', (req, res, next) => {
   if (req.user) {
-    const {awsId} = req.params
+    const awsId = crypto
+        .randomBytes(8)
+        .toString('base64')
+        .replace(/\//g, '7')
     const {dataset, columnObj} = req.body
     const stringifiedDataset = JSON.stringify({dataset, columnObj})
     let datasetParams = {
@@ -144,10 +156,10 @@ router.post('/aws/:awsId', (req, res, next) => {
       .promise()
     uploadDatasetPromise
       .then(data => {
-        res.send(`Succesfully uploaded ${awsId} to ${AWS_BUCKET}`)
+        res.status(200).send(awsId)
       })
       .catch(next)
   } else {
-    res.status(401).send('Please Log In to save your data')
+    res.status(401).send('Please log in to save your data')
   }
 })

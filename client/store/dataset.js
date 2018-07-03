@@ -56,6 +56,7 @@ export const fetchAndSetDataFromS3 = awsId => dispatch => {
   .catch(console.error)
 }
 
+
 /**
  * REDUCER
  */

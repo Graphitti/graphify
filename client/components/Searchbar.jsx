@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ShowSearchResults from './ShowSearchResults.jsx'
 import history from '../history'
-import { getSocrataCategories, searchSocrataForDatasets } from './utils/socrataFunctions'
+import { getSocrataCategories, searchSocrataForDatasets } from '../componentUtils'
 
 export default class SearchBar extends Component {
     constructor(props) {
