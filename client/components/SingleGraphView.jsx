@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -18,11 +18,11 @@ import {
   fetchAndSetDataFromS3,
   saveGraphSettingToDB
 } from '../store'
-import {HuePicker} from 'react-color'
+import { HuePicker } from 'react-color'
 import crypto from 'crypto'
 import axios from 'axios'
 import FileSaver from 'file-saver'
-import {toast, ToastContainer} from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -43,8 +43,8 @@ class SingleGraphView extends Component {
   }
 
   componentDidMount() {
-    const {graphId} = this.props.match.params
-    const {getGraphId} = this.props
+    const { graphId } = this.props.match.params
+    const { getGraphId } = this.props
     getGraphId(graphId)
   }
 
@@ -57,7 +57,7 @@ class SingleGraphView extends Component {
       .children[0]
     if (asSVG) {
       let svgURL = new XMLSerializer().serializeToString(chartSVG)
-      let svgBlob = new Blob([svgURL], {type: 'image/svg+xml;charset=utf-8'})
+      let svgBlob = new Blob([svgURL], { type: 'image/svg+xml;charset=utf-8' })
       FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
     } else {
       let svgBlob = new Blob([chartSVG.outerHTML], {
@@ -90,31 +90,28 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    this.setState({legend: idx})
+    this.setState({ legend: idx })
   }
 
   handleChangeColor(color) {
     this.props.changeColor(color.hex, this.state.legend)
-    this.setState({legend: -1})
+    this.setState({ legend: -1 })
   }
 
   handleClone() {
-    const graphId = crypto
-      .randomBytes(8)
-      .toString('base64')
-      .replace(/\//g, '7')
     const {
-      currentX,
-      currentY,
-      title,
-      xAxisName,
-      yAxisName,
-      colors,
-      graphType
+      currentX, currentY, title,
+      xAxisName, yAxisName, colors, graphType
     } = this.props.graphSettings
+<<<<<<< HEAD
     const {awsId, name} = this.props.dataset
     axios
       .post(`api/graphs/${graphId}`, {
+=======
+    const { awsId, name } = this.props.dataset
+    return axios
+      .post(`api/graphs`, {
+>>>>>>> master
         xAxis: currentX,
         yAxis: currentY,
         //comment in when the models support these
@@ -126,9 +123,17 @@ class SingleGraphView extends Component {
         datasetName: name,
         awsId
       })
+      .then(res => {
+        this.props.history.push(`/graph-dataset/customize/${res.data}`)
+        return this.props.getGraphId(res.data)
+      })
       .then(() => {
+<<<<<<< HEAD
         this.props.history.push(`/graph-dataset/customize/${graphId}`)
         toast('Graph Cloned', {
+=======
+        return toast('Graph Cloned', {
+>>>>>>> master
           autoClose: 4000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -150,6 +155,7 @@ class SingleGraphView extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     const {graphId} = this.props.match.params
     let {currentY, graphType, colors} = this.props.graphSettings
 
@@ -207,10 +213,59 @@ class SingleGraphView extends Component {
                     name="YAxis"
                     onChange={this.handleChange}
                   />
+=======
+    const { graphId } = this.props.match.params
+    let { currentY, graphType, colors } = this.props.graphSettings
+
+    return (
+      <div>
+        {/* this is the code for exporting the image */}
+        <button onClick={() => this.exportChart()}>Download Image</button>
+        <button onClick={() => this.exportSVG()}>Get SVG</button>
+        <input id="svg-copy" style={{ height: '30px', width: '400px' }} />
+
+        <div id="current-chart">
+          {(function () {
+            switch (graphType) {
+              case 'Line':
+                return <LineChartGraph />
+              case 'Bar':
+                return <BarChartGraph />
+              case 'Area':
+                return <AreaChartGraph />
+              case 'Radar':
+                return <RadarChartGraph />
+              case 'Scatter':
+                return <ScatterChartGraph />
+              case 'Pie':
+                return <PieChartGraph />
+              default:
+                return null
+            }
+          })()}
+        </div>
+
+        <div>
+          {this.state.edit === false ? (
+            <div>
+              <button onClick={() => this.setState({ edit: true })}>Edit</button>
+              <button onClick={this.handleClone}>Clone</button>
+            </div>
+          ) : (
+              <div>
+                <form>
+                  <label>{`Change title`}</label>
+                  <input type="text" name="title" onChange={this.handleChange} />
+                  <label>{`Change the name of X axis`}</label>
+                  <input type="text" name="XAxis" onChange={this.handleChange} />
+                  <label>{`Change the name of Y axis`}</label>
+                  <input type="text" name="YAxis" onChange={this.handleChange} />
+>>>>>>> master
                 </form>
                 <div>
                   {currentY.map((yAxis, idx) => (
                     <div key={idx}>
+<<<<<<< HEAD
                       <label
                       >{`${yAxis} Color`}</label>
                       <button onClick={() => this.handleClick(idx)}>
@@ -219,10 +274,18 @@ class SingleGraphView extends Component {
                       {this.state.legend !== -1 ? (
                         <div>
                           <div onClick={this.handleClose} />
+=======
+                      <label>{`Change the color of the legend of '${yAxis}'`}</label>
+                      <button onClick={() => this.handleClick(idx)}>Pick Color</button>
+                      {this.state.legend !== -1 ? (
+                        <div className="popover">
+                          <div className="cover" onClick={this.handleClose} />
+>>>>>>> master
                           <HuePicker
                             color={colors[idx]}
                             onChangeComplete={this.handleChangeColor}
                           />
+<<<<<<< HEAD
                         </div>
                       ) : null}
                     </div>
@@ -237,6 +300,15 @@ class SingleGraphView extends Component {
               <input id="svg-copy" style={{height: '30px', width: '400px'}} />
             </div>
           </div>
+=======
+                        </div>) : null}
+                    </div>
+                  ))}
+                </div>
+                <button type='submit' onClick={() => this.handleSave(graphId)}>{`Save`}</button>
+              </div>
+            )}
+>>>>>>> master
         </div>
         <ToastContainer className="toast" />
       </div>
@@ -264,8 +336,8 @@ const mapDispatch = dispatch => ({
   changeColor(color, idx) {
     dispatch(updateColor(color, idx))
   },
-  getGraphId: graphid => {
-    dispatch(fetchAndSetGraph(graphid))
+  getGraphId: graphId => {
+    dispatch(fetchAndSetGraph(graphId))
   },
   getDataset: graphId => {
     dispatch(fetchAndSetDataFromS3(graphId))

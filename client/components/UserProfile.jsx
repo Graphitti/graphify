@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { me, fetchAndSetDataFromS3, resetGraphSettings, deleteDataset, deleteGraph } from '../store'
 import { ToastContainer } from 'react-toastify'
 import Popup from "reactjs-popup";
+import { DeletePopup } from '../componentUtils'
 
 const contentStyle = {
   maxWidth: "600px",
@@ -50,21 +51,7 @@ export class UserProfile extends Component {
                   <a onClick={() => this.handleDatasetClick(dataset.awsId)}>
                     <h3>{dataset.name}</h3>
                   </a>
-                  <Popup
-                    trigger={<button>Delete Dataset</button>}
-                    contentStyle={contentStyle}
-                    modal
-                    closeOnDocumentClick
-                  >
-                    {close => (
-                      <div>
-                        <h2>Are you sure you want to delete this dataset?</h2>
-                        <button onClick={() => this.handleDeleteDataset(dataset.id, close)}>Yes, delete</button>
-                        <button onClick={close}>No, don't delete</button>
-                      </div>
-                    )
-                    }
-                  </Popup>
+                  {DeletePopup(<button>Delete Dataset</button>, this.handleDeleteDataset, dataset.id, 'dataset')}
                 </div>
               ))}
           </div>
@@ -78,22 +65,7 @@ export class UserProfile extends Component {
                     <Link to={`/graph-dataset/customize/${graph.graphId}`}>
                       <img src={graph.thumbnail} />
                     </Link>
-                    <Popup
-                      trigger={<button>Delete Graph</button>}
-                      contentStyle={contentStyle}
-                      modal
-                      closeOnDocumentClick
-                    >
-                      {close => (
-                        <div>
-                          <h2>Are you sure you want to delete this graph?</h2>
-                          <button onClick={() => this.handleDeleteGraph(graph.id, close)}>Yes, delete</button>
-                          <button onClick={close}>No, don't delete</button>
-                        </div>
-                      )
-                      }
-                    </Popup>
-                    {/* <button onClick={() => this.handleDeleteGraph(graph.id)}>Delete graph</button> */}
+                    {DeletePopup(<button>Delete Graph</button>, this.handleDeleteGraph, graph.id, 'graph')}
                   </div>
                 ))}
             </div>
