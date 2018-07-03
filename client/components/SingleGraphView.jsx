@@ -148,7 +148,7 @@ class SingleGraphView extends Component {
   render() {
     const {graphId} = this.props.match.params
     let {currentY, graphType, colors, description} = this.props.graphSettings
-    console.log('description', description)
+
     return (
       <div>
         {/* this is the code for exporting the image */}
