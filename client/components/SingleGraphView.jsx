@@ -19,7 +19,6 @@ import {
   saveGraphSettingToDB
 } from '../store'
 import {HuePicker} from 'react-color'
-import crypto from 'crypto'
 import axios from 'axios'
 import FileSaver from 'file-saver'
 import {toast, ToastContainer} from 'react-toastify'
