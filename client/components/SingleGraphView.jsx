@@ -171,7 +171,7 @@ class SingleGraphView extends Component {
             Clone
           </button>
           {SharePopup(<button id="single-graph-buttons-share">Share</button>, 
-        this.exportChart, this.exportSVG, this.giveLink)}
+        this.exportChart, this.giveLink, this.exportSVG)}
           
         </div>
         <div id='current-chart-description'>
