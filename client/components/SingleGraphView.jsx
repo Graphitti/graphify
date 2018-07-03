@@ -23,6 +23,7 @@ import {HuePicker} from 'react-color'
 import axios from 'axios'
 import FileSaver from 'file-saver'
 import {toast, ToastContainer} from 'react-toastify'
+import { SharePopup } from '../componentUtils'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -40,6 +41,7 @@ class SingleGraphView extends Component {
     this.handleClone = this.handleClone.bind(this)
     this.exportChart = this.exportChart.bind(this)
     this.exportSVG = this.exportSVG.bind(this)
+    this.giveLink = this.giveLink.bind(this)
   }
 
   componentDidMount() {
@@ -73,7 +75,8 @@ class SingleGraphView extends Component {
     let input = document.getElementById('svg-copy')
     this.state.svgDisplay = true
     let svgURL = new XMLSerializer().serializeToString(chartSVG)
-    input.value = svgURL
+    input.value = svgURL;
+    return svgURL;
   }
 
   handleChange(event) {
@@ -152,10 +155,13 @@ class SingleGraphView extends Component {
     })
   }
 
+  giveLink() {
+    return `localhost:8080${this.props.location.pathname}`
+  }
+
   render() {
     const {graphId} = this.props.match.params
     let {currentY, graphType, colors, description} = this.props.graphSettings
-
     return (
       <div>
         <div id="single-graph-buttons">
@@ -169,7 +175,9 @@ class SingleGraphView extends Component {
           <button id="single-graph-buttons-clone" onClick={this.handleClone}>
             Clone
           </button>
-          <button id="single-graph-buttons-share">Share</button>
+          {SharePopup(<button id="single-graph-buttons-share">Share</button>, 
+        this.exportChart, this.exportSVG, this.giveLink)}
+          
         </div>
         <div id='current-chart-description'>
           { description.length !== '' ? (
