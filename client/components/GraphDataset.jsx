@@ -13,7 +13,6 @@ import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
 import crypto from 'crypto'
 import { toast } from 'react-toastify'
-import { GraphPopup } from '../componentUtils'
 
 
 const contentStyle = {
@@ -55,25 +54,25 @@ class GraphDataset extends Component {
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
       ? axios.post(`api/graphs/aws`, { dataset })
-      : (AWSPost = Promise.resolve({data: dataset.awsId}))
+      : (AWSPost = Promise.resolve({ data: dataset.awsId }))
 
 
     AWSPost
-    .then(res => {
-      return axios.post(`api/graphs`, {
-        xAxis: currentX,
-        yAxis: currentY,
-        title: datasetName,
-        datasetName,
-        graphType,
-        awsId: res.data
+      .then(res => {
+        return axios.post(`api/graphs`, {
+          xAxis: currentX,
+          yAxis: currentY,
+          title: datasetName,
+          datasetName,
+          graphType,
+          awsId: res.data
+        })
       })
-    })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
       .catch(console.error)
-      
+
     if (!dataset.awsId) {
       setTimeout(() => {
         toast('Dataset Saved', {
@@ -187,28 +186,40 @@ class GraphDataset extends Component {
                 currentX &&
                 yAxis.includes(currentX) && (
                   <div className="graph-dataset-graphs">
-                    {GraphPopup(<ScatterChartGraph />, this.handleGraphClick, 'Scatter')}
+                    <div onClick={() => this.handleGraphClick('Scatter')}>
+                      <ScatterChartGraph />
+                    </div>
                   </div>
                 )}
               {currentY.length > 0 &&
                 currentX && (
                   <div className="graph-dataset-graphs">
-                    {GraphPopup(<LineChartGraph />, this.handleGraphClick, 'Line')}
-                    {GraphPopup(<BarChartGraph />, this.handleGraphClick, 'Bar')}
-                    {GraphPopup(<AreaChartGraph />, this.handleGraphClick, 'Area')}
+                    <div onClick={() => this.handleGraphClick('Line')}>
+                      <LineChartGraph />
+                    </div>
+                    <div onClick={() => this.handleGraphClick('Bar')}>
+                      <BarChartGraph />
+                    </div>
+                    <div onClick={() => this.handleGraphClick('Area')}>
+                      <AreaChartGraph />
+                    </div>
                   </div>
                 )}
               {currentY.length > 0 &&
                 currentX &&
                 !yAxis.includes(currentX) && (
                   <div className="graph-dataset-graphs">
-                    {GraphPopup(<RadarChartGraph />, this.handleGraphClick, 'Radar')}
+                    <div onClick={() => this.handleGraphClick('Radar')}>
+                      <RadarChartGraph />
+                    </div>
                   </div>
                 )}
               {currentY.length === 0 &&
                 currentX && (
                   <div className="graph-dataset-graphs">
-                    {GraphPopup(<PieChartGraph />, this.handleGraphClick, 'Pie')}
+                    <div onClick={() => this.handleGraphClick('Pie')}>
+                      <PieChartGraph />
+                    </div>
                   </div>
                 )}
             </div>
