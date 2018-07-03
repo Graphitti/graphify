@@ -19,6 +19,10 @@ const Graph = db.define('graph', {
     type: Sequelize.STRING,
     defaultValue: ''
   },
+  description: {
+    type: Sequelize.TEXT,
+    defaultValue: ''
+  },
   xAxisLabel: {
     type: Sequelize.STRING,
     defaultValue: ''

@@ -11,6 +11,7 @@ import {
 
 import {
   updateTitle,
+  updateDescription,
   updateXAxisName,
   updateYAxisName,
   updateColor,
@@ -78,10 +79,12 @@ class SingleGraphView extends Component {
   handleChange(event) {
     const name = event.target.name
     const value = event.target.value
-    const {changeTitle, changeXAxisName, changeYAxisName} = this.props
+    const {changeTitle, changeXAxisName, changeYAxisName, addDescription} = this.props
     switch (name) {
       case 'title':
         return changeTitle(value)
+      case 'description':
+        return addDescription(value)
       case 'XAxis':
         return changeXAxisName(value)
       case 'YAxis':
@@ -113,10 +116,9 @@ class SingleGraphView extends Component {
       .post(`api/graphs`, {
         xAxis: currentX,
         yAxis: currentY,
-        //comment in when the models support these
-        // xAxisLabel: xAxisName,
-        // yAxisLabel: yAxisName,
-        // colors,
+        xAxisLabel: xAxisName,
+        yAxisLabel: yAxisName,
+        colors,
         title,
         graphType,
         datasetName: name,
@@ -150,7 +152,7 @@ class SingleGraphView extends Component {
 
   render() {
     const {graphId} = this.props.match.params
-    let {currentY, graphType, colors} = this.props.graphSettings
+    let {currentY, graphType, colors, description} = this.props.graphSettings
 
     return (
       <div>
@@ -166,6 +168,14 @@ class SingleGraphView extends Component {
             Clone
           </button>
           <button id="single-graph-buttons-share">Share</button>
+        </div>
+        <div id='current-chart-description'>
+          { description.length !== '' ? (
+            <div className="current-chart-description">
+              <h3>Description</h3>
+              <p>{`${description}`}</p>
+            </div>
+          ) : null }
         </div>
 
         <div id="single-graph-container">
@@ -242,6 +252,9 @@ const mapDispatch = dispatch => ({
   changeTitle(title) {
     dispatch(updateTitle(title))
   },
+  addDescription(description) {
+    dispatch(updateDescription(description))
+  },
   changeXAxisName(name) {
     dispatch(updateXAxisName(name))
   },
@@ -263,3 +276,8 @@ const mapDispatch = dispatch => ({
 })
 
 export default connect(mapState, mapDispatch)(SingleGraphView)
+
+
+
+
+
