@@ -67,7 +67,7 @@ export class UserProfile extends Component {
                     <Link to={`/graph-dataset/customize/${graph.graphId}`}>
                       <img src={graph.thumbnail} />
                     </Link>
-                    {DeletePopup(<button className="delete-dataset-and-graph">x</button>, this.handleDeleteGraph, graph.id, 'graph')}
+                    {DeletePopup(<button className="delete-dataset-and-graph">Delete graph</button>, this.handleDeleteGraph, graph.id, 'graph')}
                   </div>
                 ))}
             </div>
