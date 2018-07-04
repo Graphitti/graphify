@@ -100,6 +100,8 @@ button {
 }
 body {
   font-family: sans-serif;
+  margin-top: 0;
+  margin-left: 0;
 }
 
 .container p {
@@ -456,6 +458,16 @@ nav a {
   border-radius: 5px;
   margin: 5px;
 }
+.searchbar-input {
+  display: block;
+  height: 25px;
+  width: 300px;
+  margin: 20px auto 15px;
+}
+
+.searches {
+ margin-top: 5em;
+}
 
 .search-results {
   display: flex;
@@ -470,10 +482,44 @@ nav a {
 }
 
 .search-results-dataset-box {
-  width: fit-content;
-  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
-  border: inset 1px #318f41;
-  padding: 10px 40px;
+  width: 90%;
+  border-top: inset 1px rgb(19, 247, 131);
+  padding: 10px 35px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.searchbar-select {
+  display: block;
+  height: 25px;
+  width: 300px;
+  margin: 20px auto 15px;
+}
+.searchbar-select select {
+  height: 25px;
+  width: 300px;
+}
+.searchbar-select button {
+  display: block;
+  margin: auto;
+  margin-top: 1.5em;
+  margin-bottom: 2em;
+  width: 250px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 10px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: 1s;
+}
+.searchbar-select button:hover {
+  text-shadow: 0px 0px 10px rgb(19, 247, 100);
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
 }
 
 #single-graph {
@@ -581,6 +627,7 @@ nav a {
 }
 
 .delete-dataset-and-graph {
+  height: 1.8em;
   margin: 20px 10px 20px;
   font-size: 15px;
   color: white;
@@ -609,19 +656,4 @@ nav a {
     width: 80%;
   }
 }
-.searchbar-input {
-  display: block;
-  height: 25px;
-  width: 300px;
-  margin: 20px auto 15px;
-}
-.searchbar-select {
-  display: block;
-  height: 25px;
-  width: 300px;
-  margin: 20px auto 15px;
-}
-.searchbar-select select {
-  height: 25px;
-  width: 240px;
-}
+

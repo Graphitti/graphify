@@ -79,7 +79,11 @@ export class UserProfile extends Component {
               datasets.map(dataset => (
                 <div key={dataset.id} className="dataset-link">
                   <a onClick={() => this.handleDatasetClick(dataset.awsId)}>
-                    <h3>{dataset.name}</h3>
+                    <h3>{
+                      dataset.name.length > 25 ?
+                      dataset.name.slice(0,25)  + '...'
+                      : dataset.name.slice(0,25)
+                    }</h3>
                   </a>
                   {DeletePopup(<button className="delete-dataset-and-graph">x</button>, this.handleDeleteDataset, dataset.id, 'dataset')}
                 </div>
