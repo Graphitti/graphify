@@ -73,21 +73,23 @@ export default class SearchBar extends Component {
             <div>
             {/* CG: NAME YOUR DIVS AKA CLASSNAMES EX. className="searchbar-container"*/}
                 <form onSubmit={this.handleSubmit}>
-                    <input onChange={this.handleChange} name="searchbar" value={this.state.search} />
-                    {
-                        searchCategories.length > 0 &&
-                        <select onChange={this.handleFilter} value={this.state.filter}>
-                            <option value="no filter">no filter</option>
-                            {
-                                searchCategories.map(category => (
-                                    <option value={category} key={category}>
-                                        {category}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                    }
-                    <button type="submit" id="search-button">Search</button>
+                    <input onChange={this.handleChange} name="searchbar" value={this.state.search} className="searchbar-input" />
+                    <div className="searchbar-select">
+                      {
+                          searchCategories.length > 0 &&
+                          <select onChange={this.handleFilter} value={this.state.filter} >
+                              <option value="no filter">no filter</option>
+                              {
+                                  searchCategories.map(category => (
+                                      <option value={category} key={category}>
+                                          {category}
+                                      </option>
+                                  ))
+                              }
+                          </select>
+                      }
+                      <button type="submit" id="search-button">Search</button>
+                    </div>
                 </form>
                 {this.state.showResults &&
                     <ShowSearchResults results={results} search={submittedSearch} />
