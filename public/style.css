@@ -102,6 +102,8 @@ body {
   font-family: sans-serif;
   margin-top: 0;
   margin-left: 0;
+  background-color: #f9f4f7;
+   /* #efe9ec; */
 }
 
 .container p {
@@ -656,5 +658,32 @@ nav a {
   .graph-dataset-single-container {
     width: 80%;
   }
+}
+
+.share-popup {
+  display: flex;
+  flex-direction: column;
+}
+
+.share-popup-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.share-popup-buttons button {
+  border: none;
+  color: #6b6969;
+  flex: 0 0 33%;
+  margin-top: 3%;
+  text-decoration: underline;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.share-popup-text textarea{
+  width: 395px;
+  max-height: 310px;
+  resize: none;
+  overflow: hidden;
 }
 

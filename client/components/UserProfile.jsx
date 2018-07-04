@@ -8,10 +8,6 @@ import { DeletePopup } from '../componentUtils'
 import renderHtml from 'react-render-html'
 import axios from 'axios'
 
-const contentStyle = {
-  maxWidth: "600px",
-  width: "90%"
-}
 
 export class UserProfile extends Component {
   constructor(props) {

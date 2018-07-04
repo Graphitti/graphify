@@ -72,6 +72,12 @@ class SingleGraphView extends Component {
   exportSVG() {
     let chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
+    toast('Copied', {
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true
+    })
     return new XMLSerializer().serializeToString(chartSVG);
   }
 
@@ -157,6 +163,12 @@ class SingleGraphView extends Component {
   }
 
   giveLink() {
+    toast('Copied', {
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true
+    })
     return `localhost:8080${this.props.location.pathname}`
   }
 
