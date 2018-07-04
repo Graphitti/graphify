@@ -279,6 +279,7 @@ body {
 .graph-thumbnail-image {
   height: 200px;
   width: 200px;
+  cursor: pointer;
 }
 .graph-thumbnail-image .graph-dataset-graphs-single {
   border: none;
