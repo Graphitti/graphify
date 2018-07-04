@@ -47,7 +47,6 @@ router.get('/graph/:graphId', (req, res, next) => {
 router.post('/graph/:graphId', (req, res, next) => {
     //have some kind of security so that we don't do this if the user doesn't have access to the graph
     const {graphId} = req.params
-    console.log('posting the graph', graphId)
     const {svgBlob} = req.body
     let datasetParams = {Bucket: AWS_BUCKET, Key: graphId, Body: svgBlob}
     // this makes the promise to do the actual request, get object is a get request
@@ -56,7 +55,7 @@ router.post('/graph/:graphId', (req, res, next) => {
     .promise()
     uploadBlobPromise
     .then(result => {
-        res.status(200).send('Successfully posted');
+        res.status(200).send(graphId);
     })
     .catch(next)
 })

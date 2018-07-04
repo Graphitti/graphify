@@ -65,6 +65,12 @@ class GraphDataset extends Component {
       })
     })
       .then(res => {
+        const chartSVG = document.getElementById(`${graphType}-graph`)
+          .children[0]
+        const svgBlob = JSON.stringify(chartSVG.outerHTML);
+        return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
+      })
+      .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
       .catch(console.error)
@@ -117,9 +123,9 @@ class GraphDataset extends Component {
     const displayGroup = currentY.length > 0 && currentX;
     const displayRadar = currentY.length > 0 && currentX && !yAxis.includes(currentX);
     const displayPie = currentY.length === 0 && currentX && !yAxis.includes(currentX);
-    const recommendation = displayScatter ? 'A Scatter Chart may be best for this data' : 
-      displayPie ? 'A Pie Chart may be best for this data' : 
-      displayGroup ? 'A Bar Chart may be best for this data' : null;
+    const recommendation = displayScatter ? 'A Scatter Chart may be best for this data' :
+      displayPie ? 'A Pie Chart may be best for this data' :
+        displayGroup ? 'A Bar Chart may be best for this data' : null;
     return (
       <div id="graph-dataset">
         <div id="graph-dataset-table-container">
@@ -194,28 +200,28 @@ class GraphDataset extends Component {
                 </div>
               </div>
               <div className="graph-dataset-graphs">
-                <div onClick={() => this.handleGraphClick('Scatter')} className="graph-dataset-single-container"
+                <div id="Scatter-graph" onClick={() => this.handleGraphClick('Scatter')} className="graph-dataset-single-container"
                   style={{ display: displayScatter ? 'inline' : 'none' }}
                 >
                   <ScatterChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Line')} className="graph-dataset-single-container"
+                <div id="Line-graph" onClick={() => this.handleGraphClick('Line')} className="graph-dataset-single-container"
                   style={{ display: displayGroup ? 'inline' : 'none' }}>
                   <LineChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Bar')} className="graph-dataset-single-container"
+                <div id="Bar-graph" onClick={() => this.handleGraphClick('Bar')} className="graph-dataset-single-container"
                   style={{ display: displayGroup ? 'inline' : 'none' }}>
                   <BarChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Area')} className="graph-dataset-single-container"
+                <div id="Area-graph" onClick={() => this.handleGraphClick('Area')} className="graph-dataset-single-container"
                   style={{ display: displayGroup ? 'inline' : 'none' }}>
                   <AreaChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Radar')} className="graph-dataset-single-container"
+                <div id="Radar-graph" onClick={() => this.handleGraphClick('Radar')} className="graph-dataset-single-container"
                   style={{ display: displayRadar ? 'inline' : 'none' }}>
                   <RadarChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Pie')} className="graph-dataset-single-container"
+                <div id="Pie-graph" onClick={() => this.handleGraphClick('Pie')} className="graph-dataset-single-container"
                   style={{ display: displayPie ? 'inline' : 'none' }}>
                   <PieChartGraph />
                 </div>
