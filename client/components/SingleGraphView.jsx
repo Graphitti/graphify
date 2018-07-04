@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -19,11 +19,12 @@ import {
   fetchAndSetDataFromS3,
   saveGraphSettingToDB
 } from '../store'
-import {HuePicker} from 'react-color'
+import { HuePicker } from 'react-color'
 import axios from 'axios'
 import FileSaver from 'file-saver'
-import {toast, ToastContainer} from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { SharePopup } from '../componentUtils'
+import renderHtml from 'react-render-html'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -44,8 +45,8 @@ class SingleGraphView extends Component {
   }
 
   componentDidMount() {
-    const {graphId} = this.props.match.params
-    const {getGraphId} = this.props
+    const { graphId } = this.props.match.params
+    const { getGraphId } = this.props
     getGraphId(graphId)
   }
 
@@ -56,16 +57,16 @@ class SingleGraphView extends Component {
     // let chartSVG = ReactDOM.findDOMNode(this.currentChart).children[0];
     let chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
-    if (asSVG) {
-      let svgURL = new XMLSerializer().serializeToString(chartSVG)
-      let svgBlob = new Blob([svgURL], {type: 'image/svg+xml;charset=utf-8'})
-      FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
-    } else {
-      let svgBlob = new Blob([chartSVG.outerHTML], {
-        type: 'text/html;charset=utf-8'
-      })
-      FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
-    }
+    // if (asSVG) {
+    //   let svgURL = new XMLSerializer().serializeToString(chartSVG)
+    //   let svgBlob = new Blob([svgURL], {type: 'image/svg+xml;charset=utf-8'})
+    //   FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
+    // } else {
+    let svgBlob = new Blob([chartSVG.outerHTML], {
+      type: 'text/html;charset=utf-8'
+    })
+    FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
+    // }
   }
 
   exportSVG() {
@@ -77,7 +78,7 @@ class SingleGraphView extends Component {
   handleChange(event) {
     const name = event.target.name
     const value = event.target.value
-    const {changeTitle, changeXAxisName, changeYAxisName, addDescription} = this.props
+    const { changeTitle, changeXAxisName, changeYAxisName, addDescription } = this.props
     switch (name) {
       case 'title':
         return changeTitle(value)
@@ -91,12 +92,12 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    this.setState({legend: idx})
+    this.setState({ legend: idx })
   }
 
   handleChangeColor(color) {
     this.props.changeColor(color.hex, this.state.legend)
-    this.setState({legend: -1})
+    this.setState({ legend: -1 })
   }
 
   handleClone() {
@@ -110,7 +111,7 @@ class SingleGraphView extends Component {
       graphType,
       description
     } = this.props.graphSettings
-    const {awsId, name} = this.props.dataset
+    const { awsId, name } = this.props.dataset
     return axios
       .post(`api/graphs`, {
         xAxis: currentX,
@@ -148,6 +149,11 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
+    const chartSVG = document.getElementById('single-graph-container-chart')
+      .children[0]
+    const svgBlob = JSON.stringify(chartSVG.outerHTML);
+    axios.post(`/api/aws/graph/${graphId}`, { svgBlob })
+      .catch(console.error)
   }
 
   giveLink() {
@@ -155,8 +161,9 @@ class SingleGraphView extends Component {
   }
 
   render() {
-    const {graphId} = this.props.match.params
-    let {currentY, graphType, colors, description} = this.props.graphSettings
+    const { graphId } = this.props.match.params
+    let { currentY, graphType, colors, description } = this.props.graphSettings
+    const image = this.state.image;
     return (
       <div>
         <div id="single-graph-buttons">
@@ -170,22 +177,22 @@ class SingleGraphView extends Component {
           <button id="single-graph-buttons-clone" onClick={this.handleClone}>
             Clone
           </button>
-          {SharePopup(<button id="single-graph-buttons-share">Share</button>, 
-        this.exportChart, this.giveLink, this.exportSVG)}
-          
+          {SharePopup(<button id="single-graph-buttons-share">Share</button>,
+            this.exportChart, this.giveLink, this.exportSVG)}
+
         </div>
         <div id='current-chart-description'>
-          { description.length !== '' ? (
+          {description.length !== '' ? (
             <div className="current-chart-description">
               <h3>Description</h3>
               <p>{`${description}`}</p>
             </div>
-          ) : null }
+          ) : null}
         </div>
 
         <div id="single-graph-container">
           <div id="single-graph-container-chart">
-            {(function() {
+            {(function () {
               switch (graphType) {
                 case 'Line':
                   return <LineChartGraph />
