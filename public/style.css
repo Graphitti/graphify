@@ -373,7 +373,7 @@ body {
 }
 
 #home-buttons-container {
-  justify-content: space-around;
+  justify-content: space-evenly;
   display: flex;
   margin: 80px;
 }
@@ -617,7 +617,7 @@ nav a {
   text-align: center;
 }
 
-#searchbar-input {
+.searchbar-input {
   display: block;
   width: 250px;
   margin: 20px auto 15px;
@@ -629,7 +629,7 @@ nav a {
   transition: 0.3s ease-in-out;
 }
 
-#searchbar-input:focus {
+.searchbar-input:focus {
   text-shadow: 0px 0px 3px rgb(19, 247, 142);
   box-shadow: 0px 0px 1px 1.1px rgb(19, 247, 142);
   border: inset 2px #318f71;
@@ -692,6 +692,25 @@ nav a {
 
 #single-graph {
   margin: 50px;
+}
+
+.single-graph-input {
+  display: block;
+  width: 90%;
+  margin: 10px auto 10px;
+  text-align: center;
+  outline: none;
+  font-size: 20px;
+  border: inset 2px #617180;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+  padding: 5px;
+}
+
+.single-graph-input:focus {
+  text-shadow: 0px 0px 3px rgb(19, 247, 142);
+  box-shadow: 0px 0px 1px 1.1px rgb(19, 247, 142);
+  border: inset 2px #318f71;
 }
 
 #single-graph-buttons {
@@ -790,6 +809,22 @@ nav a {
 #single-graph-container-settings {
   width: 25%;
   margin: 20px 50px;
+}
+
+#single-graph-container-settings-container {
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
+  border: inset 1px #318f41;
+  font-size: 1.3em;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.single-graph-settings-buttons{
+  margin: 5px 30px;
+  font-size: 15px;
+  border-radius: 5px;
+  outline: none;
 }
 
 .toast > div {
