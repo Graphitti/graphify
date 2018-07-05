@@ -79,7 +79,7 @@ export default class SearchBar extends Component {
         <form onSubmit={this.handleSubmit}>
           <input
             placeholder="Search Dataset"
-            id="searchbar-input"
+            className="searchbar-input"
             onChange={this.handleChange}
             name="searchbar"
             value={this.state.search}

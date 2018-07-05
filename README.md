@@ -1,6 +1,6 @@
 ##Graphify
 
-Graphify is a data visualization web app that allows users to easily upload and save datasets as well as creating and sharing customizable charts, additionally allow users to search and visualize among more than 10,000 datasets.
+Graphify is a data visualization web app that allows users to easily upload and save datasets as well as creating and sharing customizable charts, additionally it allows users to search and visualize from more than 10,000 datasets.
 
 Upload your own data or search it from public datasets
 

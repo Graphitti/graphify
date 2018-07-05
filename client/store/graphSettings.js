@@ -51,7 +51,7 @@ export const updateColor = (color, idx) => ({type: UPDATE_COLOR, color, idx})
 
 // THUNK CREATORS
 export const fetchAndSetGraph = graphId => dispatch => {
-  axios
+  return axios
     .get(`/api/graphs/${graphId}`)
     .then(res => {
       dispatch(fetchAndSetGraphFromDatabase(res.data.graph))
