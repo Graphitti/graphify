@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -9,9 +9,9 @@ import {
   PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
-import { setXAxis, addYAxis, deleteYAxis } from '../store'
+import {setXAxis, addYAxis, deleteYAxis} from '../store'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import {toast} from 'react-toastify'
 
 const contentStyle = {
   maxWidth: '600px',
@@ -37,7 +37,7 @@ class GraphDataset extends Component {
   }
 
   handleDeleteY(idx) {
-    const { deleteY } = this.props
+    const {deleteY} = this.props
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
@@ -45,14 +45,14 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick(graphType) {
-    const { dataset, graphSettings } = this.props
-    const { currentX, currentY } = graphSettings
+    const {dataset, graphSettings} = this.props
+    const {currentX, currentY} = graphSettings
     const datasetName = dataset.name
 
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
-      ? axios.post(`api/graphs/aws`, { dataset })
-      : (AWSPost = Promise.resolve({ data: dataset.awsId }))
+      ? axios.post(`api/graphs/aws`, {dataset})
+      : (AWSPost = Promise.resolve({data: dataset.awsId}))
 
     AWSPost.then(res => {
       return axios.post(`api/graphs`, {
@@ -97,7 +97,7 @@ class GraphDataset extends Component {
       handleXCategory,
       handleYCategory
     } = this.props
-    const { currentX, currentY } = graphSettings
+    const {currentX, currentY} = graphSettings
     const columnObj = dataset.dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
@@ -113,13 +113,18 @@ class GraphDataset extends Component {
         width: 'auto'
       }
     })
-    const displayScatter = currentY.length > 0 && currentX && yAxis.includes(currentX);
-    const displayGroup = currentY.length > 0 && currentX;
-    const displayRadar = currentY.length > 0 && currentX && !yAxis.includes(currentX);
-    const displayPie = currentY.length === 0 && currentX && !yAxis.includes(currentX);
-    const recommendation = displayScatter ? 'A Scatter Chart may be best for this data' : 
-      displayPie ? 'A Pie Chart may be best for this data' : 
-      displayGroup ? 'A Bar Chart may be best for this data' : null;
+    const displayScatter =
+      currentY.length > 0 && currentX && yAxis.includes(currentX)
+    const displayGroup = currentY.length > 0 && currentX
+    const displayRadar =
+      currentY.length > 0 && currentX && !yAxis.includes(currentX)
+    const displayPie =
+      currentY.length === 0 && currentX && !yAxis.includes(currentX)
+    const recommendation = displayScatter
+      ? 'A Scatter Chart may be best for this data'
+      : displayPie
+        ? 'A Pie Chart may be best for this data'
+        : displayGroup ? 'A Bar Chart may be best for this data' : null
     return (
       <div id="graph-dataset">
         <div id="graph-dataset-table-container">
@@ -161,7 +166,7 @@ class GraphDataset extends Component {
                         onClick={this.addYCategory}
                       >
                         +
-                    </button>
+                      </button>
                     </div>
                     {this.state.yCategQuantity.map((n, idx) => {
                       return (
@@ -180,43 +185,71 @@ class GraphDataset extends Component {
                             onClick={() => this.handleDeleteY(idx)}
                           >
                             x
-                        </button>
+                          </button>
                         </div>
                       )
                     })}
                   </div>
                 </div>
-                <div id="graph-dataset-message">
-                  <div id="click-message">
-                    <h2>Click on a graph to edit it</h2>
-                    <p><strong>Recommendation: </strong>{recommendation}</p>
+                  <div id="graph-dataset-message">
+                    <div id="click-message">
+                      <h2>Choose Your Favorite Graph</h2>
+                      <p>
+                        <strong>Recommendation: </strong>
+                        {recommendation}
+                      </p>
+                      <p>
+                        Upon click your <strong>Dataset</strong> is going to be
+                        saved automaticly
+                      </p>
+                      <p>
+                        Upon click your <strong>Graph</strong> is going to be
+                        saved automaticly
+                      </p>
+                    </div>
                   </div>
-                </div>
               </div>
               <div className="graph-dataset-graphs">
-                <div onClick={() => this.handleGraphClick('Scatter')} className="graph-dataset-single-container"
-                  style={{ display: displayScatter ? 'inline' : 'none' }}
+                <div
+                  onClick={() => this.handleGraphClick('Scatter')}
+                  className="graph-dataset-single-container"
+                  style={{display: displayScatter ? 'inline' : 'none'}}
                 >
                   <ScatterChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Line')} className="graph-dataset-single-container"
-                  style={{ display: displayGroup ? 'inline' : 'none' }}>
+                <div
+                  onClick={() => this.handleGraphClick('Line')}
+                  className="graph-dataset-single-container"
+                  style={{display: displayGroup ? 'inline' : 'none'}}
+                >
                   <LineChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Bar')} className="graph-dataset-single-container"
-                  style={{ display: displayGroup ? 'inline' : 'none' }}>
+                <div
+                  onClick={() => this.handleGraphClick('Bar')}
+                  className="graph-dataset-single-container"
+                  style={{display: displayGroup ? 'inline' : 'none'}}
+                >
                   <BarChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Area')} className="graph-dataset-single-container"
-                  style={{ display: displayGroup ? 'inline' : 'none' }}>
-                  <AreaChartGraph />
-                </div>
-                <div onClick={() => this.handleGraphClick('Radar')} className="graph-dataset-single-container"
-                  style={{ display: displayRadar ? 'inline' : 'none' }}>
+                <div
+                  onClick={() => this.handleGraphClick('Radar')}
+                  className="graph-dataset-single-container"
+                  style={{display: displayRadar ? 'inline' : 'none'}}
+                >
                   <RadarChartGraph />
                 </div>
-                <div onClick={() => this.handleGraphClick('Pie')} className="graph-dataset-single-container"
-                  style={{ display: displayPie ? 'inline' : 'none' }}>
+                <div
+                  onClick={() => this.handleGraphClick('Area')}
+                  className="graph-dataset-single-container"
+                  style={{display: displayGroup ? 'inline' : 'none'}}
+                >
+                  <AreaChartGraph />
+                </div>
+                <div
+                  onClick={() => this.handleGraphClick('Pie')}
+                  className="graph-dataset-single-container"
+                  style={{display: displayPie ? 'inline' : 'none'}}
+                >
                   <PieChartGraph />
                 </div>
               </div>

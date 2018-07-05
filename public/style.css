@@ -115,9 +115,20 @@ body {
   border-radius: 5px;
 }
 .dataset-link {
-  display: inline-flex;
+  align-items: center;
+  display: flex;
   cursor: pointer;
 }
+
+.dataset-link > div > div {
+  width: 40% !important;
+  border-radius: 10px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f3fffa, #1d6142) !important;
+}
+
 .dataset-preview {
   display: flex;
   flex-direction: column;
@@ -212,10 +223,11 @@ body {
 }
 
 #graph-dataset-message {
+  height: fit-content;
   width: fit-content;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
-  padding: 10px 40px;
+  padding: 25px 40px;
   border-radius: 5px;
 }
 
@@ -331,7 +343,8 @@ nav a {
   align-items: center;
   justify-content: space-between;
   background-image: linear-gradient(45deg, #f3fffa, #1d6142);
-  border-radius: 0 0 1em 0;
+  border-radius: 0 0 1em 1em;
+  opacity: 0.8;
   transition: transform 0.5s ease;
 }
 
@@ -359,7 +372,7 @@ nav a {
 }
 
 #navbar-home-name:hover {
-  text-shadow: 0px 0px 14px rgb(22, 199, 85);
+  text-shadow: 0px 0px 10px rgb(6, 251, 70);
 }
 
 #navbar-options {
@@ -370,6 +383,12 @@ nav a {
 
 #navbar-options div {
   margin: 0px 20px;
+}
+
+.navbar-options-name {
+  display: inline-block;
+  align-self: center;
+  color: white;
 }
 
 .navbar-options-buttons {
@@ -402,6 +421,22 @@ nav a {
   align-items: center;
 }
 
+#profile-datasets-wrapper {
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
+  border: inset 1px #318f41;
+  margin: 10px;
+  padding: 0px 15px;
+  border-radius: 5px;
+}
+
+#profile-datasets-wrapper-name:hover {
+  text-shadow: 0px 0px 1.5px rgb(22, 239, 148);
+}
+
+.profile-title {
+  border-bottom: double 3px rgb(42, 216, 127);
+}
+
 #profile-graphs {
   display: flex;
   flex-direction: column;
@@ -415,17 +450,73 @@ nav a {
 }
 
 .profile-graphs-single {
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  width: fit-content;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
   padding: 10px 40px;
   border-radius: 5px;
-  margin: 5px;
+  margin: 10px;
+}
+
+.profile-graphs-single > div > div {
+  width: 40% !important;
+  border-radius: 10px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f3fffa, #1d6142) !important;
+}
+
+#popup-delete-buttons-yes {
+  padding: 3px 10px;
+  margin: 20px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #8f3131;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(109, 20, 20) 45%,
+    rgb(255, 0, 0) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(247, 19, 19);
+  transition: color 1s, background-image 1.5s;
+}
+
+#popup-delete-buttons-yes:hover {
+  color: #000000;
+  background-image: linear-gradient(45deg, #ffdddd, #cc4949);
+}
+
+#popup-delete-buttons-no {
+  padding: 3px 13px;
+  margin: 20px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: color 1s, background-image 1.5s;
+}
+
+#popup-delete-buttons-no:hover {
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
+}
+
+#popup-share {
+  display: flex;
+  justify-content: space-around;
+  padding: 2px 2px;
 }
 
 .search-results {
@@ -447,6 +538,14 @@ nav a {
 #single-graph-buttons {
   display: flex;
   margin: 30px;
+}
+
+#single-graph-buttons > div.popup-content {
+  border-radius: 5px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f5f3ff, #213c86) !important;
 }
 
 #single-graph-buttons-save {
@@ -530,18 +629,13 @@ nav a {
 
 .toast > div {
   opacity: 0.9;
-  top: 80px;
+  top: 85px;
   text-align: center;
   font-size: 26px;
-  background: url(toast.jpg);
-  filter: hue-rotate(-50deg);
+  /* background: url(toast.jpg);
+  filter: hue-rotate(-50deg); */
+  background-image: linear-gradient(45deg, #1d6142, #f3fffa );
   color: white;
-}
-
-.profile-select-name {
-  display: inline-block;
-  align-self: center;
-  border-bottom: double 3px rgb(42, 216, 127);
 }
 
 .delete-dataset-and-graph {
