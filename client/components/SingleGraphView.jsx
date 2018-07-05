@@ -144,6 +144,12 @@ class SingleGraphView extends Component {
         awsId
       })
       .then(res => {
+        const chartSVG = document.getElementById('single-graph-container-chart')
+          .children[0]
+        const svgBlob = JSON.stringify(chartSVG.outerHTML)
+        return axios.post(`/api/aws/graph/${res.data}`, {svgBlob})
+      })
+      .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
         return this.props.getGraphId(res.data)
       })
@@ -188,7 +194,7 @@ class SingleGraphView extends Component {
     let {currentY, graphType, colors, description} = this.props.graphSettings
     const image = this.state.image
     return (
-      <div>
+      <div id="single-graph">
         <div id="single-graph-buttons">
           <button
             id="single-graph-buttons-save"
@@ -207,15 +213,6 @@ class SingleGraphView extends Component {
             this.exportSVG
           )}
         </div>
-        <div id="current-chart-description">
-          {description.length !== '' ? (
-            <div className="current-chart-description">
-              <h3>Description</h3>
-              <p>{`${description}`}</p>
-            </div>
-          ) : null}
-        </div>
-
         <div id="single-graph-container">
           <div id="single-graph-container-chart">
             {(function() {
@@ -238,20 +235,47 @@ class SingleGraphView extends Component {
             })()}
           </div>
           <div id="single-graph-container-settings">
-            <div>
+            <div id="single-graph-container-settings-container">
               <form>
                 <label>Title</label>
-                <input type="text" name="title" onChange={this.handleChange} />
+                <input
+                  className="single-graph-input"
+                  type="text"
+                  name="title"
+                  onChange={this.handleChange}
+                />
                 <label>X axis Name</label>
-                <input type="text" name="XAxis" onChange={this.handleChange} />
+                <input
+                  className="single-graph-input"
+                  type="text"
+                  name="XAxis"
+                  onChange={this.handleChange}
+                />
                 <label>Y axis Name</label>
-                <input type="text" name="YAxis" onChange={this.handleChange} />
+                <input
+                  className="single-graph-input"
+                  type="text"
+                  name="YAxis"
+                  onChange={this.handleChange}
+                />
+                <label>Description</label>
+                <input
+                  className="single-graph-input"
+                  type="text"
+                  name="description"
+                  onChange={this.handleChange}
+                />
               </form>
               <div>
                 {currentY.map((yAxis, idx) => (
                   <div key={idx}>
-                    <label>{`${yAxis} Color`}</label>
-                    <button onClick={() => this.handleClick(idx)}>
+                    <label>{`${yAxis[0].toUpperCase()}${yAxis.slice(
+                      1
+                    )} Color`}</label>
+                    <button
+                      className="single-graph-settings-buttons"
+                      onClick={() => this.handleClick(idx)}
+                    >
                       Pick Color
                     </button>
                     {this.state.legend !== -1 ? (
@@ -269,7 +293,14 @@ class SingleGraphView extends Component {
             </div>
           </div>
         </div>
-
+        <div id="current-chart-description">
+          {description.length !== '' ? (
+            <div className="current-chart-description">
+              <h3>Description:</h3>
+              <p>{`${description}`}</p>
+            </div>
+          ) : null}
+        </div>
         <ToastContainer className="toast" />
       </div>
     )
