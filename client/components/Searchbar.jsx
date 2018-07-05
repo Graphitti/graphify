@@ -71,6 +71,7 @@ export default class SearchBar extends Component {
         const { results, submittedSearch, searchCategories } = this.state;
         return (
             <div>
+                <h2>Search our datasets here</h2>
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.handleChange} name="searchbar" value={this.state.search} className="searchbar-input" />
                     <div className="searchbar-select">

@@ -142,7 +142,7 @@ class GraphDataset extends Component {
             )}
         </div>
         <div id="graph-dataset-select">
-          <h1 id="graph-dataset-select-name">Select the Data to Graph</h1>
+          <h1 id="graph-dataset-select-name">Select which data to graph</h1>
           {dataset.dataset.length && (
             <div>
               <div className="graph-dataset-headers">
@@ -194,7 +194,7 @@ class GraphDataset extends Component {
                 </div>
                 <div id="graph-dataset-message">
                   <div id="click-message">
-                    <h2>Click on a graph to edit it</h2>
+                    <h2>Click on a graph to edit further</h2>
                     <p><strong>Recommendation: </strong>{recommendation}</p>
                   </div>
                 </div>

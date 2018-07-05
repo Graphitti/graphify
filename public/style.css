@@ -106,6 +106,7 @@ body {
    /* #efe9ec; */
 }
 
+
 .container p {
   padding-top: 10px;
   color: #666;
@@ -216,11 +217,15 @@ body {
 }
 
 #graph-dataset-message {
-  width: fit-content;
+  width: 35vw;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
   padding: 10px 40px;
   border-radius: 5px;
+}
+#graph-dataset-message h2{
+  margin-top: 2em;
+  margin-bottom: 1.7em;
 }
 
 .graph-dataset-select-y {
