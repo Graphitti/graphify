@@ -24,6 +24,7 @@ import axios from 'axios'
 import FileSaver from 'file-saver'
 import {toast, ToastContainer} from 'react-toastify'
 import {SharePopup} from '../componentUtils'
+import htmlToImage from 'html-to-image'
 
 axios.defaults.baseURL = 'https://graphiffy.herokuapp.com/'
 
@@ -40,6 +41,7 @@ class SingleGraphView extends Component {
     this.handleClone = this.handleClone.bind(this)
     this.exportChart = this.exportChart.bind(this)
     this.exportSVG = this.exportSVG.bind(this)
+    this.exportToImg = this.exportToImg.bind(this)
     this.giveLink = this.giveLink.bind(this)
   }
 
@@ -58,6 +60,20 @@ class SingleGraphView extends Component {
     })
     FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
     // }
+  }
+
+
+  exportToImg() {
+    let chartSVG = document.getElementById('single-graph-container-chart').children[0];
+    const { graphId } = this.props.match.params
+    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 800, style: { margin: 'auto', verticalAlign: 'center' } })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'my-image-name.jpeg';
+        link.href = dataUrl;
+        link.click();
+		})
+    .catch(err => console.log(err));
   }
 
   exportSVG() {
@@ -186,7 +202,7 @@ class SingleGraphView extends Component {
           </button>
           {SharePopup(
             <button id="single-graph-buttons-share">Share</button>,
-            this.exportChart,
+            this.exportToImg,
             this.giveLink,
             this.exportSVG
           )}
