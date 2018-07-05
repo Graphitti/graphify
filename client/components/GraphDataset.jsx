@@ -13,11 +13,6 @@ import {setXAxis, addYAxis, deleteYAxis} from '../store'
 import axios from 'axios'
 import {toast} from 'react-toastify'
 
-const contentStyle = {
-  maxWidth: '600px',
-  width: '90%'
-}
-
 class GraphDataset extends Component {
   constructor(props) {
     super(props)
@@ -78,7 +73,7 @@ class GraphDataset extends Component {
     if (!dataset.awsId) {
       setTimeout(() => {
         toast('Dataset Saved', {
-          autoClose: 4000,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true
@@ -88,7 +83,7 @@ class GraphDataset extends Component {
 
     setTimeout(() => {
       toast('Graph Saved', {
-        autoClose: 4000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true
@@ -217,6 +212,7 @@ class GraphDataset extends Component {
               </div>
               <div className="graph-dataset-graphs">
                 <div
+                  id="Scatter-graph"
                   onClick={() => this.handleGraphClick('Scatter')}
                   className="graph-dataset-single-container"
                   style={{display: displayScatter ? 'inline' : 'none'}}
@@ -224,6 +220,7 @@ class GraphDataset extends Component {
                   <ScatterChartGraph />
                 </div>
                 <div
+                  id="Line-graph"
                   onClick={() => this.handleGraphClick('Line')}
                   className="graph-dataset-single-container"
                   style={{display: displayGroup ? 'inline' : 'none'}}
@@ -231,6 +228,7 @@ class GraphDataset extends Component {
                   <LineChartGraph />
                 </div>
                 <div
+                  id="Bar-graph"
                   onClick={() => this.handleGraphClick('Bar')}
                   className="graph-dataset-single-container"
                   style={{display: displayGroup ? 'inline' : 'none'}}
@@ -238,6 +236,7 @@ class GraphDataset extends Component {
                   <BarChartGraph />
                 </div>
                 <div
+                  id="Radar-graph"
                   onClick={() => this.handleGraphClick('Radar')}
                   className="graph-dataset-single-container"
                   style={{display: displayRadar ? 'inline' : 'none'}}
@@ -245,6 +244,7 @@ class GraphDataset extends Component {
                   <RadarChartGraph />
                 </div>
                 <div
+                  id="Area-graph"
                   onClick={() => this.handleGraphClick('Area')}
                   className="graph-dataset-single-container"
                   style={{display: displayGroup ? 'inline' : 'none'}}
@@ -252,6 +252,7 @@ class GraphDataset extends Component {
                   <AreaChartGraph />
                 </div>
                 <div
+                  id="Pie-graph"
                   onClick={() => this.handleGraphClick('Pie')}
                   className="graph-dataset-single-container"
                   style={{display: displayPie ? 'inline' : 'none'}}

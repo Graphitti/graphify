@@ -63,8 +63,8 @@ class SingleGraphView extends Component {
   exportSVG() {
     let chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
-    toast('Copied', {
-      autoClose: 2000,
+    toast('SVG Copied', {
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true
@@ -146,7 +146,7 @@ class SingleGraphView extends Component {
     const settings = this.props.graphSettings
     this.props.saveGraphSetting(graphId, settings)
     toast('Graph Saved', {
-      autoClose: 4000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true
@@ -158,8 +158,8 @@ class SingleGraphView extends Component {
   }
 
   giveLink() {
-    toast('Copied', {
-      autoClose: 2000,
+    toast('Link Copied', {
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true

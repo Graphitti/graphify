@@ -1,6 +1,5 @@
 import Popup from 'reactjs-popup'
 import React from 'react'
-import {toast} from 'react-toastify'
 
 export const GraphPopup = (graph, callback, graphType) => (
   <Popup
@@ -43,26 +42,27 @@ export const DeletePopup = (element, callback, id, keyword) => (
 )
 
 export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
-  <Popup
-    trigger={element}
-    closeOnDocumentClick
-    contentStyle={{
-      width: '400px',
-      height: '50px'
-    }}
-  >
+  <Popup trigger={element} closeOnDocumentClick>
     {close => (
-      <div className="share-popup">
-        <div className="share-popup-buttons">
-          <button onClick={downloadcb}>Download</button>
-          <button onClick={() => addInput('copied-text', linkcb())}>
+      <div id="popup-share">
+        <div id="popup-share-container">
+          <button
+            className="popup-share-button"
+            onClick={() => addInput('copied-text', linkcb())}
+          >
             Link
           </button>
-          <button onClick={() => addInput('copied-text', htmlcb())}>
-            html
+          <button className="popup-share-button" onClick={downloadcb}>
+            Download
+          </button>
+          <button
+            className="popup-share-button"
+            onClick={() => addInput('copied-text', htmlcb())}
+          >
+            SVG
           </button>
         </div>
-        <div className="share-popup-text">
+        <div>
           <textarea id="copied-text" style={{display: 'none'}} />
         </div>
       </div>
