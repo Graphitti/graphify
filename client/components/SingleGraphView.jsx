@@ -25,7 +25,7 @@ import FileSaver from 'file-saver'
 import {toast, ToastContainer} from 'react-toastify'
 import {SharePopup} from '../componentUtils'
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'https://graphiffy.herokuapp.com/'
 
 class SingleGraphView extends Component {
   constructor(props) {
@@ -164,7 +164,7 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    return `localhost:8080${this.props.location.pathname}`
+    return `graphiffy.herokuapp.com${this.props.location.pathname}`
   }
 
   render() {
