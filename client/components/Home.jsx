@@ -32,12 +32,16 @@ export default class Home extends Component {
           <button className="home-buttons" onClick={this.handleSearch}>
             Search Our Datasets
           </button>
-          <CSVReader
-            cssClass="home-buttons react-csv-input"
-            onFileLoaded={this.handleUpload}
-          />
+          <div className='home-buttons'>
+            Upload
+            <CSVReader
+              cssClass="react-csv-input"
+              onFileLoaded={this.handleUpload}
+            />
+          </div>
         </div>
       </div>
     )
   }
 }
+
