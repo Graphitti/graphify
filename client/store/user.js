@@ -30,6 +30,14 @@ export const me = () => async dispatch => {
   }
 }
 
+export const meAndGraphImages = () => dispatch => {
+  return axios.get('/auth/me')
+  .then(res => {
+    dispatch(getUser(res.data || defaultUser))
+  })
+  .catch(console.error)
+}
+
 export const auth = (email, password, method) => async dispatch => {
   let res
   try {

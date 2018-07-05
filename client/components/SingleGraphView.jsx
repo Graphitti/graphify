@@ -23,7 +23,7 @@ import {HuePicker} from 'react-color'
 import axios from 'axios'
 import FileSaver from 'file-saver'
 import {toast, ToastContainer} from 'react-toastify'
-import { SharePopup } from '../componentUtils'
+import {SharePopup} from '../componentUtils'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -51,33 +51,36 @@ class SingleGraphView extends Component {
 
   // Exports the graph as embedded JS or PNG
   exportChart(asSVG) {
-    // A Recharts component is rendered as a div that contains namely an SVG
-    // which holds the chart. We can access this SVG by calling upon the first child/
-    // let chartSVG = ReactDOM.findDOMNode(this.currentChart).children[0];
     let chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
-    if (asSVG) {
-      let svgURL = new XMLSerializer().serializeToString(chartSVG)
-      let svgBlob = new Blob([svgURL], {type: 'image/svg+xml;charset=utf-8'})
-      FileSaver.saveAs(svgBlob, this.state.uuid + '.svg')
-    } else {
-      let svgBlob = new Blob([chartSVG.outerHTML], {
-        type: 'text/html;charset=utf-8'
-      })
-      FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
-    }
+    let svgBlob = new Blob([chartSVG.outerHTML], {
+      type: 'text/html;charset=utf-8'
+    })
+    FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
+    // }
   }
 
   exportSVG() {
     let chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
-    return new XMLSerializer().serializeToString(chartSVG);
+    toast('Copied', {
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true
+    })
+    return new XMLSerializer().serializeToString(chartSVG)
   }
 
   handleChange(event) {
     const name = event.target.name
     const value = event.target.value
-    const {changeTitle, changeXAxisName, changeYAxisName, addDescription} = this.props
+    const {
+      changeTitle,
+      changeXAxisName,
+      changeYAxisName,
+      addDescription
+    } = this.props
     switch (name) {
       case 'title':
         return changeTitle(value)
@@ -148,15 +151,26 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
+    const chartSVG = document.getElementById('single-graph-container-chart')
+      .children[0]
+    const svgBlob = JSON.stringify(chartSVG.outerHTML)
+    axios.post(`/api/aws/graph/${graphId}`, {svgBlob}).catch(console.error)
   }
 
   giveLink() {
+    toast('Copied', {
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true
+    })
     return `localhost:8080${this.props.location.pathname}`
   }
 
   render() {
     const {graphId} = this.props.match.params
     let {currentY, graphType, colors, description} = this.props.graphSettings
+    const image = this.state.image
     return (
       <div>
         <div id="single-graph-buttons">
@@ -170,17 +184,20 @@ class SingleGraphView extends Component {
           <button id="single-graph-buttons-clone" onClick={this.handleClone}>
             Clone
           </button>
-          {SharePopup(<button id="single-graph-buttons-share">Share</button>, 
-        this.exportChart, this.giveLink, this.exportSVG)}
-          
+          {SharePopup(
+            <button id="single-graph-buttons-share">Share</button>,
+            this.exportChart,
+            this.giveLink,
+            this.exportSVG
+          )}
         </div>
-        <div id='current-chart-description'>
-          { description.length !== '' ? (
+        <div id="current-chart-description">
+          {description.length !== '' ? (
             <div className="current-chart-description">
               <h3>Description</h3>
               <p>{`${description}`}</p>
             </div>
-          ) : null }
+          ) : null}
         </div>
 
         <div id="single-graph-container">
@@ -278,8 +295,3 @@ const mapDispatch = dispatch => ({
 })
 
 export default connect(mapState, mapDispatch)(SingleGraphView)
-
-
-
-
-

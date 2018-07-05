@@ -42,36 +42,43 @@ export const DeletePopup = (element, callback, id, keyword) => (
   </Popup>
 )
 
-export const SharePopup = (element, downloadcb, linkcb, svgcb) => (
-  <Popup trigger={element} closeOnDocumentClick>
+export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
+  <Popup
+    trigger={element}
+    closeOnDocumentClick
+    contentStyle={{
+      width: '400px',
+      height: '50px'
+    }}
+  >
     {close => (
-      <div id="popup-share">
-        <button
-          onClick={() => {
-            addInput('Link', linkcb())
-          }}
-        >
-          Link
-        </button>
-        <input id="Link" style={{display: 'none'}} />
-        <button onClick={downloadcb}>Download</button>
-        <button onClick={() => addInput('SVG', svgcb())}>SVG</button>
-        <input id="SVG" style={{display: 'none'}} />
+      <div className="share-popup">
+        <div className="share-popup-buttons">
+          <button onClick={downloadcb}>Download</button>
+          <button onClick={() => addInput('copied-text', linkcb())}>
+            Link
+          </button>
+          <button onClick={() => addInput('copied-text', htmlcb())}>
+            html
+          </button>
+        </div>
+        <div className="share-popup-text">
+          <textarea id="copied-text" style={{display: 'none'}} />
+        </div>
       </div>
     )}
   </Popup>
 )
 
 const addInput = (id, text) => {
-  let element = document.getElementById(id)
+  const element = document.getElementById(id)
+  const popup = document.getElementsByClassName('popup-content')[0]
   element.value = text
   element.style.display = 'inline'
+  element.style.height = '1px'
+  const newHeight = element.scrollHeight >= 310 ? 310 : element.scrollHeight
+  element.style.height = newHeight + 'px'
+  popup.style.height = newHeight + 40 + 'px'
   element.select()
   document.execCommand('Copy')
-  toast(`${id} Copied`, {
-    autoClose: 4000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true
-  })
 }

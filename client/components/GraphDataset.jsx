@@ -65,6 +65,12 @@ class GraphDataset extends Component {
       })
     })
       .then(res => {
+        const chartSVG = document.getElementById(`${graphType}-graph`)
+          .children[0]
+        const svgBlob = JSON.stringify(chartSVG.outerHTML)
+        return axios.post(`/api/aws/graph/${res.data}`, {svgBlob})
+      })
+      .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
       .catch(console.error)
@@ -141,7 +147,7 @@ class GraphDataset extends Component {
             )}
         </div>
         <div id="graph-dataset-select">
-          <h1 id="graph-dataset-select-name">Select the Data to Graph</h1>
+          <h1 id="graph-dataset-select-name">Select which data to graph</h1>
           {dataset.dataset.length && (
             <div>
               <div className="graph-dataset-headers">
@@ -191,23 +197,23 @@ class GraphDataset extends Component {
                     })}
                   </div>
                 </div>
-                  <div id="graph-dataset-message">
-                    <div id="click-message">
-                      <h2>Choose Your Favorite Graph</h2>
-                      <p>
-                        <strong>Recommendation: </strong>
-                        {recommendation}
-                      </p>
-                      <p>
-                        Upon click your <strong>Dataset</strong> is going to be
-                        saved automaticly
-                      </p>
-                      <p>
-                        Upon click your <strong>Graph</strong> is going to be
-                        saved automaticly
-                      </p>
-                    </div>
+                <div id="graph-dataset-message">
+                  <div id="click-message">
+                    <h2>Choose Your Favorite Graph</h2>
+                    <p>
+                      <strong>Recommendation: </strong>
+                      {recommendation}
+                    </p>
+                    <p>
+                      Upon click your <strong>Dataset</strong> is going to be
+                      saved automaticly
+                    </p>
+                    <p>
+                      Upon click your <strong>Graph</strong> is going to be
+                      saved automaticly
+                    </p>
                   </div>
+                </div>
               </div>
               <div className="graph-dataset-graphs">
                 <div
