@@ -61,6 +61,7 @@ a {
 }
 
 #auth-form-button {
+  outline: none;
   margin: 30px;
   width: 35%;
   padding: 10px;
@@ -103,13 +104,19 @@ body {
   margin-top: 0;
   margin-left: 0;
   background-color: #f9f4f7;
-   /* #efe9ec; */
+  /* #efe9ec; */
 }
-
 
 .container p {
   padding-top: 10px;
   color: #666;
+}
+
+#copied-text {
+  width: 220px;
+  max-height: 310px;
+  resize: none;
+  overflow: hidden;
 }
 
 .csv-input {
@@ -120,9 +127,20 @@ body {
   border-radius: 5px;
 }
 .dataset-link {
-  display: inline-flex;
+  align-items: center;
+  display: flex;
   cursor: pointer;
 }
+
+.dataset-link > div > div {
+  width: 40% !important;
+  border-radius: 10px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f3fffa, #1d6142) !important;
+}
+
 .dataset-preview {
   display: flex;
   flex-direction: column;
@@ -179,6 +197,7 @@ body {
 }
 
 .graph-dataset-graphs-single {
+  cursor: pointer;
   margin: 15px;
   display: flex;
   flex-direction: column;
@@ -193,7 +212,7 @@ body {
 }
 
 .graph-dataset-graphs-single:hover {
-  text-shadow: 0px 0px 2px rgb(19, 247, 100);
+  text-shadow: 0px 0px 1.5px rgb(22, 239, 148);
   box-shadow: 0px 0px 10px 0.4px rgb(19, 247, 100);
   border: inset 3px #318f57;
 }
@@ -217,13 +236,14 @@ body {
 }
 
 #graph-dataset-message {
-  width: 35vw;
+  height: fit-content;
+  width: fit-content;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
-  padding: 10px 40px;
+  padding: 25px 40px;
   border-radius: 5px;
 }
-#graph-dataset-message h2{
+#graph-dataset-message h2 {
   margin-top: 2em;
   margin-bottom: 1.7em;
 }
@@ -285,10 +305,11 @@ body {
 
 .graph-thumbnail-image {
   height: 200px;
-  width: 200px;
+  max-width: 100%;
   cursor: pointer;
 }
 .graph-thumbnail-image .graph-dataset-graphs-single {
+  color: black;
   border: none;
   box-shadow: none;
 }
@@ -311,7 +332,6 @@ body {
   max-height: 100%;
 }
 
-
 #home {
   text-align: center;
   margin: 50px;
@@ -326,6 +346,7 @@ body {
 }
 
 .home-buttons {
+  outline: none;
   width: 13em;
   font-size: 30px;
   color: white;
@@ -370,7 +391,8 @@ nav a {
   align-items: center;
   justify-content: space-between;
   background-image: linear-gradient(45deg, #f3fffa, #1d6142);
-  border-radius: 0 0 1em 0;
+  border-radius: 0 0 1em 1em;
+  opacity: 0.8;
   transition: transform 0.5s ease;
 }
 
@@ -398,7 +420,7 @@ nav a {
 }
 
 #navbar-home-name:hover {
-  text-shadow: 0px 0px 14px rgb(22, 199, 85);
+  text-shadow: 0px 0px 10px rgb(6, 251, 70);
 }
 
 #navbar-options {
@@ -411,7 +433,14 @@ nav a {
   margin: 0px 20px;
 }
 
+.navbar-options-name {
+  display: inline-block;
+  align-self: center;
+  color: white;
+}
+
 .navbar-options-buttons {
+  outline: none;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
   font-size: 1.3em;
@@ -441,6 +470,26 @@ nav a {
   align-items: center;
 }
 
+#profile-datasets-wrapper {
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
+  border: inset 1px #318f41;
+  margin: 10px;
+  padding: 0px 15px;
+  border-radius: 5px;
+}
+
+#profile-datasets-wrapper-name {
+  transition: 0.5s;
+}
+
+#profile-datasets-wrapper-name:hover {
+  text-shadow: 0px 0px 1.5px rgb(22, 239, 148);
+}
+
+.profile-title {
+  border-bottom: double 3px rgb(42, 216, 127);
+}
+
 #profile-graphs {
   display: flex;
   flex-direction: column;
@@ -451,30 +500,134 @@ nav a {
 #profile-graphs-wrap {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 .profile-graphs-single {
-  width: 50%;
+  width: 33%;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  width: fit-content;
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 131);
   border: inset 1px #318f41;
   padding: 10px 40px;
   border-radius: 5px;
-  margin: 5px;
+  margin: 10px;
+  transition: 0.5s;
 }
-.searchbar-input {
-  display: block;
-  height: 25px;
-  width: 300px;
-  margin: 20px auto 15px;
+
+.profile-graphs-single:hover {
+  box-shadow: 0px 0px 10px 0.4px rgb(19, 247, 100);
+  border: inset 1px #318f57;
+}
+
+.profile-graphs-single > div > div {
+  width: 40% !important;
+  border-radius: 10px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f3fffa, #1d6142) !important;
+}
+
+#popup-delete-buttons-yes {
+  outline: none;
+  padding: 3px 10px;
+  margin: 20px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #8f3131;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(109, 20, 20) 45%,
+    rgb(255, 0, 0) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(247, 19, 19);
+  transition: color 1s, background-image 1.5s;
+}
+
+#popup-delete-buttons-yes:hover {
+  color: #000000;
+  background-image: linear-gradient(45deg, #ffdddd, #cc4949);
+}
+
+#popup-delete-buttons-no {
+  outline: none;
+  padding: 3px 13px;
+  margin: 20px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: color 1s, background-image 1.5s;
+}
+
+#popup-delete-buttons-no:hover {
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
+}
+
+#popup-share {
+  display: flex;
+  flex-direction: column;
+}
+
+#popup-share-container {
+  display: flex;
+  margin: 2px;
+  padding: 2px 2px;
+}
+
+.popup-share-button {
+  outline: none;
+  box-shadow: 0px 0px 0px 1px rgb(86, 19, 247);
+  border: inset 1px #3b318f;
+  font-size: 1em;
+  color: #fff;
+  text-decoration: none;
+  padding: 3px 8px;
+  border-radius: 5px;
+  transition: color 1s, background-color 0.5s;
+  background: rgba(0, 0, 0, 0);
+  margin: 0px 5px;
+}
+.popup-share-button:hover {
+  color: #000000;
+  background-image: linear-gradient(45deg, #dde6ff, #425bd4);
 }
 
 .searches {
- margin-top: 5em;
+  margin-top: 5em;
+}
+
+#searchbar-name {
+  text-align: center;
+}
+
+#searchbar-input {
+  display: block;
+  width: 250px;
+  margin: 20px auto 15px;
+  text-align: center;
+  outline: none;
+  font-size: 25px;
+  border: inset 2px #617180;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+}
+
+#searchbar-input:focus {
+  text-shadow: 0px 0px 3px rgb(19, 247, 142);
+  box-shadow: 0px 0px 1px 1.1px rgb(19, 247, 142);
+  border: inset 2px #318f71;
 }
 
 .search-results {
@@ -507,20 +660,18 @@ nav a {
   width: 300px;
 }
 .searchbar-select button {
+  outline: none;
   display: block;
   margin: auto;
   margin-top: 1.5em;
   margin-bottom: 2em;
-  width: 250px;
+  width: 150px;
   font-size: 15px;
+  padding: 5px;
   color: white;
   border: inset 2px #318f68;
   border-radius: 10px;
-  background-image: linear-gradient(
-    45deg,
-    rgb(10, 54, 34) 45%,
-    rgb(0, 255, 126) 105%
-  );
+  background-image: linear-gradient( 45deg, rgb(10, 54, 34) 45%, rgb(0, 255, 126) 105% );
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
   transition: 1s;
 }
@@ -539,7 +690,18 @@ nav a {
   margin: 30px;
 }
 
+#single-graph-buttons > div.popup-content {
+  outline: none;
+  width: unset !important;
+  border-radius: 5px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f5f3ff, #213c86) !important;
+}
+
 #single-graph-buttons-save {
+  outline: none;
   padding: 5px 25px;
   margin: 0px 10px;
   font-size: 25px;
@@ -562,6 +724,7 @@ nav a {
 }
 
 #single-graph-buttons-clone {
+  outline: none;
   padding: 5px 15px;
   margin: 0px 10px;
   font-size: 25px;
@@ -584,6 +747,7 @@ nav a {
 }
 
 #single-graph-buttons-share {
+  outline: none;
   padding: 5px 15px;
   margin: 0px 10px;
   font-size: 25px;
@@ -600,6 +764,7 @@ nav a {
 }
 
 #single-graph-buttons-share:hover {
+  outline: none;
   text-shadow: 0px 0px 1px rgb(19, 26, 247);
   color: #202747;
   background-image: linear-gradient(45deg, #e2ddff73, #5a66f3);
@@ -620,18 +785,13 @@ nav a {
 
 .toast > div {
   opacity: 0.9;
-  top: 80px;
+  top: 85px;
   text-align: center;
   font-size: 26px;
-  background: url(toast.jpg);
-  filter: hue-rotate(-50deg);
+  /* background: url(toast.jpg);
+  filter: hue-rotate(-50deg); */
+  background-image: linear-gradient(45deg, #1d6142, #f3fffa);
   color: white;
-}
-
-.profile-select-name {
-  display: inline-block;
-  align-self: center;
-  border-bottom: double 3px rgb(42, 216, 127);
 }
 
 .delete-dataset-and-graph {
@@ -664,31 +824,3 @@ nav a {
     width: 80%;
   }
 }
-
-.share-popup {
-  display: flex;
-  flex-direction: column;
-}
-
-.share-popup-buttons {
-  display: flex;
-  flex-direction: row;
-}
-
-.share-popup-buttons button {
-  border: none;
-  color: #6b6969;
-  flex: 0 0 33%;
-  margin-top: 3%;
-  text-decoration: underline;
-  font-weight: 800;
-  font-size: 15px;
-}
-
-.share-popup-text textarea{
-  width: 395px;
-  max-height: 310px;
-  resize: none;
-  overflow: hidden;
-}
-
