@@ -29,17 +29,17 @@ export const PieChartGraph = props => {
   } = graphSettings
 
   return (
-    <div>
+    <div className="graph-dataset-graphs-single">
       <h2>{title}</h2>
-      <ResponsiveContainer width="90%" height={550}>
+      <ResponsiveContainer width="105%" height={550}>
         <PieChart>
           <Pie
             isAnimationActive={true}
             data={quantityMaker(dataset.dataset, currentX)}
             dataKey="value"
-            cx={300}
-            cy={300}
-            innerRadius={150}
+            cx={280}
+            cy={280}
+            innerRadius={120}
             // outerRadius={150}
             fill={colors[0]}
             label

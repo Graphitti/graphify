@@ -1,23 +1,39 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { me, fetchAndSetDataFromS3, resetGraphSettings, deleteDataset, deleteGraph } from '../store'
+import { meAndGraphImages, fetchAndSetDataFromS3, resetGraphSettings, deleteDataset, deleteGraph } from '../store'
 import { ToastContainer } from 'react-toastify'
 import Popup from "reactjs-popup";
 import { DeletePopup } from '../componentUtils'
+import renderHtml from 'react-render-html'
+import axios from 'axios'
 
-const contentStyle = {
-  maxWidth: "600px",
-  width: "90%"
-}
 
 export class UserProfile extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      image: ''
+    }
 
+    this.getBack = this.getBack.bind(this)
   }
   componentDidMount() {
-    this.props.me();
+    this.props.meAndGraphImages()
+    .then(res => {
+      this.props.user.graphs.forEach(graph => {
+        const {graphId} = graph;
+        this.setState({[graphId]: ''})
+      })
+      let thisPromise = this.props.user.graphs.map(graph => {
+        this.getBack(graph.graphId)
+        .then(res => {
+          this.setState({[graph.graphId]: res})
+        })
+      })
+      Promise.all(thisPromise)
+      .catch(console.error)
+    })
   }
 
   handleDatasetClick = awsId => {
@@ -32,6 +48,14 @@ export class UserProfile extends Component {
 
   handleDeleteGraph = graphId => {
     this.props.deleteGraph(graphId)
+  }
+
+  getBack = (graphId) => {
+    return axios.get(`/api/aws/graph/${graphId}`)
+      .then(res => {
+        return res.data;
+      })
+      .catch(console.error)
   }
 
   render() {
@@ -51,7 +75,11 @@ export class UserProfile extends Component {
               datasets.map(dataset => (
                 <div key={dataset.id} className="dataset-link">
                   <a onClick={() => this.handleDatasetClick(dataset.awsId)}>
-                    <h3>{dataset.name}</h3>
+                    <h3>{
+                      dataset.name.length > 25 ?
+                      dataset.name.slice(0,25)  + '...'
+                      : dataset.name.slice(0,25)
+                    }</h3>
                   </a>
                   {DeletePopup(<button className="delete-dataset-and-graph">x</button>, this.handleDeleteDataset, dataset.id, 'dataset')}
                 </div>
@@ -63,9 +91,10 @@ export class UserProfile extends Component {
               {graphs &&
                 graphs.map(graph => (
                   <div key={graph.id} className="profile-graphs-single">
-                    <h2>{graph.title}</h2>
                     <Link to={`/graph-dataset/customize/${graph.graphId}`}>
-                      <img src={graph.thumbnail} />
+                      <div className="graph-thumbnail-image">
+                      {renderHtml(this.state[graph.graphId] || '')}
+                      </div>
                     </Link>
                     {DeletePopup(<button className="delete-dataset-and-graph">Delete graph</button>, this.handleDeleteGraph, graph.id, 'graph')}
                   </div>
@@ -86,7 +115,7 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({
-  me: () => dispatch(me()),
+  meAndGraphImages: () => dispatch(meAndGraphImages()),
   resetGraphSettings: () => dispatch(resetGraphSettings()),
   fetchAndSetDataFromS3: awsId => dispatch(fetchAndSetDataFromS3(awsId)),
   deleteDataset: datasetId => dispatch(deleteDataset(datasetId)),

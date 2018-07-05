@@ -35,18 +35,26 @@ export const DeletePopup = (element, callback, id, keyword) => (
     </Popup>
 )
 
-export const SharePopup = (element, downloadcb, linkcb, svgcb) => (
+export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
     <Popup
         trigger={element}
         closeOnDocumentClick
+        contentStyle={{
+            width: "400px",
+            height: "50px",
+        }}
     >
         {close => (
-            <div>
-                <button onClick={downloadcb}>Download</button>
-                <button onClick={() => addInput("link-text", linkcb())}>Link</button>
-                <input id="link-text" style={{ display: "none" }}></input>
-                <button onClick={() => addInput("svg-text", svgcb())}>SVG</button>
-                <input id="svg-text" style={{ display: "none" }}></input>
+            <div className="share-popup">
+                <div className="share-popup-buttons">
+                    <button onClick={downloadcb}>Download</button>
+                    <button onClick={() => addInput("copied-text", linkcb())}>Link</button>
+                    <button onClick={() => addInput("copied-text", htmlcb())}>html</button>
+                </div>
+                <div className="share-popup-text">
+                    <textarea id="copied-text" style={{ display: "none" }}
+                    ></textarea>
+                </div>
             </div>
         )
         }
@@ -54,9 +62,14 @@ export const SharePopup = (element, downloadcb, linkcb, svgcb) => (
 )
 
 const addInput = (id, text) => {
-    let element = document.getElementById(id)
+    const element = document.getElementById(id);
+    const popup = document.getElementsByClassName("popup-content")[0];
     element.value = text;
-    element.style.display = "inline"
+    element.style.display = "inline";
+    element.style.height= "1px";
+    const newHeight = element.scrollHeight >= 310 ? 310 : element.scrollHeight;
+    element.style.height = (newHeight)+"px";
+    popup.style.height = (newHeight + 40)+"px";
     element.select();
     document.execCommand("Copy");
 }

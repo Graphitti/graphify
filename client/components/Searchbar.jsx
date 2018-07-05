@@ -71,7 +71,7 @@ export default class SearchBar extends Component {
         const { results, submittedSearch, searchCategories } = this.state;
         return (
             <div>
-            {/* CG: NAME YOUR DIVS AKA CLASSNAMES EX. className="searchbar-container"*/}
+                <h2>Search our datasets here</h2>
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.handleChange} name="searchbar" value={this.state.search} className="searchbar-input" />
                     <div className="searchbar-select">
@@ -91,9 +91,12 @@ export default class SearchBar extends Component {
                       <button type="submit" id="search-button">Search</button>
                     </div>
                 </form>
+                <br/>
+                <div className="searches">
                 {this.state.showResults &&
                     <ShowSearchResults results={results} search={submittedSearch} />
                 }
+                </div>
             </div>
         )
     }
