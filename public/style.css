@@ -120,11 +120,14 @@ body {
 }
 
 .csv-input {
-  padding: 10px;
-  display: block;
-  margin: 15px auto;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  left: 0px;
+  top: 0px;
+  position: absolute;
+  padding: 20px 70px;
+  z-index: -1;
+}
+.react-csv-input {
+  opacity: 0;
 }
 .dataset-link {
   align-items: center;
@@ -346,8 +349,10 @@ body {
 }
 
 .home-buttons {
+  padding: 10px;
+  position: relative;
   outline: none;
-  width: 13em;
+  width: 11em;
   font-size: 30px;
   color: white;
   border: inset 2px #318f68;
@@ -504,7 +509,7 @@ nav a {
 }
 
 .profile-graphs-single {
-  width: 33%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -671,7 +676,11 @@ nav a {
   color: white;
   border: inset 2px #318f68;
   border-radius: 10px;
-  background-image: linear-gradient( 45deg, rgb(10, 54, 34) 45%, rgb(0, 255, 126) 105% );
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
   transition: 1s;
 }
@@ -811,6 +820,26 @@ nav a {
 }
 
 .delete-dataset-and-graph:hover {
+  color: #000000;
+  background-image: linear-gradient(45deg, #ffdddd, #cc4949);
+}
+
+.delete-graph {
+  margin: 80px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #8f3131;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(109, 20, 20) 45%,
+    rgb(255, 0, 0) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(247, 19, 19);
+  transition: color 1s, background-image 1.5s;
+}
+
+.delete-graph:hover {
   color: #000000;
   background-image: linear-gradient(45deg, #ffdddd, #cc4949);
 }

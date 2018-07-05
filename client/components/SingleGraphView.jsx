@@ -191,15 +191,6 @@ class SingleGraphView extends Component {
             this.exportSVG
           )}
         </div>
-        <div id="current-chart-description">
-          {description.length !== '' ? (
-            <div className="current-chart-description">
-              <h3>Description</h3>
-              <p>{`${description}`}</p>
-            </div>
-          ) : null}
-        </div>
-
         <div id="single-graph-container">
           <div id="single-graph-container-chart">
             {(function() {
@@ -230,6 +221,8 @@ class SingleGraphView extends Component {
                 <input type="text" name="XAxis" onChange={this.handleChange} />
                 <label>Y axis Name</label>
                 <input type="text" name="YAxis" onChange={this.handleChange} />
+                <label>Description</label>
+                <input type="text" name="description" onChange={this.handleChange} />
               </form>
               <div>
                 {currentY.map((yAxis, idx) => (
@@ -253,7 +246,14 @@ class SingleGraphView extends Component {
             </div>
           </div>
         </div>
-
+        <div id="current-chart-description">
+          {description.length !== '' ? (
+            <div className="current-chart-description">
+              <h3>Description</h3>
+              <p>{`${description}`}</p>
+            </div>
+          ) : null}
+        </div>
         <ToastContainer className="toast" />
       </div>
     )

@@ -96,7 +96,7 @@ export class UserProfile extends Component {
                       </div>
                     </Link>
                     {DeletePopup(
-                      <button className="delete-dataset-and-graph">
+                      <button className="delete-graph">
                         Delete graph
                       </button>,
                       this.handleDeleteGraph,
