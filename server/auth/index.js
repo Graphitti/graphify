@@ -1,5 +1,14 @@
 const router = require('express').Router()
 const {User, Graph, Dataset} = require('../db/models')
+const axios = require('axios')
+const {AWS_KEY, AWS_SECRET, AWS_BUCKET} = process.env || require('../../secrets')
+const AWS = require('aws-sdk')
+// set all the keys and region here
+AWS.config.update({
+  accessKeyId: AWS_KEY,
+  secretAccessKey: AWS_SECRET,
+  region: 'us-east-2'
+})
 module.exports = router
 
 router.post('/login', async (req, res, next) => {

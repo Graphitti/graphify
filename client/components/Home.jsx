@@ -33,7 +33,7 @@ export default class Home extends Component {
             Search Our Datasets
           </button>
           <div className='home-buttons'>
-            Upload
+            Upload File
             <CSVReader
               cssClass="react-csv-input"
               onFileLoaded={this.handleUpload}

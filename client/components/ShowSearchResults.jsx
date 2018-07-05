@@ -30,7 +30,7 @@ export default class ShowResults extends Component {
                 {results.length > 0 ?
                     results.map((result, idx) => {
                         return (
-                            <div className="search-results-dataset" key={result.resource.id}>
+                            <div className="search-results-dataset search-results-dataset-box" key={result.resource.id}>
                                 <SearchDatasetPreview result={result} handleClick={this.handleClick} />
                             </div>
                         )
