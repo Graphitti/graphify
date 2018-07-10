@@ -70,7 +70,7 @@ class GraphDataset extends Component {
       })
       .catch(console.error)
 
-    if (!dataset.awsId) {
+    // if (!dataset.awsId) {
       setTimeout(() => {
         toast('Dataset Saved', {
           autoClose: 3000,
@@ -79,7 +79,7 @@ class GraphDataset extends Component {
           pauseOnHover: true
         })
       }, 500)
-    }
+    // }
 
     setTimeout(() => {
       toast('Graph Saved', {
