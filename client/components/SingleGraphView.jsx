@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -17,13 +17,14 @@ import {
   updateColor,
   fetchAndSetGraph,
   fetchAndSetDataFromS3,
-  saveGraphSettingToDB
+  saveGraphSettingToDB,
+  toastResetter
 } from '../store'
-import {HuePicker} from 'react-color'
+import { HuePicker } from 'react-color'
 import axios from 'axios'
 import FileSaver from 'file-saver'
-import {toast, ToastContainer} from 'react-toastify'
-import {SharePopup} from '../componentUtils'
+import { toast, ToastContainer } from 'react-toastify'
+import { SharePopup } from '../componentUtils'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -44,9 +45,28 @@ class SingleGraphView extends Component {
   }
 
   componentDidMount() {
-    const {graphId} = this.props.match.params
-    const {getGraphId} = this.props
-    getGraphId(graphId)
+    const { graphId } = this.props.match.params
+    const { getGraphId } = this.props
+    const { dataset, graph } = this.props.toast
+    console.log('totottitototo',this.props.toast)
+    if (graph) {
+      toast('Graph Saved', {
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true
+      })
+    }
+    if (dataset) {
+      toast('Dataset Saved', {
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true
+      })
+    }
+    this.props.toastResetter()
+    this.props.getGraphId(graphId)
   }
 
   // Exports the graph as embedded JS or PNG
@@ -94,12 +114,12 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    this.setState({legend: idx})
+    this.setState({ legend: idx })
   }
 
   handleChangeColor(color) {
     this.props.changeColor(color.hex, this.state.legend)
-    this.setState({legend: -1})
+    this.setState({ legend: -1 })
   }
 
   handleClone() {
@@ -113,7 +133,7 @@ class SingleGraphView extends Component {
       graphType,
       description
     } = this.props.graphSettings
-    const {awsId, name} = this.props.dataset
+    const { awsId, name } = this.props.dataset
     return axios
       .post(`api/graphs`, {
         xAxis: currentX,
@@ -131,7 +151,7 @@ class SingleGraphView extends Component {
         const chartSVG = document.getElementById('single-graph-container-chart')
           .children[0]
         const svgBlob = JSON.stringify(chartSVG.outerHTML)
-        return axios.post(`/api/aws/graph/${res.data}`, {svgBlob})
+        return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
       })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
@@ -160,7 +180,7 @@ class SingleGraphView extends Component {
     const chartSVG = document.getElementById('single-graph-container-chart')
       .children[0]
     const svgBlob = JSON.stringify(chartSVG.outerHTML)
-    axios.post(`/api/aws/graph/${graphId}`, {svgBlob}).catch(console.error)
+    axios.post(`/api/aws/graph/${graphId}`, { svgBlob }).catch(console.error)
   }
 
   giveLink() {
@@ -170,12 +190,12 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    return `graphiffy.herokuapp.com/UuXNN7f77NM=`
+    return `localhost8080:/graph-dataset/${this.props.match.params.graphId}`
   }
 
   render() {
-    const {graphId} = this.props.match.params
-    let {currentY, graphType, colors, description} = this.props.graphSettings
+    const { graphId } = this.props.match.params
+    let { currentY, graphType, colors, description } = this.props.graphSettings
     const image = this.state.image
     return (
       <div id="single-graph">
@@ -199,7 +219,7 @@ class SingleGraphView extends Component {
         </div>
         <div id="single-graph-container">
           <div id="single-graph-container-chart">
-            {(function() {
+            {(function () {
               switch (graphType) {
                 case 'Line':
                   return <LineChartGraph />
@@ -294,7 +314,8 @@ class SingleGraphView extends Component {
 const mapState = state => {
   return {
     graphSettings: state.graphSettings,
-    dataset: state.dataset
+    dataset: state.dataset,
+    toast: state.toast
   }
 }
 
@@ -322,6 +343,9 @@ const mapDispatch = dispatch => ({
   },
   saveGraphSetting: (graphId, settings) => {
     dispatch(saveGraphSettingToDB(graphId, settings))
+  },
+  toastResetter: () => {
+    dispatch(toastResetter())
   }
 })
 
