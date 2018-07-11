@@ -17,8 +17,7 @@ import {
   updateColor,
   fetchAndSetGraph,
   fetchAndSetDataFromS3,
-  saveGraphSettingToDB,
-  toastResetter
+  saveGraphSettingToDB
 } from '../store'
 import { HuePicker } from 'react-color'
 import axios from 'axios'
@@ -47,25 +46,6 @@ class SingleGraphView extends Component {
   componentDidMount() {
     const { graphId } = this.props.match.params
     const { getGraphId } = this.props
-    const { dataset, graph } = this.props.toast
-    console.log('totottitototo',this.props.toast)
-    if (graph) {
-      toast('Graph Saved', {
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true
-      })
-    }
-    if (dataset) {
-      toast('Dataset Saved', {
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true
-      })
-    }
-    this.props.toastResetter()
     this.props.getGraphId(graphId)
   }
 
@@ -314,8 +294,7 @@ class SingleGraphView extends Component {
 const mapState = state => {
   return {
     graphSettings: state.graphSettings,
-    dataset: state.dataset,
-    toast: state.toast
+    dataset: state.dataset
   }
 }
 
@@ -343,9 +322,6 @@ const mapDispatch = dispatch => ({
   },
   saveGraphSetting: (graphId, settings) => {
     dispatch(saveGraphSettingToDB(graphId, settings))
-  },
-  toastResetter: () => {
-    dispatch(toastResetter())
   }
 })
 

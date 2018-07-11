@@ -128,6 +128,7 @@ body {
 }
 .react-csv-input {
   opacity: 0;
+  cursor: pointer;
 }
 .dataset-link {
   align-items: center;
@@ -364,6 +365,7 @@ body {
   );
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
   transition: 1s;
+  cursor: pointer;
 }
 
 .home-buttons:hover {

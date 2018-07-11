@@ -1,5 +1,6 @@
 import Popup from 'reactjs-popup'
 import React from 'react'
+import { Login } from '../components'
 
 export const GraphPopup = (graph, callback, graphType) => (
   <Popup
@@ -82,3 +83,15 @@ const addInput = (id, text) => {
   element.select()
   document.execCommand('Copy')
 }
+
+export const ErrorPopup = (element) => (
+  <Popup trigger={element} modal lockScroll closeOnDocumentClick>
+    {close => (
+      <div>
+        <h2>Please Login or Signup to customize your graphs</h2>
+        <Login />
+        <button onClick={close}>Close</button>
+      </div>
+    )}
+  </Popup>
+)

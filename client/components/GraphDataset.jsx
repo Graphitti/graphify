@@ -9,17 +9,16 @@ import {
   PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
-import { setXAxis, addYAxis, deleteYAxis, setToast } from '../store'
+import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { ErrorPopup } from '../componentUtils'
 
 class GraphDataset extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      yCategQuantity: [''],
-      datasetToast: null,
-      graphToast: null
+      yCategQuantity: ['']
     }
 
     this.addYCategory = this.addYCategory.bind(this)
@@ -52,10 +51,7 @@ class GraphDataset extends Component {
       : (AWSPost = Promise.resolve({ data: dataset.awsId }))
 
     AWSPost.then(res => {
-      if (!dataset.awsId) {
-        this.props.toastSet({graph: true, dataset: true})
-      } else {
-        this.props.toastSet({graph: true, dataset: false})
+      if (res.status === 401) {
       }
       return axios.post(`api/graphs`, {
         xAxis: currentX,
@@ -73,9 +69,29 @@ class GraphDataset extends Component {
         return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
       })
       .then(res => {
+        toast('Graph Saved', {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true
+        })
+        if (!dataset.awsId) {
+          toast('Dataset Saved', {
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true
+          })
+
+        }
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
-      .catch(console.error)
+      .catch(err => {
+        console.error(err);
+        const errorButton = document.getElementById("error-button");
+        console.log(errorButton, 'button');
+        errorButton.click();
+      })
   }
 
 
@@ -116,9 +132,10 @@ class GraphDataset extends Component {
         : displayGroup ? 'A Bar Chart may be best for this data' : null
     return (
       <div id="graph-dataset">
+        {ErrorPopup(<button id="error-button" style={{opacity: "0"}}></button>)}
         <div id="graph-dataset-table-container">
           <h1 id="graph-dataset-table-container-name">{dataset.name}</h1>
-          {dataset.dataset.length &&
+          {!!dataset.dataset.length &&
             xAxis.length && (
               <div id="graph-dataset-table-container-table">
                 <ReactTable
@@ -131,7 +148,7 @@ class GraphDataset extends Component {
         </div>
         <div id="graph-dataset-select">
           <h1 id="graph-dataset-select-name">Select which data to graph</h1>
-          {dataset.dataset.length && (
+          {!!dataset.dataset.length && (
             <div>
               <div className="graph-dataset-headers">
                 <div id="graph-dataset-select-x-y">
@@ -259,7 +276,8 @@ class GraphDataset extends Component {
 const mapState = state => {
   return {
     dataset: state.dataset,
-    graphSettings: state.graphSettings
+    graphSettings: state.graphSettings,
+    user: state.user
   }
 }
 
@@ -272,9 +290,6 @@ const mapDispatch = dispatch => ({
   },
   deleteY(idx) {
     dispatch(deleteYAxis(idx))
-  },
-  toastSet(toastObj) {
-    dispatch(setToast(toastObj))
   }
 })
 
