@@ -170,7 +170,7 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    return `graphiffy.herokuapp.com/UuXNN7f77NM=`
+    return `localhost:8080/${this.props.match.params.graphId}`
   }
 
   render() {

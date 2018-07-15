@@ -12,7 +12,6 @@ AWS.config.update({
 module.exports = router;
 
 router.get('/:awsId', (req, res, next) => {
-    //have some kind of security so that we don't do this if the user doesn't have access to the graph
     const {awsId} = req.params
     let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
     //this makes the promise to do the actual request, get object is a get request
@@ -29,7 +28,6 @@ router.get('/:awsId', (req, res, next) => {
 })
 
 router.get('/graph/:graphId', (req, res, next) => {
-    //have some kind of security so that we don't do this if the user doesn't have access to the graph
     const {graphId} = req.params
     let datasetParams = {Bucket: AWS_BUCKET, Key: graphId}
     //this makes the promise to do the actual request, get object is a get request
@@ -45,7 +43,6 @@ router.get('/graph/:graphId', (req, res, next) => {
 })
 
 router.post('/graph/:graphId', (req, res, next) => {
-    //have some kind of security so that we don't do this if the user doesn't have access to the graph
     const {graphId} = req.params
     const {svgBlob} = req.body
     let datasetParams = {Bucket: AWS_BUCKET, Key: graphId, Body: svgBlob}

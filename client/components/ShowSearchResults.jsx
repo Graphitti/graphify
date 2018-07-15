@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
 import store, {getAsyncData} from '../store'
 import SearchDatasetPreview from './SearchDatasetPreview'
 
