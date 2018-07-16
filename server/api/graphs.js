@@ -24,6 +24,7 @@ router.get('/:graphId', (req, res, next) => {
       const {awsId} = graph.dataset.dataValues
       const graphDataObj = {}
       getDatasetFromS3(awsId).then(dataset => {
+        // CG: nested Promise
         graphDataObj.dataset = dataset
         graphDataObj.graph = graph
         res.send(graphDataObj)
@@ -53,6 +54,7 @@ router.post('/', (req, res, next) => {
     const userId = req.user.id
 
     let makingGraph = Graph.create({
+      // CG: promiseForGraph
       userId,
       graphId,
       xAxis,
@@ -64,11 +66,13 @@ router.post('/', (req, res, next) => {
       description
     })
     let makingYAxes = Promise.all(
+      // CG: promiseForYAxis
       yAxis.map(name => {
         return YAxis.create({name})
       })
     )
     let makingDataset = Dataset.findOrCreate({
+      // OR JUST USE ASYNC AWAIT
       where: {
         name: datasetName,
         userId,
@@ -131,7 +135,7 @@ router.put('/:graphId', (req, res, next) => {
           })
         )
         //return everything in a promise
-        return Promise.all([affectedGraph, newYAxes])
+        return Promise.all([effectedGraph, newYAxes]) // CG: AFFECTED GRAPH!
       })
       //set the newYAxes as connected to the graph
       .then(([updatedGraph, createdAxes]) => {
@@ -145,6 +149,7 @@ router.put('/:graphId', (req, res, next) => {
     res.status(401).send('You need to be logged in to edit this graph')
   }
 })
+
 
 router.get('/aws/:awsId', (req, res, next) => {
   if (req.user) {
@@ -177,8 +182,8 @@ router.post('/aws', (req, res, next) => {
     const stringifiedDataset = JSON.stringify({dataset, columnObj})
     let datasetParams = {
       Bucket: AWS_BUCKET,
-      Key: '1234567890',
-      Body: JSON.stringify({testObj: 'You found it!'})
+      Key: awsId,
+      Body: stringifiedDataset
     }
 
     //this creates or updates the desired object
@@ -187,7 +192,7 @@ router.post('/aws', (req, res, next) => {
       .promise()
     uploadDatasetPromise
       .then(data => {
-        res.status(200).send('1234567890')
+        res.status(200).send(awsId)
       })
       .catch(next)
   } else {
