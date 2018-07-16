@@ -11,10 +11,11 @@ const AuthForm = props => {
 
   return (
     <div id="auth">
+    {console.log('the props', props)}
       <div id="auth-info">
         <img id="auth-info-img" src="/graph-icon.png" />
         <h1 id="auth-info-title">{displayName}</h1>
-        <form id="auth-form" onSubmit={handleSubmit} name={name}>
+        <form id="auth-form" onSubmit={(evt) => handleSubmit(evt, props.location.query.lastPage)} name={name}>
           <div>
             <input
               autoFocus="autofocus"
@@ -77,12 +78,12 @@ const mapSignup = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
+    handleSubmit(evt, lastPage) {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      dispatch(auth(email, password, formName, lastPage))
     }
   }
 }

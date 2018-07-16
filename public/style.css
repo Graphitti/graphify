@@ -125,6 +125,7 @@ body {
   position: absolute;
   padding: 20px 70px;
   z-index: -1;
+  cursor: pointer;
 }
 .react-csv-input {
   opacity: 0;

@@ -38,7 +38,8 @@ export const meAndGraphImages = () => dispatch => {
   .catch(console.error)
 }
 
-export const auth = (email, password, method) => async dispatch => {
+export const auth = (email, password, method, lastPage) => async dispatch => {
+  console.log('the lastpage', lastPage)
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
@@ -48,7 +49,7 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
-    history.push('/')
+    !!lastPage ? history.push(lastPage) : history.push('/')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }

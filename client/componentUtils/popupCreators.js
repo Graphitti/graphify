@@ -1,6 +1,6 @@
 import Popup from 'reactjs-popup'
 import React from 'react'
-import { Login } from '../components'
+import {Link} from 'react-router-dom'
 
 export const GraphPopup = (graph, callback, graphType) => (
   <Popup
@@ -64,7 +64,7 @@ export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
           </button>
         </div>
         <div>
-          <textarea id="copied-text" style={{display: 'none'}} />
+          <textarea id="copied-text" style={{ display: 'none' }} />
         </div>
       </div>
     )}
@@ -84,14 +84,21 @@ const addInput = (id, text) => {
   document.execCommand('Copy')
 }
 
-export const ErrorPopup = (element) => (
-  <Popup trigger={element} modal lockScroll closeOnDocumentClick>
+export const ErrorPopup = (element, pathname) => (
+  <Popup trigger={element} modal closeOnDocumentClick>
     {close => (
       <div>
         <h2>Please Login or Signup to customize your graphs</h2>
-        <Login />
+          <Link className="navbar-options-buttons" 
+          to={{ pathname: "/login", query: {lastPage: pathname}}}
+          >Login</Link>
+          <Link className="navbar-options-buttons" 
+          to={{ pathname: "/login", query: {lastPage: pathname}}}
+          >Sign Up</Link>
         <button onClick={close}>Close</button>
       </div>
     )}
   </Popup>
 )
+
+
