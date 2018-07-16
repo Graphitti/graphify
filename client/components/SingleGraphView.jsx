@@ -57,7 +57,6 @@ class SingleGraphView extends Component {
       type: 'text/html;charset=utf-8'
     })
     FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
-    // }
   }
 
   exportSVG() {
