@@ -12,6 +12,7 @@ import {ToastContainer} from 'react-toastify'
 import {DeletePopup} from '../componentUtils'
 import renderHtml from 'react-render-html'
 import axios from 'axios'
+import htmlToImage from 'html-to-image'
 
 export class UserProfile extends Component {
   constructor(props) {
@@ -29,11 +30,13 @@ export class UserProfile extends Component {
         this.setState({[graphId]: ''})
       })
       let thisPromise = this.props.user.graphs.map(graph => {
-        this.getBack(graph.graphId).then(res => {
-          this.setState({[graph.graphId]: res})
+        this.getBack(graph.graphId)
+          .then(res => {
+            this.setState({[graph.graphId]: res})
         })
       })
-      Promise.all(thisPromise).catch(console.error)
+      Promise.all(thisPromise)
+      .catch(console.error)
     })
   }
 
