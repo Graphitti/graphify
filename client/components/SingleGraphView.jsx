@@ -24,8 +24,9 @@ import axios from 'axios'
 import FileSaver from 'file-saver'
 import {toast, ToastContainer} from 'react-toastify'
 import {SharePopup} from '../componentUtils'
+import { CURRENT_HOST } from '../../secrets'
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = `http://${CURRENT_HOST}`
 
 class SingleGraphView extends Component {
   constructor(props) {
@@ -170,7 +171,7 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    return `localhost:8080/${this.props.match.params.graphId}`
+    return `${CURRENT_HOST}/${this.props.match.params.graphId}`
   }
 
   render() {
