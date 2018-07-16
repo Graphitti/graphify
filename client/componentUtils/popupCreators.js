@@ -93,7 +93,7 @@ export const ErrorPopup = (element, pathname) => (
           to={{ pathname: "/login", query: {lastPage: pathname}}}
           >Login</Link>
           <Link className="navbar-options-buttons" 
-          to={{ pathname: "/login", query: {lastPage: pathname}}}
+          to={{ pathname: "/signup", query: {lastPage: pathname}}}
           >Sign Up</Link>
         <button onClick={close}>Close</button>
       </div>
