@@ -25,9 +25,10 @@ import FileSaver from 'file-saver'
 import { toast, ToastContainer } from 'react-toastify'
 import { SharePopup } from '../componentUtils'
 import htmlToImage from 'html-to-image'
+import {CURRENT_HOST} from '../../secrets'
 
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = `http://${CURRENT_HOST}`
 
 class SingleGraphView extends Component {
   constructor(props) {
