@@ -72,29 +72,6 @@ class SingleGraphView extends Component {
       pauseOnHover: true
     })
     return new XMLSerializer().serializeToString(chartSVG)
-
-
-    // let chartSVG = document.getElementById('single-graph-container-chart').children[0];
-    // const { graphId } = this.props.match.params
-    // console.log('charSVG in exportAsImage--->>>', chartSVG)
-    // console.log('type', typeof chartSVG)
-    // // let input = document.getElementById('svg-copy')
-    // // this.setState({svgDisplay: true})
-    // // let svgURL = new XMLSerializer().serializeToString(chartSVG)
-    // // input.value = svgURL
-    // // setThumbnailToGraph(graphId, chartSVG);
-    // console.log('outerhtml', chartSVG.outerHTML)
-    // htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
-    //   .then(function (dataUrl) {
-    //     console.log('this was made', dataUrl)
-    //     var link = document.createElement('a');
-    //     link.download = 'my-image-name.jpeg';
-    //     link.href = dataUrl;
-    //     link.click();
-    //     let svgBlob = new Blob([chartSVG.outerHTML], {
-    //       type: 'text/html;charset=utf-8'
-    //     })
-    //   })
   }
 
   handleChange(event) {

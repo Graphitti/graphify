@@ -87,15 +87,17 @@ const addInput = (id, text) => {
 export const ErrorPopup = (element, pathname) => (
   <Popup trigger={element} modal closeOnDocumentClick>
     {close => (
-      <div>
-        <h2>Please Login or Signup to customize your graphs</h2>
-          <Link className="navbar-options-buttons" 
+      <div className="error-popup-div">
+        <h2>Please login or signup to customize your graphs</h2>
+        <div className="error-popup-buttons">
+          <Link className="popup-login-buttons" 
           to={{ pathname: "/login", query: {lastPage: pathname}}}
           >Login</Link>
-          <Link className="navbar-options-buttons" 
+          <Link className="popup-login-buttons" 
           to={{ pathname: "/signup", query: {lastPage: pathname}}}
           >Sign Up</Link>
-        <button onClick={close}>Close</button>
+        <button className="popup-login-buttons-no" onClick={close}>Close</button>
+        </div>
       </div>
     )}
   </Popup>

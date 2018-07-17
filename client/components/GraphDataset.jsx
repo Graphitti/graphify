@@ -136,7 +136,6 @@ class GraphDataset extends Component {
         : displayGroup ? 'A Bar Chart may be best for this data' : null
     return (
       <div id="graph-dataset">
-
         {ErrorPopup(<button id="error-button" style={{ opacity: "0" }}></button>, this.props.location.pathname)}
         <div id="graph-dataset-table-container">
           <h1 id="graph-dataset-table-container-name">{dataset.name}</h1>
