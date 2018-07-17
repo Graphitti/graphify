@@ -13,6 +13,7 @@ import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { ErrorPopup } from '../componentUtils'
+import htmlToImage from 'html-to-image'
 
 class GraphDataset extends Component {
   constructor(props) {
@@ -63,10 +64,26 @@ class GraphDataset extends Component {
       })
     })
       .then(res => {
-        const chartSVG = document.getElementById(`${graphType}-graph`)
-          .children[0]
-        const svgBlob = JSON.stringify(chartSVG.outerHTML)
-        return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
+        let chartSVG = document.getElementById(`${graphType}-graph`).children[0];
+        const { graphId } = this.props.match.params
+        return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+        .then((dataUrl) => {
+          return axios.post(`/api/aws/graph/${res.data}`, {
+            svgBlob: dataUrl
+          })
+      })
+        // .then(res => {
+        //   console.log('what is this', res)
+        //   return 5
+        // })
+        // .cacth(console.error)
+
+
+
+        // const chartSVG = document.getElementById(`${graphType}-graph`)
+        //   .children[0]
+        // const svgBlob = JSON.stringify(chartSVG.outerHTML)
+        // return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
       })
       .then(res => {
         toast('Graph Saved', {
@@ -88,8 +105,8 @@ class GraphDataset extends Component {
       })
       .catch(err => {
         console.error(err);
-        const errorButton = document.getElementById("error-button");
-        errorButton.click();
+        // const errorButton = document.getElementById("error-button");
+        // errorButton.click();
       })
   }
 
@@ -132,7 +149,7 @@ class GraphDataset extends Component {
     return (
       <div id="graph-dataset">
 
-        {ErrorPopup(<button id="error-button" style={{opacity: "0"}}></button>, this.props.location.pathname)}
+        {ErrorPopup(<button id="error-button" style={{ opacity: "0" }}></button>, this.props.location.pathname)}
         <div id="graph-dataset-table-container">
           <h1 id="graph-dataset-table-container-name">{dataset.name}</h1>
           {!!dataset.dataset.length &&

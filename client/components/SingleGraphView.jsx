@@ -43,6 +43,7 @@ class SingleGraphView extends Component {
     this.exportChart = this.exportChart.bind(this)
     this.exportSVG = this.exportSVG.bind(this)
     this.giveLink = this.giveLink.bind(this)
+    this.testAWS = this.testAWS.bind(this)
   }
 
   componentDidMount() {
@@ -59,6 +60,22 @@ class SingleGraphView extends Component {
       type: 'text/html;charset=utf-8'
     })
     FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
+  }
+
+  testAWS() {
+    let chartSVG = document.getElementById('single-graph-container-chart').children[0];
+    const { graphId } = this.props.match.params
+    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+      .then((dataUrl) => {
+        return axios.post('/api/graphs/aws', {
+          dataset: dataUrl
+        })
+      })
+      .then(res => {
+        console.log('what is this', res)
+        return 5
+      })
+      .cacth(console.error)
   }
 
   exportSVG() {
@@ -152,10 +169,13 @@ class SingleGraphView extends Component {
         awsId
       })
       .then(res => {
-        const chartSVG = document.getElementById('single-graph-container-chart')
-          .children[0]
-        const svgBlob = JSON.stringify(chartSVG)
-        return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
+        const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+        return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+        .then((dataUrl) => {
+          return axios.post(`/api/aws/graph/${res.data}`, {
+            svgBlob: dataUrl
+          })
+        })
       })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
@@ -181,10 +201,14 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    const chartSVG = document.getElementById('single-graph-container-chart')
-      .children[0]
-    const svgBlob = JSON.stringify(chartSVG.outerHTML)
-    axios.post(`/api/aws/graph/${graphId}`, { svgBlob }).catch(console.error)
+    const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+    return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    .then((dataUrl) => {
+      return axios.post(`/api/aws/graph/${graphId}`, {
+        svgBlob: dataUrl
+      })
+    })
+      .catch(console.error)
   }
 
   giveLink() {
@@ -243,6 +267,7 @@ class SingleGraphView extends Component {
             })()}
           </div>
           <div id="single-graph-container-settings">
+            <button onClick={this.testAWS}>test aws button</button>
             <div id="single-graph-container-settings-container">
               <form>
                 <label>Title</label>
