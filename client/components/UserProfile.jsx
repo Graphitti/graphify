@@ -19,7 +19,6 @@ export class UserProfile extends Component {
     super(props)
     this.state = {}
 
-    this.getBack = this.getBack.bind(this)
   }
   componentDidMount() {
     this.props.meAndGraphImages().then(res => {
@@ -62,22 +61,10 @@ export class UserProfile extends Component {
       .catch(console.error)
   }
 
-  // getImage(graphId) {
-  //   axios.get(`/api/graphs/aws/${graphId}`)
-  //   .then(res => res.data)
-  //   .then(res => {
-  //     const newImage = document.createElement('img');
-  //     newImage.src = res.dataset;
-  //     document.getElementById('special-button').appendChild(newImage);
-  //   })
-  //   .catch(console.error)
-  // }
-
   render() {
     const {graphs, datasets} = this.props.user
     return (
       <div id="profile">
-        {/* <button onClick={() => this.getImage('s4+w9KbjbzA=')} id="special-button">get the image</button> */}
         <div id="profile-content">
           <div id="profile-datasets">
             <h2 className="profile-title">My Datasets</h2>
@@ -106,9 +93,6 @@ export class UserProfile extends Component {
                   <div key={graph.id} className="profile-graphs-single">
                     <Link to={`/graph-dataset/customize/${graph.graphId}`}>
                       <img src={this.state[graph.graphId]}/>
-                      {/* <div className="graph-thumbnail-image">
-                        {renderHtml(this.state[graph.graphId] || '')}
-                      </div> */}
                     </Link>
                     {DeletePopup(
                       <button className="delete-graph">

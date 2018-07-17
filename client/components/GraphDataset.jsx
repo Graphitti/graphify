@@ -67,23 +67,11 @@ class GraphDataset extends Component {
         let chartSVG = document.getElementById(`${graphType}-graph`).children[0];
         const { graphId } = this.props.match.params
         return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
-        .then((dataUrl) => {
-          return axios.post(`/api/aws/graph/${res.data}`, {
-            svgBlob: dataUrl
+          .then((dataUrl) => {
+            return axios.post(`/api/aws/graph/${res.data}`, {
+              svgBlob: dataUrl
+            })
           })
-      })
-        // .then(res => {
-        //   console.log('what is this', res)
-        //   return 5
-        // })
-        // .cacth(console.error)
-
-
-
-        // const chartSVG = document.getElementById(`${graphType}-graph`)
-        //   .children[0]
-        // const svgBlob = JSON.stringify(chartSVG.outerHTML)
-        // return axios.post(`/api/aws/graph/${res.data}`, { svgBlob })
       })
       .then(res => {
         toast('Graph Saved', {
@@ -105,8 +93,8 @@ class GraphDataset extends Component {
       })
       .catch(err => {
         console.error(err);
-        // const errorButton = document.getElementById("error-button");
-        // errorButton.click();
+        const errorButton = document.getElementById("error-button");
+        errorButton.click();
       })
   }
 

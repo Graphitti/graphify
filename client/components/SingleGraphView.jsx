@@ -43,7 +43,6 @@ class SingleGraphView extends Component {
     this.exportChart = this.exportChart.bind(this)
     this.exportSVG = this.exportSVG.bind(this)
     this.giveLink = this.giveLink.bind(this)
-    this.testAWS = this.testAWS.bind(this)
   }
 
   componentDidMount() {
@@ -60,22 +59,6 @@ class SingleGraphView extends Component {
       type: 'text/html;charset=utf-8'
     })
     FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
-  }
-
-  testAWS() {
-    let chartSVG = document.getElementById('single-graph-container-chart').children[0];
-    const { graphId } = this.props.match.params
-    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
-      .then((dataUrl) => {
-        return axios.post('/api/graphs/aws', {
-          dataset: dataUrl
-        })
-      })
-      .then(res => {
-        console.log('what is this', res)
-        return 5
-      })
-      .cacth(console.error)
   }
 
   exportSVG() {
@@ -267,7 +250,6 @@ class SingleGraphView extends Component {
             })()}
           </div>
           <div id="single-graph-container-settings">
-            <button onClick={this.testAWS}>test aws button</button>
             <div id="single-graph-container-settings-container">
               <form>
                 <label>Title</label>

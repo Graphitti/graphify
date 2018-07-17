@@ -8,14 +8,14 @@ import {auth} from '../store'
  */
 const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
+  const lastPage = props.location.query ? props.location.query.lastPage : '/'
 
   return (
     <div id="auth">
-    {console.log('the props', props)}
       <div id="auth-info">
         <img id="auth-info-img" src="/graph-icon.png" />
         <h1 id="auth-info-title">{displayName}</h1>
-        <form id="auth-form" onSubmit={(evt) => handleSubmit(evt, props.location.query.lastPage)} name={name}>
+        <form id="auth-form" onSubmit={(evt) => handleSubmit(evt, lastPage)} name={name}>
           <div>
             <input
               autoFocus="autofocus"

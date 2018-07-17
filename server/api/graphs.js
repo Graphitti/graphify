@@ -53,7 +53,6 @@ router.post('/', (req, res, next) => {
     const userId = req.user.id
 
     let makingGraph = Graph.create({
-      // CG: promiseForGraph
       userId,
       graphId,
       xAxis,
@@ -65,13 +64,11 @@ router.post('/', (req, res, next) => {
       description
     })
     let makingYAxes = Promise.all(
-      // CG: promiseForYAxis
       yAxis.map(name => {
         return YAxis.create({name})
       })
     )
     let makingDataset = Dataset.findOrCreate({
-      // OR JUST USE ASYNC AWAIT
       where: {
         name: datasetName,
         userId,
