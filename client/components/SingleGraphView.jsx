@@ -53,47 +53,48 @@ class SingleGraphView extends Component {
 
   // Exports the graph as embedded JS or PNG
   exportChart(asSVG) {
-    let chartSVG = document.getElementById('single-graph-container-chart')
-      .children[0]
-    let svgBlob = new Blob([chartSVG.outerHTML], {
-      type: 'text/html;charset=utf-8'
+    const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    .then((dataUrl) => {
+      let link = document.createElement('a');
+      link.download = `${this.props.graphSettings.title}.jpeg`;
+      link.href = dataUrl;
+      link.click();
     })
-    FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
   }
 
   exportSVG() {
-    // let chartSVG = document.getElementById('single-graph-container-chart')
-    //   .children[0]
-    // toast('SVG Copied', {
-    //   autoClose: 3000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true
-    // })
-    // return new XMLSerializer().serializeToString(chartSVG)
+    const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+    toast('SVG Copied', {
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true
+    })
+    return new XMLSerializer().serializeToString(chartSVG)
 
 
-    let chartSVG = document.getElementById('single-graph-container-chart').children[0];
-    const { graphId } = this.props.match.params
-    console.log('charSVG in exportAsImage--->>>', chartSVG)
-    console.log('type', typeof chartSVG)
-    // let input = document.getElementById('svg-copy')
-    // this.setState({svgDisplay: true})
-    // let svgURL = new XMLSerializer().serializeToString(chartSVG)
-    // input.value = svgURL
-    // setThumbnailToGraph(graphId, chartSVG);
-    console.log('outerhtml', chartSVG.outerHTML)
-    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
-      .then(function (dataUrl) {
-        console.log('this was made', dataUrl)
-        var link = document.createElement('a');
-        link.download = 'my-image-name.jpeg';
-        link.href = dataUrl;
-        link.click();
-        let svgBlob = new Blob([chartSVG.outerHTML], {
-          type: 'text/html;charset=utf-8'
-        })
-      })
+    // let chartSVG = document.getElementById('single-graph-container-chart').children[0];
+    // const { graphId } = this.props.match.params
+    // console.log('charSVG in exportAsImage--->>>', chartSVG)
+    // console.log('type', typeof chartSVG)
+    // // let input = document.getElementById('svg-copy')
+    // // this.setState({svgDisplay: true})
+    // // let svgURL = new XMLSerializer().serializeToString(chartSVG)
+    // // input.value = svgURL
+    // // setThumbnailToGraph(graphId, chartSVG);
+    // console.log('outerhtml', chartSVG.outerHTML)
+    // htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    //   .then(function (dataUrl) {
+    //     console.log('this was made', dataUrl)
+    //     var link = document.createElement('a');
+    //     link.download = 'my-image-name.jpeg';
+    //     link.href = dataUrl;
+    //     link.click();
+    //     let svgBlob = new Blob([chartSVG.outerHTML], {
+    //       type: 'text/html;charset=utf-8'
+    //     })
+    //   })
   }
 
   handleChange(event) {

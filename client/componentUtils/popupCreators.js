@@ -42,7 +42,7 @@ export const DeletePopup = (element, callback, id, keyword) => (
   </Popup>
 )
 
-export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
+export const SharePopup = (element, downloadcb, linkcb, svgcb) => (
   <Popup trigger={element} closeOnDocumentClick>
     {close => (
       <div id="popup-share">
@@ -58,7 +58,7 @@ export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
           </button>
           <button
             className="popup-share-button"
-            onClick={() => addInput('copied-text', htmlcb())}
+            onClick={() => addInput('copied-text', svgcb())}
           >
             SVG
           </button>
