@@ -10,7 +10,6 @@ User.hasMany(Dataset);
 Dataset.belongsTo(User);
 Dataset.hasMany(Graph);
 Graph.belongsTo(Dataset);
-// NL: once you add the YAxis model to the Graph model, remove the associations below
 Graph.hasMany(YAxis);
 YAxis.belongsTo(Graph);
 

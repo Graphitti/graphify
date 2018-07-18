@@ -146,6 +146,10 @@ router.put('/:graphId', (req, res, next) => {
   }
 })
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 router.get('/aws/:awsId', (req, res, next) => {
   if (req.user) {
     //have some kind of security so that we don't do this if the user doesn't have access to the graph

@@ -180,7 +180,7 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    return `localhost8080:/graph-dataset/${this.props.match.params.graphId}`
+    return `${CURRENT_HOST}/graph-dataset/${this.props.match.params.graphId}`
   }
 
   render() {

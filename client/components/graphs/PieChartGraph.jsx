@@ -40,7 +40,6 @@ export const PieChartGraph = props => {
             cx={280}
             cy={280}
             innerRadius={120}
-            // outerRadius={150}
             fill={colors[0]}
             label
           />
