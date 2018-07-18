@@ -7,22 +7,15 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false
-    // NL: validate email
   },
   password: {
     type: Sequelize.STRING,
-    // NL: get rid of comments like this below
-    // Making `.password` act like a func hides it when serializing to JSON.
-    // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('password')
     }
   },
   salt: {
     type: Sequelize.STRING,
-    // NL: get rid of comments like this below
-    // Making `.salt` act like a function hides it when serializing to JSON.
-    // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('salt')
     }

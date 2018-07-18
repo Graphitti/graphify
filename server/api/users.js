@@ -2,7 +2,6 @@ const router = require('express').Router()
 const {User, Graph, YAxis, Dataset} = require('../db/models')
 module.exports = router
 
-// CG: unnecessary route
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({

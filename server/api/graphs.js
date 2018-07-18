@@ -150,11 +150,6 @@ router.put('/:graphId', (req, res, next) => {
   }
 })
 
-//////////////////////////////////////////
-// CG: DO NOT EXPOSE ROUTES TO AWS      //
-// Do this in the loading of the graph  //
-// For example in an AWS utils file     //
-//////////////////////////////////////////
 
 router.get('/aws/:awsId', (req, res, next) => {
   if (req.user) {
