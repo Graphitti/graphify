@@ -27,7 +27,7 @@ export class UserProfile extends Component {
         this.setState({[graphId]: ''})
       })
       let thisPromise = this.props.user.graphs.map(graph => {
-        this.getBack(graph.graphId)
+        this.getGraphImages(graph.graphId)
           .then(res => {
             const {graphId} = graph;
             this.setState({[graphId]: res.svgBlob})
@@ -52,7 +52,7 @@ export class UserProfile extends Component {
     this.props.deleteGraph(graphId)
   }
 
-  getBack = graphId => {
+  getGraphImages = graphId => {
     return axios
       .get(`/api/graphs/aws/images/${graphId}`)
       .then(res => {
