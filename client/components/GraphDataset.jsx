@@ -74,22 +74,12 @@ class GraphDataset extends Component {
           })
       })
       .then(res => {
-<<<<<<< HEAD
         toast('Graph Saved', {
-=======
-        this.props.history.push(`/graph-dataset/customize/${res.data}`)
-      })
-      .catch(console.error)
-
-      setTimeout(() => {
-        toast('Dataset Saved', {
->>>>>>> master
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true
         })
-<<<<<<< HEAD
         if (!dataset.awsId) {
           toast('Dataset Saved', {
             autoClose: 3000,
@@ -97,12 +87,8 @@ class GraphDataset extends Component {
             closeOnClick: true,
             pauseOnHover: true
           })
-=======
-      }, 500)
->>>>>>> master
-
         }
-        this.props.history.push(`/graph-dataset/customize/${res.data}`)
+        return this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
       .catch(err => {
         console.error(err);
