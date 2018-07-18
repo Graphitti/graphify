@@ -84,7 +84,7 @@ const addInput = (id, text) => {
   document.execCommand('Copy')
 }
 
-export const ErrorPopup = (element, pathname) => (
+export const NotLoggedInErrorPopup = (element, pathname) => (
   <Popup trigger={element} modal closeOnDocumentClick>
     {close => (
       <div className="error-popup-div">

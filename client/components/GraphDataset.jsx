@@ -12,7 +12,7 @@ import ReactTable from 'react-table'
 import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { ErrorPopup } from '../componentUtils'
+import { NotLoggedInErrorPopup } from '../componentUtils'
 import htmlToImage from 'html-to-image'
 
 class GraphDataset extends Component {
@@ -74,6 +74,7 @@ class GraphDataset extends Component {
           })
       })
       .then(res => {
+        this.props.history.push(`/graph-dataset/customize/${res.data}`)
         toast('Graph Saved', {
           autoClose: 3000,
           hideProgressBar: false,
@@ -88,7 +89,6 @@ class GraphDataset extends Component {
             pauseOnHover: true
           })
         }
-        return this.props.history.push(`/graph-dataset/customize/${res.data}`)
       })
       .catch(err => {
         console.error(err);
@@ -135,7 +135,7 @@ class GraphDataset extends Component {
         : displayGroup ? 'A Bar Chart may be best for this data' : null
     return (
       <div id="graph-dataset">
-        {ErrorPopup(<button id="error-button" style={{ opacity: "0" }}></button>, this.props.location.pathname)}
+        {NotLoggedInErrorPopup(<button id="error-button" style={{ display: "none" }}></button>, this.props.location.pathname)}
         <div id="graph-dataset-table-container">
           <h1 id="graph-dataset-table-container-name">{dataset.name}</h1>
           {!!dataset.dataset.length &&
