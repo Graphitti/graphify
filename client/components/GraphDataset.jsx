@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -9,9 +9,11 @@ import {
   PieChartGraph
 } from './graphs'
 import ReactTable from 'react-table'
-import {setXAxis, addYAxis, deleteYAxis} from '../store'
+import { setXAxis, addYAxis, deleteYAxis } from '../store'
 import axios from 'axios'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
+import { NotLoggedInErrorPopup } from '../componentUtils'
+import htmlToImage from 'html-to-image'
 
 class GraphDataset extends Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class GraphDataset extends Component {
   }
 
   handleDeleteY(idx) {
-    const {deleteY} = this.props
+    const { deleteY } = this.props
     deleteY(idx)
     this.setState({
       yCategQuantity: this.state.yCategQuantity.slice(0, -1)
@@ -40,16 +42,18 @@ class GraphDataset extends Component {
   }
 
   handleGraphClick(graphType) {
-    const {dataset, graphSettings} = this.props
-    const {currentX, currentY} = graphSettings
+    const { dataset, graphSettings } = this.props
+    const { currentX, currentY } = graphSettings
     const datasetName = dataset.name
 
     //upload to AWS only if the dataset doesn't already have an awsId
     let AWSPost = !dataset.awsId
-      ? axios.post(`api/graphs/aws`, {dataset})
-      : (AWSPost = Promise.resolve({data: dataset.awsId}))
+      ? axios.post(`api/graphs/aws`, { dataset })
+      : (AWSPost = Promise.resolve({ data: dataset.awsId }))
 
     AWSPost.then(res => {
+      if (res.status === 401) {
+      }
       return axios.post(`api/graphs`, {
         xAxis: currentX,
         yAxis: currentY,
@@ -60,34 +64,39 @@ class GraphDataset extends Component {
       })
     })
       .then(res => {
-        const chartSVG = document.getElementById(`${graphType}-graph`)
-          .children[0]
-        const svgBlob = JSON.stringify(chartSVG.outerHTML)
-        return axios.post(`/api/aws/graph/${res.data}`, {svgBlob})
+        let chartSVG = document.getElementById(`${graphType}-graph`).children[0];
+        const { graphId } = this.props.match.params
+        return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+          .then((dataUrl) => {
+            return axios.post(`/api/aws/graph/${res.data}`, {
+              svgBlob: dataUrl
+            })
+          })
       })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
-      })
-      .catch(console.error)
-
-      setTimeout(() => {
-        toast('Dataset Saved', {
+        toast('Graph Saved', {
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true
         })
-      }, 500)
-
-    setTimeout(() => {
-      toast('Graph Saved', {
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true
+        if (!dataset.awsId) {
+          toast('Dataset Saved', {
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true
+          })
+        }
       })
-    }, 1000)
+      .catch(err => {
+        console.error(err);
+        const errorButton = document.getElementById("error-button");
+        errorButton.click();
+      })
   }
+
 
   render() {
     const {
@@ -96,7 +105,7 @@ class GraphDataset extends Component {
       handleXCategory,
       handleYCategory
     } = this.props
-    const {currentX, currentY} = graphSettings
+    const { currentX, currentY } = graphSettings
     const columnObj = dataset.dataset.length > 0 ? dataset.columnObj : {}
     const xAxis = Object.keys(columnObj)
     const yAxis = xAxis.filter(key => {
@@ -126,9 +135,10 @@ class GraphDataset extends Component {
         : displayGroup ? 'A Bar Chart may be best for this data' : null
     return (
       <div id="graph-dataset">
+        {NotLoggedInErrorPopup(<button id="error-button" style={{ display: "none" }}></button>, this.props.location.pathname)}
         <div id="graph-dataset-table-container">
           <h1 id="graph-dataset-table-container-name">{dataset.name}</h1>
-          {dataset.dataset.length &&
+          {!!dataset.dataset.length &&
             xAxis.length && (
               <div id="graph-dataset-table-container-table">
                 <ReactTable
@@ -141,7 +151,7 @@ class GraphDataset extends Component {
         </div>
         <div id="graph-dataset-select">
           <h1 id="graph-dataset-select-name">Select which data to graph</h1>
-          {dataset.dataset.length && (
+          {!!dataset.dataset.length && (
             <div>
               <div className="graph-dataset-headers">
                 <div id="graph-dataset-select-x-y">
@@ -213,7 +223,7 @@ class GraphDataset extends Component {
                   id="Scatter-graph"
                   onClick={() => this.handleGraphClick('Scatter')}
                   className="graph-dataset-single-container"
-                  style={{display: displayScatter ? 'inline' : 'none'}}
+                  style={{ display: displayScatter ? 'inline' : 'none' }}
                 >
                   <ScatterChartGraph />
                 </div>
@@ -221,7 +231,7 @@ class GraphDataset extends Component {
                   id="Line-graph"
                   onClick={() => this.handleGraphClick('Line')}
                   className="graph-dataset-single-container"
-                  style={{display: displayGroup ? 'inline' : 'none'}}
+                  style={{ display: displayGroup ? 'inline' : 'none' }}
                 >
                   <LineChartGraph />
                 </div>
@@ -229,7 +239,7 @@ class GraphDataset extends Component {
                   id="Bar-graph"
                   onClick={() => this.handleGraphClick('Bar')}
                   className="graph-dataset-single-container"
-                  style={{display: displayGroup ? 'inline' : 'none'}}
+                  style={{ display: displayGroup ? 'inline' : 'none' }}
                 >
                   <BarChartGraph />
                 </div>
@@ -237,7 +247,7 @@ class GraphDataset extends Component {
                   id="Radar-graph"
                   onClick={() => this.handleGraphClick('Radar')}
                   className="graph-dataset-single-container"
-                  style={{display: displayRadar ? 'inline' : 'none'}}
+                  style={{ display: displayRadar ? 'inline' : 'none' }}
                 >
                   <RadarChartGraph />
                 </div>
@@ -245,7 +255,7 @@ class GraphDataset extends Component {
                   id="Area-graph"
                   onClick={() => this.handleGraphClick('Area')}
                   className="graph-dataset-single-container"
-                  style={{display: displayGroup ? 'inline' : 'none'}}
+                  style={{ display: displayGroup ? 'inline' : 'none' }}
                 >
                   <AreaChartGraph />
                 </div>
@@ -253,7 +263,7 @@ class GraphDataset extends Component {
                   id="Pie-graph"
                   onClick={() => this.handleGraphClick('Pie')}
                   className="graph-dataset-single-container"
-                  style={{display: displayPie ? 'inline' : 'none'}}
+                  style={{ display: displayPie ? 'inline' : 'none' }}
                 >
                   <PieChartGraph />
                 </div>
@@ -269,7 +279,8 @@ class GraphDataset extends Component {
 const mapState = state => {
   return {
     dataset: state.dataset,
-    graphSettings: state.graphSettings
+    graphSettings: state.graphSettings,
+    user: state.user
   }
 }
 

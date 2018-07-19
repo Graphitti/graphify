@@ -125,9 +125,11 @@ body {
   position: absolute;
   padding: 20px 70px;
   z-index: -1;
+  cursor: pointer;
 }
 .react-csv-input {
   opacity: 0;
+  cursor: pointer;
 }
 .dataset-link {
   align-items: center;
@@ -364,6 +366,7 @@ body {
   );
   box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
   transition: 1s;
+  cursor: pointer;
 }
 
 .home-buttons:hover {
@@ -534,6 +537,70 @@ nav a {
   opacity: 0.8;
   text-align: center;
   background-image: linear-gradient(45deg, #f3fffa, #1d6142) !important;
+}
+
+#graph-dataset > div > div.popup-content {
+  width: 50% !important;
+  border-radius: 10px;
+  border: 0px !important;
+  opacity: 0.8;
+  text-align: center;
+  background-image: linear-gradient(45deg, #f3fffa, #1d6142) !important;
+}
+
+.error-popup-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-popup-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.popup-login-buttons {
+  outline: none;
+  padding: 3px 13px;
+  margin: 20px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #318f68;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(10, 54, 34) 45%,
+    rgb(0, 255, 126) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(19, 247, 152);
+  transition: color 1s, background-image 1.5s;
+}
+
+.popup-login-buttons:hover {
+  color: #202b47;
+  background-image: linear-gradient(45deg, #ddffee, #49cc7e);
+}
+
+.popup-login-buttons-no {
+  outline: none;
+  padding: 3px 10px;
+  margin: 20px 10px 20px;
+  font-size: 15px;
+  color: white;
+  border: inset 2px #8f3131;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    45deg,
+    rgb(109, 20, 20) 45%,
+    rgb(255, 0, 0) 105%
+  );
+  box-shadow: 0px 0px 0px 1px rgb(247, 19, 19);
+  transition: color 1s, background-image 1.5s;
+}
+
+.popup-login-buttons-no:hover {
+  color: #000000;
+  background-image: linear-gradient(45deg, #ffdddd, #cc4949);
 }
 
 #popup-delete-buttons-yes {

@@ -45,7 +45,8 @@ router.get('/graph/:graphId', (req, res, next) => {
 router.post('/graph/:graphId', (req, res, next) => {
     const {graphId} = req.params
     const {svgBlob} = req.body
-    let datasetParams = {Bucket: AWS_BUCKET, Key: graphId, Body: svgBlob}
+    const stringifiedImage = JSON.stringify({svgBlob});
+    let datasetParams = {Bucket: AWS_BUCKET, Key: graphId, Body: stringifiedImage}
     // this makes the promise to do the actual request, get object is a get request
     let uploadBlobPromise = new AWS.S3({apiVersion: '2006-03-01'})
     .putObject(datasetParams)

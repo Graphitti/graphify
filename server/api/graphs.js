@@ -24,7 +24,6 @@ router.get('/:graphId', (req, res, next) => {
       const {awsId} = graph.dataset.dataValues
       const graphDataObj = {}
       getDatasetFromS3(awsId).then(dataset => {
-        // CG: nested Promise
         graphDataObj.dataset = dataset
         graphDataObj.graph = graph
         res.send(graphDataObj)
@@ -54,7 +53,6 @@ router.post('/', (req, res, next) => {
     const userId = req.user.id
 
     let makingGraph = Graph.create({
-      // CG: promiseForGraph
       userId,
       graphId,
       xAxis,
@@ -66,13 +64,11 @@ router.post('/', (req, res, next) => {
       description
     })
     let makingYAxes = Promise.all(
-      // CG: promiseForYAxis
       yAxis.map(name => {
         return YAxis.create({name})
       })
     )
     let makingDataset = Dataset.findOrCreate({
-      // OR JUST USE ASYNC AWAIT
       where: {
         name: datasetName,
         userId,
@@ -150,7 +146,6 @@ router.put('/:graphId', (req, res, next) => {
   }
 })
 
-
 router.get('/aws/:awsId', (req, res, next) => {
   if (req.user) {
     //have some kind of security so that we don't do this if the user doesn't have access to the graph
@@ -165,6 +160,26 @@ router.get('/aws/:awsId', (req, res, next) => {
         let parsedDataset = JSON.parse(result.Body)
         parsedDataset.dataset.awsId = awsId
         res.json(parsedDataset)
+      })
+      .catch(next)
+  } else {
+    res.send(401).send('You must be logged in to access a dataset')
+  }
+})
+
+router.get('/aws/images/:awsId', (req, res, next) => {
+  if (req.user) {
+    //have some kind of security so that we don't do this if the user doesn't have access to the graph
+    const {awsId} = req.params
+    let datasetParams = {Bucket: AWS_BUCKET, Key: awsId}
+    //this makes the promise to do the actual request, get object is a get request
+    let findDatasetPromise = new AWS.S3({apiVersion: '2006-03-01'})
+      .getObject(datasetParams)
+      .promise()
+    findDatasetPromise
+      .then(result => {
+        let parsedImage = JSON.parse(result.Body)
+        res.json(parsedImage)
       })
       .catch(next)
   } else {

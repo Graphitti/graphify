@@ -12,15 +12,13 @@ import {ToastContainer} from 'react-toastify'
 import {DeletePopup} from '../componentUtils'
 import renderHtml from 'react-render-html'
 import axios from 'axios'
+import htmlToImage from 'html-to-image'
 
 export class UserProfile extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      image: ''
-    }
+    this.state = {}
 
-    this.getBack = this.getBack.bind(this)
   }
   componentDidMount() {
     this.props.meAndGraphImages().then(res => {
@@ -29,11 +27,14 @@ export class UserProfile extends Component {
         this.setState({[graphId]: ''})
       })
       let thisPromise = this.props.user.graphs.map(graph => {
-        this.getBack(graph.graphId).then(res => {
-          this.setState({[graph.graphId]: res})
+        this.getGraphImages(graph.graphId)
+          .then(res => {
+            const {graphId} = graph;
+            this.setState({[graphId]: res.svgBlob})
         })
       })
-      Promise.all(thisPromise).catch(console.error)
+      Promise.all(thisPromise)
+      .catch(console.error)
     })
   }
 
@@ -51,9 +52,9 @@ export class UserProfile extends Component {
     this.props.deleteGraph(graphId)
   }
 
-  getBack = graphId => {
+  getGraphImages = graphId => {
     return axios
-      .get(`/api/aws/graph/${graphId}`)
+      .get(`/api/graphs/aws/images/${graphId}`)
       .then(res => {
         return res.data
       })
@@ -91,9 +92,7 @@ export class UserProfile extends Component {
                 graphs.map(graph => (
                   <div key={graph.id} className="profile-graphs-single">
                     <Link to={`/graph-dataset/customize/${graph.graphId}`}>
-                      <div className="graph-thumbnail-image">
-                        {renderHtml(this.state[graph.graphId] || '')}
-                      </div>
+                      <img src={this.state[graph.graphId]}/>
                     </Link>
                     {DeletePopup(
                       <button className="delete-graph">

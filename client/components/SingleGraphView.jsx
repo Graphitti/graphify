@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   LineChartGraph,
   BarChartGraph,
@@ -19,12 +19,14 @@ import {
   fetchAndSetDataFromS3,
   saveGraphSettingToDB
 } from '../store'
-import {HuePicker} from 'react-color'
+import { HuePicker } from 'react-color'
 import axios from 'axios'
 import FileSaver from 'file-saver'
-import {toast, ToastContainer} from 'react-toastify'
-import {SharePopup} from '../componentUtils'
-import { CURRENT_HOST } from '../../secrets'
+import { toast, ToastContainer } from 'react-toastify'
+import { SharePopup } from '../componentUtils'
+import htmlToImage from 'html-to-image'
+import {CURRENT_HOST} from '../../secrets'
+
 
 axios.defaults.baseURL = `http://${CURRENT_HOST}`
 
@@ -45,25 +47,25 @@ class SingleGraphView extends Component {
   }
 
   componentDidMount() {
-    const {graphId} = this.props.match.params
-    const {getGraphId} = this.props
-    getGraphId(graphId)
+    const { graphId } = this.props.match.params
+    const { getGraphId } = this.props
+    this.props.getGraphId(graphId)
   }
 
   // Exports the graph as embedded JS or PNG
   exportChart(asSVG) {
-    let chartSVG = document.getElementById('single-graph-container-chart')
-      .children[0]
-    let svgBlob = new Blob([chartSVG.outerHTML], {
-      type: 'text/html;charset=utf-8'
+    const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+    htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    .then((dataUrl) => {
+      let link = document.createElement('a');
+      link.download = `${this.props.graphSettings.title}.jpeg`;
+      link.href = dataUrl;
+      link.click();
     })
-    FileSaver.saveAs(svgBlob, this.state.uuid + '.html')
-    // }
   }
 
   exportSVG() {
-    let chartSVG = document.getElementById('single-graph-container-chart')
-      .children[0]
+    const chartSVG = document.getElementById('single-graph-container-chart').children[0]
     toast('SVG Copied', {
       autoClose: 3000,
       hideProgressBar: false,
@@ -95,12 +97,12 @@ class SingleGraphView extends Component {
   }
 
   handleClick(idx) {
-    this.setState({legend: idx})
+    this.setState({ legend: idx })
   }
 
   handleChangeColor(color) {
     this.props.changeColor(color.hex, this.state.legend)
-    this.setState({legend: -1})
+    this.setState({ legend: -1 })
   }
 
   handleClone() {
@@ -114,7 +116,7 @@ class SingleGraphView extends Component {
       graphType,
       description
     } = this.props.graphSettings
-    const {awsId, name} = this.props.dataset
+    const { awsId, name } = this.props.dataset
     return axios
       .post(`api/graphs`, {
         xAxis: currentX,
@@ -129,10 +131,13 @@ class SingleGraphView extends Component {
         awsId
       })
       .then(res => {
-        const chartSVG = document.getElementById('single-graph-container-chart')
-          .children[0]
-        const svgBlob = JSON.stringify(chartSVG.outerHTML)
-        return axios.post(`/api/aws/graph/${res.data}`, {svgBlob})
+        const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+        return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+        .then((dataUrl) => {
+          return axios.post(`/api/aws/graph/${res.data}`, {
+            svgBlob: dataUrl
+          })
+        })
       })
       .then(res => {
         this.props.history.push(`/graph-dataset/customize/${res.data}`)
@@ -158,10 +163,14 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    const chartSVG = document.getElementById('single-graph-container-chart')
-      .children[0]
-    const svgBlob = JSON.stringify(chartSVG.outerHTML)
-    axios.post(`/api/aws/graph/${graphId}`, {svgBlob}).catch(console.error)
+    const chartSVG = document.getElementById('single-graph-container-chart').children[0]
+    return htmlToImage.toJpeg(chartSVG, { backgroundColor: '#FFFFFF', height: 700, width: 700, style: { margin: 'auto', verticalAlign: 'center' } })
+    .then((dataUrl) => {
+      return axios.post(`/api/aws/graph/${graphId}`, {
+        svgBlob: dataUrl
+      })
+    })
+      .catch(console.error)
   }
 
   giveLink() {
@@ -171,12 +180,12 @@ class SingleGraphView extends Component {
       closeOnClick: true,
       pauseOnHover: true
     })
-    return `${CURRENT_HOST}/${this.props.match.params.graphId}`
+    return `${CURRENT_HOST}/graph-dataset/customize/${this.props.match.params.graphId}`
   }
 
   render() {
-    const {graphId} = this.props.match.params
-    let {currentY, graphType, colors, description} = this.props.graphSettings
+    const { graphId } = this.props.match.params
+    let { currentY, graphType, colors, description } = this.props.graphSettings
     const image = this.state.image
     return (
       <div id="single-graph">
@@ -200,7 +209,7 @@ class SingleGraphView extends Component {
         </div>
         <div id="single-graph-container">
           <div id="single-graph-container-chart">
-            {(function() {
+            {(function () {
               switch (graphType) {
                 case 'Line':
                   return <LineChartGraph />

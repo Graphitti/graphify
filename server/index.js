@@ -14,6 +14,7 @@ const socketio = require('socket.io')
 const {Graph, Dataset} = require('./db/models')
 module.exports = app
 
+
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
 if (process.env.NODE_ENV === 'test') {
@@ -47,8 +48,8 @@ const createApp = () => {
   app.use(morgan('dev'))
 
   // body parsing middleware
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({extended: true}))
+  app.use(bodyParser.json({limit: '50mb', extended: true}))
+  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 
   // compression middleware
   app.use(compression())

@@ -1,5 +1,6 @@
 import Popup from 'reactjs-popup'
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 export const GraphPopup = (graph, callback, graphType) => (
   <Popup
@@ -41,7 +42,7 @@ export const DeletePopup = (element, callback, id, keyword) => (
   </Popup>
 )
 
-export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
+export const SharePopup = (element, downloadcb, linkcb, svgcb) => (
   <Popup trigger={element} closeOnDocumentClick>
     {close => (
       <div id="popup-share">
@@ -57,13 +58,13 @@ export const SharePopup = (element, downloadcb, linkcb, htmlcb) => (
           </button>
           <button
             className="popup-share-button"
-            onClick={() => addInput('copied-text', htmlcb())}
+            onClick={() => addInput('copied-text', svgcb())}
           >
             SVG
           </button>
         </div>
         <div>
-          <textarea id="copied-text" style={{display: 'none'}} />
+          <textarea id="copied-text" style={{ display: 'none' }} />
         </div>
       </div>
     )}
@@ -82,3 +83,24 @@ const addInput = (id, text) => {
   element.select()
   document.execCommand('Copy')
 }
+
+export const NotLoggedInErrorPopup = (element, pathname) => (
+  <Popup trigger={element} modal closeOnDocumentClick>
+    {close => (
+      <div className="error-popup-div">
+        <h2>Please login or signup to customize your graphs</h2>
+        <div className="error-popup-buttons">
+          <Link className="popup-login-buttons" 
+          to={{ pathname: "/login", query: {lastPage: pathname}}}
+          >Login</Link>
+          <Link className="popup-login-buttons" 
+          to={{ pathname: "/signup", query: {lastPage: pathname}}}
+          >Sign Up</Link>
+        <button className="popup-login-buttons-no" onClick={close}>Close</button>
+        </div>
+      </div>
+    )}
+  </Popup>
+)
+
+
