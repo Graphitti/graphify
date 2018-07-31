@@ -18,7 +18,7 @@ export default class ShowResults extends Component {
         result.resource.columns_name.forEach((columnName, i) => {
             columObj[columnName] = result.resource.columns_datatype[i];
         })
-        store.dispatch(getAsyncData(domain, id, columObj, datasetName));
+        store.dispatch(getAsyncData(domain, id, columObj, datasetName))
     }
 
     render() {
