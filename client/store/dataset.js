@@ -5,6 +5,7 @@ import {
   datasetColumnFormatter,
   uploadedDataFormatter
 } from './utils/datasetOrganizingFuncs'
+import { toast } from 'react-toastify'
 
 /**
  * ACTION TYPES
@@ -44,7 +45,15 @@ export const getAsyncData = (domain, id, columnObj, datasetName) => dispatch => 
       dispatch(setData(processedData))
       history.push('/graph-dataset')
     })
-    .catch(console.error)
+    .catch(err => {
+      toast('Dataset not available, please select a different dataset', {
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true
+      })
+      console.error(err);
+    })
 }
 
 export const fetchAndSetDataFromS3 = awsId => dispatch => {
